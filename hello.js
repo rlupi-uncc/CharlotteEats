@@ -11,7 +11,7 @@ const requestListener = function (req, res) {
     res.writeHead(200);
     
     // Send the response body and close the connection
-    res.end("My first server!");
+    res.end("Group 1 Web server is up and running!\n");
 };
 
 // Create the server with our request listener
