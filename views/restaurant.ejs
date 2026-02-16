@@ -1,0 +1,51 @@
+<a href="/restaurants" class="muted">← Back to restaurants</a>
+<h1><%= restaurant.name %></h1>
+<p><%= restaurant.description %></p>
+
+<p>
+Rating: <strong><%= restaurant.ratingAvg %></strong> / 5
+(<%= restaurant.ratingCount %> reviews)
+</p>
+
+<hr>
+
+<form>
+  <input name="q" placeholder="Search menu" value="<%= filters.q || '' %>">
+
+  <select name="category">
+    <option value="">All categories</option>
+    <% categories.forEach(c => { %>
+      <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>>
+        <%= c %>
+      </option>
+    <% }) %>
+  </select>
+
+  <input name="excludeAllergens" placeholder="Exclude allergens">
+
+  <button>Filter</button>
+</form>
+
+<h2>Menu</h2>
+
+<% menuItems.forEach(i => { %>
+  <div>
+    <strong><%= i.name %></strong> — $<%= i.price %><br>
+    <%= i.description %><br>
+    Allergens: <%= (i.allergens || []).join(", ") || "None" %>
+  </div>
+  <br>
+<% }) %>
+
+<hr>
+
+<h2>Reviews</h2>
+
+<% reviews.forEach(r => { %>
+  <div>
+    <strong><%= r.authorName %></strong> — <%= r.rating %>/5<br>
+    <em><%= r.title %></em><br>
+    <%= r.body %>
+  </div>
+  <br>
+<% }) %>

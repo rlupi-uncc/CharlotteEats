@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CharlotteEats - Restaurants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; padding: 16px; max-width: 1000px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      input, select { padding: 10px; }
+      button { padding: 10px 14px; cursor: pointer; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+      .card { border: 1px solid #eee; border-radius: 12px; padding: 14px; text-decoration: none; color: inherit; }
+      .card:hover { border-color: #ccc; }
+      .title { font-weight: 800; font-size: 18px; margin: 0 0 6px; }
+      .muted { opacity: 0.75; }
+      .tag { display: inline-block; padding: 2px 8px; border: 1px solid #ccc; border-radius: 999px; font-size: 12px; margin: 6px 6px 0 0; }
+      .rating { margin-top: 10px; font-size: 14px; }
+      .topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div>
+        <h1 style="margin: 0;">Restaurants</h1>
+        <div class="muted">Browse local spots and view menus</div>
+      </div>
+      <a class="muted" href="/">Home</a>
+    </div>
+
+    <form method="GET" action="/restaurants" style="margin-top: 14px;">
+      <div class="row">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search by name, description, tags..."
+          value="<%= filters.q %>"
+          style="flex: 1; min-width: 240px;"
+        />
+
+        <select name="tag">
+          <option value="">All tags</option>
+          <% allTags.forEach(function(t) { %>
+            <option value="<%= t %>" <%= (filters.tag === t ? "selected" : "") %>><%= t %></option>
+          <% }); %>
+        </select>
+
+        <select name="sort">
+          <option value="rating" <%= (filters.sort === "rating" ? "selected" : "") %>>Sort: Rating</option>
+          <option value="name" <%= (filters.sort === "name" ? "selected" : "") %>>Sort: Name</option>
+          <option value="newest" <%= (filters.sort === "newest" ? "selected" : "") %>>Sort: Newest</option>
+        </select>
+
+        <button type="submit">Apply</button>
+
+        <a href="/restaurants" class="muted" style="margin-left: 6px;">Reset</a>
+      </div>
+    </form>
+
+    <div class="grid">
+      <% if (!restaurants.length) { %>
+        <div class="muted">No restaurants match your search.</div>
+      <% } %>
+
+      <% restaurants.forEach(function(r) { %>
+        <a class="card" href="/restaurants/<%= r._id %>">
+          <div class="title"><%= r.name %></div>
+          <div class="muted"><%= r.description || "" %></div>
+
+          <div style="margin-top: 8px;" class="muted">
+            <% if (r.address && (r.address.city || r.address.state)) { %>
+              <%= r.address.city || "" %><%= r.address.city && r.address.state ? ", " : "" %><%= r.address.state || "" %>
+            <% } %>
+          </div>
+
+          <div class="rating">
+            Rating:
+            <strong><%= (r.ratingAvg || 0).toFixed(1) %></strong> / 5
+            <span class="muted">(<%= r.ratingCount || 0 %>)</span>
+          </div>
+
+          <div>
+            <% (r.tags || []).slice(0, 6).forEach(function(t) { %>
+              <span class="tag"><%= t %></span>
+            <% }); %>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </body>
+</html>
