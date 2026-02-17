@@ -1,11 +1,22 @@
-require("dotenv").config();
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 
-const client = new MongoClient(process.env.MONGO_URI);
+async function connectMongo() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) throw new Error("Missing MONGO_URI in environment");
 
-async function connect() {
-  await client.connect();
-  return client.db("sprint0_demo");
+  // Prevent “hang forever”
+  mongoose.set("bufferCommands", false);
+
+  mongoose.connection.on("connected", () => console.log("db.js: MongoDB connected"));
+  mongoose.connection.on("error", (err) => console.error("db.js: MongoDB error:", err));
+  mongoose.connection.on("disconnected", () => console.log("db.js: MongoDB disconnected"));
+
+  await mongoose.connect(uri, {
+    serverSelectionTimeoutMS: 5000,
+    connectTimeoutMS: 5000,
+  });
+
+  return mongoose;
 }
 
-module.exports = { connect };
+module.exports = { connectMongo };

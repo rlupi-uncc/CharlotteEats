@@ -1,23 +1,31 @@
-// Import the built-in http module - no installation needed
-const http = require("http");
+require("dotenv").config();
 
-// Define where the server will listen
-const host = 'localhost';  // Only accessible from this machine
-const port = 8000;          // Common development port
+const express = require("express");
+const path = require("path");
+const app = express();
 
-// Request listener: handles every incoming HTTP request
-const requestListener = function (req, res) {
-    // Set HTTP status code to 200 (OK)
-    res.writeHead(200);
-    
-    // Send the response body and close the connection
-    res.end("Group 1 Web server is up and running!\n");
-};
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Create the server with our request listener
-const server = http.createServer(requestListener);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// Start listening for connections
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+const restaurantRoutes = require("./routes/restaurant");
+app.use("/restaurants", restaurantRoutes);
+
+app.get("/", (req, res) => {
+  res.send("CharlotteEats server is running!");
+});
+
+const PORT = 8000;
+app.listen(PORT, async () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+
+  // Connect to Mongo after server is listening
+  try {
+    const { connectMongo } = require("./db");
+    await connectMongo();
+  } catch (e) {
+    console.error("Mongo connect failed:", e);
+  }
 });
