@@ -7,11 +7,22 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Serve static assets (css, images, html) from project root
+app.use(express.static(path.join(__dirname)));
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 const restaurantRoutes = require("./routes/restaurant");
 app.use("/restaurants", restaurantRoutes);
+
+app.get("/profile", (req, res) => {
+  res.render("userProfile");
+});
+
+app.get("/edit_profile", (req, res) => {
+  res.render("userProfileEdit");
+});
 
 app.get("/", (req, res) => {
   res.send("CharlotteEats server is running!");
