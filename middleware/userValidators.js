@@ -23,12 +23,13 @@ export const validateUser = [
 export const validateUpdateUser = [
     oneOf(
         [
+          body('username').exists({ values: 'falsy'}),
           body('email').exists({ values: 'falsy' }),
           body('password').exists({ values: 'falsy' }),
         ],
         {
           message:
-            'At least one field (email, password) must be provided',
+            'At least one field (username, email, password) must be provided',
         },
       ),
     

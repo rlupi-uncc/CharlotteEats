@@ -10,6 +10,7 @@ export async function getCurrentUserHandler(req, res){
 export async function updateCurrentUserHandler(req, res) {
   let id = parseInt(req.user.id);
   const updates = {};
+  if (req.body.username) updates.username = req.body.username;
   if (req.body.email) updates.email = req.body.email;
   if (req.body.password) updates.password = req.body.password;
 

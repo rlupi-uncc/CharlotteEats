@@ -1,19 +1,20 @@
 import bcrypt from 'bcrypt';
-//Need MongoDB integration here
 import jwt from 'jsonwebtoken';
-//import {createUser, findUserByEmail} from '../respositories/userRepo.js';
+import {createUser, findUserByEmail} from '../respositories/userRepo.js';
+import { MongoServerError } from 'mongodb';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRE_IN = process.env.JWT_EXPIRES_IN;
 
-export async function signUp(email, password) {
+export async function signUp(username, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     try{
-        const newUser = await createUser({email, password: hashedPassword});
+        const newUser = await createUser({username, email, password: hashedPassword});
         return newUser;
     } catch (error) {
-        if(error instanceof Prisma.PrismaClientKnownRequestError) {
-            if(error.code = 'P2002'){
+        //Might need to refactor this in the future
+        if(error instanceof MongoServerError) {
+            if(error.code === '11000'){
                 const error = new Error('Email has already been used');
                 error.status = 409;
                 throw error;

@@ -17,8 +17,8 @@ export async function updateUser(id, data){
             const updatedUser = await update(id, data);
             return updatedUser;
         } catch (error) {
-            if(error instanceof Prisma.PrismaClientKnownRequestError) {
-                if(error.code = 'P2002'){
+            if(error instanceof MongoServerError) {
+                if(error.code === '11000'){
                     const error = new Error('Email has already been used');
                     error.status = 409;
                     throw error;
