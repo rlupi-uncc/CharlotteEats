@@ -19,6 +19,10 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
+app.get("/reviews", (req, res) => {
+  res.render("reviews");
+});
+
 const PORT = 8000;
 app.listen(PORT, async () => {
   console.log(`Server running at http://localhost:${PORT}`);
