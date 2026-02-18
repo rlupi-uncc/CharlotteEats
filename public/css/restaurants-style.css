@@ -1,0 +1,99 @@
+:root {
+  --text-color: black;
+  --background-color: lightblue;
+  --form-background-color: rgb(175, 225, 175);
+  --pop-color: rgb(100, 149, 237);
+  --content-height: 0px;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  color: var(--text-color);
+}
+
+h1 {
+  text-align: center;
+  margin-left: 175px;
+  margin-right: 175px;
+  margin-top: 15px;
+  padding: 10px;
+  background: var(--background-color);
+}
+
+#restaurants-title {
+  background: none;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+h2 {
+  text-align: center;
+}
+
+hr {
+  border: 1px solid var(--pop-color);
+}
+
+.header-links-flex {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  background-color: var(--background-color);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  padding-top: 20px;
+  padding-bottom: 2px;
+}
+
+.hamburger-menu {
+  height: 50px;
+  width: 50px;
+  margin-left: auto;
+  position: relative;
+}
+
+.hamburger-menu span {
+  height: 5px;
+  width: 100%;
+  background-color: var(--text-color);
+  border-radius: 25px;
+  position: absolute;
+  margin-top: 40px;
+  margin-right: 10px;
+  top: -50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.3s ease;
+}
+
+.hamburger-menu span:nth-child(1){
+  top: -25%;
+}
+
+.hamburger-menu span:nth-child(3){
+  top: -75%;
+}
+
+.hamburger-menu.active span:nth-child(1){
+  top: -50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2){
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3){
+  top: -50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
