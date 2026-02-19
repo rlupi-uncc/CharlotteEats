@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <title>CharlotteEats - Restaurants</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/restaurants-style.css">
     <style>
-      body { font-family: Arial, sans-serif; margin: 0; padding: 16px; max-width: 1000px; }
+      /* body { font-family: Arial, sans-serif; margin: 0; padding: 16px; max-width: 1000px; } */
       .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
       input, select { padding: 10px; }
       button { padding: 10px 14px; cursor: pointer; }
@@ -20,9 +21,36 @@
     </style>
   </head>
   <body>
+
+    <header>
+    <h1>CharlotteEats</h1>
+
+    <div class="header-links-flex">
+
+      <a href="/"><h2>Login</h2></a>
+
+      <hr width="2" size="40"/>
+      <a href="/restaurants"><h2>Restaurants List</h2></a>
+      <hr width="2" size="40"/>
+      <h2>User Profile</h2>
+
+      <hr width="2" size="40"/>
+
+      <nav>
+        <div class="hamburger-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+
+    </div>
+
+  </header>
+
     <div class="topbar">
       <div>
-        <h1 style="margin: 0;">Restaurants</h1>
+        <h1 id="restaurants-title" style="margin: 0;">Restaurants</h1>
         <div class="muted">Browse local spots and view menus</div>
       </div>
       <a class="muted" href="/">Home</a>

@@ -25,7 +25,11 @@ app.get("/edit_profile", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("CharlotteEats server is running!");
+  res.render("login");
+});
+
+app.get("/reviews", (req, res) => {
+  res.render("reviews");
 });
 
 const PORT = 8000;
