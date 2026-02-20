@@ -5,18 +5,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
-  <link rel="stylesheet" href="css/login-style.css">
+  <link rel="stylesheet" href="/css/login-style.css">
 </head>
 <body>
 
   <header>
-    <h1><a href="login.html">CharlotteEats</a></h1>
+    <h1>CharlotteEats</h1>
 
     <div class="header-links-flex">
 
-      <h2>Logo</h2>
+      <a href="/"><h2>Login</h2></a>
+
       <hr width="2" size="40"/>
-      <h2>Search for Restaurants</h2>
+      <a href="/restaurants"><h2>Restaurants List</h2></a>
       <hr width="2" size="40"/>
       <h2>User Profile</h2>
 
@@ -39,14 +40,14 @@
 
       <h2 id="login-title">Existing User Login</h2>
 
-      <form action="#">
+      <form action="/login" method="POST">
 
         <div>
           <input type="text" name="username" id="username" placeholder="Username" required>
         </div>
 
         <div>
-          <input type="text" name="password" id="password" placeholder="Password" required>
+          <input type="password" name="password" id="password" placeholder="Password" required>
         </div>
         
         <div>
@@ -57,18 +58,23 @@
 
       <h2 id="registration-title">New User Registration</h2>
 
-      <form action="#">
+      <form action="/register" method="POST">
 
         <div>
           <input type="text" name="username" id="username" placeholder="Username" required>
         </div>
 
         <div>
-          <input type="text" name="password" id="password" placeholder="Password" required>
+          <input type="email" name="email" id="email"
+          placeholder="Email" required>
         </div>
 
         <div>
-          <input type="text" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+          <input type="password" name="password" id="password" placeholder="Password" required>
+        </div>
+
+        <div>
+          <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
         </div>
         
         <div>
