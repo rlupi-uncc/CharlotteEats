@@ -2,9 +2,9 @@
   "name": "charlotteeats",
   "version": "1.0.0",
   "description": "",
-  "main": "hello.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node hello.js",
+    "start": "node server.js",
     "test": "jest"
   },
   "repository": {
