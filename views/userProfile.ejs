@@ -11,15 +11,15 @@
 <body>
 
   <header>
-    <h1>CharlotteEats</h1>
+    <h1><a href="/">CharlotteEats</a></h1>
 
     <div class="header-links-flex">
 
-      <h2>Logo</h2>
+      <h2><a href="/">Login</a></h2>
       <hr width="2" size="40"/>
-      <h2><a href="/restaurants">Search for Restaurants</h2>
+      <h2><a href="/restaurants">Search for Restaurants</a></h2>
       <hr width="2" size="40"/>
-      <h2><a href="/profile">User Profile</a></h2>
+      <h2>User Profile</h2>
 
       <hr width="2" size="40"/>
 
@@ -35,29 +35,42 @@
 
   </header>
 
-    <main>
-        <div class="profile-container">
-          <div class="profile-top">
-            <div class="profile-info">
-              <div class="profile-picture">
-                <img src="https://via.placeholder.com/400" alt="User avatar" class="avatar">
-              </div>
-              <h2>John Doe</h2>
-              <div class="profile-meta">john.doe@example.com</div>
-              <div class="profile-actions">
-                <a href="/edit_profile" class="btn">Edit Profile</a>
-                <button class="btn secondary">Log Out</button>
-              </div>
-              <div class="profile-stats">
-                <div class="stat">Reservations: 3</div>
-                <div class="stat">Reviews: 12</div>
-              </div>
-            </div>
+  <main>
+    <div class="profile-container">
+      <div class="profile-top">
+        <div class="profile-info">
+
+          <div class="profile-picture">
+            <img 
+              src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" 
+              alt="User avatar" 
+              class="avatar"
+            >
           </div>
 
-          
+          <!-- Dynamic username -->
+          <h2><%= user.username %></h2>
+
+          <!-- Dynamic email -->
+          <div class="profile-meta"><%= user.email %></div>
+
+          <div class="profile-actions">
+            <a href="/edit_profile" class="btn">Edit Profile</a>
+            <form action="/auth/logout" method="POST" style="display:inline;">
+              <button type="submit" class="btn secondary">Log Out</button>
+            </form>
+          </div>
+
+          <!-- Placeholder stats (future feature) -->
+          <div class="profile-stats">
+            <div class="stat">Reservations: 0</div>
+            <div class="stat">Reviews: 0</div>
+          </div>
+
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>

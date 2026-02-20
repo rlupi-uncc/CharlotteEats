@@ -1,4 +1,4 @@
-const userRepo = require('../respositories/userRepo.js');
+const userRepo = require('../repositories/userRepo.js');
 const mongodb = require('mongodb');
 const bcrypt = require('bcrypt');
 
@@ -40,4 +40,4 @@ async function patchUser(id, data){
         }
 }
 
-module.exports(getAllUsers, getUser, updateUser, deleteUser, patchUser);
+module.exports = {getAllUsers, getUser, updateUser, deleteUser, patchUser};
