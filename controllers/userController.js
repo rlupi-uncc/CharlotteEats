@@ -1,25 +1,27 @@
-import { deleteUser, getUser, updateUser } from "../services/userService.js";
+const userService = require("../services/userService.js");
 
 
-export async function getCurrentUserHandler(req, res){
+async function getCurrentUserHandler(req, res){
     let id = parseInt(req.user.id);
-    const user = await getUser(id);
+    const user = await userService.getUser(id);
     res.status(200).json(user);
 }
 
-export async function updateCurrentUserHandler(req, res) {
+async function updateCurrentUserHandler(req, res) {
   let id = parseInt(req.user.id);
   const updates = {};
   if (req.body.username) updates.username = req.body.username;
   if (req.body.email) updates.email = req.body.email;
   if (req.body.password) updates.password = req.body.password;
 
-  const updatedUser = await updateUser(id, updates);
+  const updatedUser = await userService.updateUser(id, updates);
   res.status(200).json(updatedUser);
 }
 
-export async function deleteCurrentUserHandler(req, res) {
+async function deleteCurrentUserHandler(req, res) {
   let id = parseInt(req.user.id);
-  await deleteUser(id);
+  await userService.deleteUser(id);
   res.status(204).send();
 }
+
+module.exports(getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler);

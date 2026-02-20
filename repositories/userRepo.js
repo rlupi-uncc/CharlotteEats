@@ -1,24 +1,24 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-export async function createUser(data){
+async function createUser(data){
     return await prisma.User.create({data: data, omit: {password: true}});
 }
 
-export async function findUserByEmail(email){
+async function findUserByEmail(email){
     return await mongoose.User.findone({email: email});
 }
 
-export async function findUserById(id){
+async function findUserById(id){
     return await mongoose.User.findById(id);
 }
 
-export async function findAllUsers() {
+async function findAllUsers() {
     return await mongoose.User.find({
         omit: { password: true},
     });
 }
 
-export async function update(id, updates){
+async function update(id, updates){
     const updatedUser = await mongoose.User.updateOne({
         where: { id },
         data: updates,
@@ -31,7 +31,7 @@ export async function update(id, updates){
     }
 }
 
-export async function remove(id){
+async function remove(id){
     const deletedUser = await mongoose.User.deleteOne({
       where: { id },
     });
@@ -41,3 +41,5 @@ export async function remove(id){
         return deletedUser;
     }
 }
+
+module.exports(createUser, findUserByEmail, findUserById, findAllUsers, update, remove);
