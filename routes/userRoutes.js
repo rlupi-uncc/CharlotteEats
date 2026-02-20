@@ -8,4 +8,4 @@ router.get('/me', authenticate.authenticate, userController.getCurrentUserHandle
 router.put('/me', authenticate.authenticate, userValidators.validateUpdateUser, userController.updateCurrentUserHandler);
 router.delete('/me', authenticate.authenticate, userController.deleteCurrentUserHandler);
 
-module.exports(router);
+module.exports = (router);

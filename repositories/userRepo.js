@@ -42,4 +42,4 @@ async function remove(id){
     }
 }
 
-module.exports(createUser, findUserByEmail, findUserById, findAllUsers, update, remove);
+module.exports = (createUser, findUserByEmail, findUserById, findAllUsers, update, remove);

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userRepo = require('../respositories/userRepo.js');
+const userRepo = require('../repositories/userRepo.js');
 const mongodb = require('mongodb');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -43,4 +43,4 @@ async function logIn(email, password){
     return accessToken;
 }
 
-module.exports(signUp, logIn);
+module.exports = (signUp, logIn);

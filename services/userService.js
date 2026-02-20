@@ -40,4 +40,4 @@ async function patchUser(id, data){
         }
 }
 
-module.exports(getAllUsers, getUser, updateUser, deleteUser, patchUser);
+module.exports = (getAllUsers, getUser, updateUser, deleteUser, patchUser);

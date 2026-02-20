@@ -1,7 +1,7 @@
 const handleValidationErrors = require('./handleValidationErrors.js');
 const expressvalidator = require('express-validator');
 
-export const validateUser = [
+const validateUser = [
     expressvalidator.body(`email`)
     .exists({values: `false`})
     .withMessage('email is required')
@@ -20,7 +20,7 @@ export const validateUser = [
     handleValidationErrors.handleValidationErrors,
 ];
 
-export const validateUpdateUser = [
+const validateUpdateUser = [
     expressvalidator.oneOf(
         [
           expressvalidator.body('username').exists({ values: 'falsy'}),
@@ -47,4 +47,4 @@ export const validateUpdateUser = [
     handleValidationErrors.handleValidationErrors,
 ];
 
-module.exports(validateUser, validateUpdateUser);
+module.exports = (validateUser, validateUpdateUser);
