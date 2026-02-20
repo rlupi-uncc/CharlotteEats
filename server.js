@@ -15,7 +15,12 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 const restaurantRoutes = require("./routes/restaurant");
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+
 app.use("/restaurants", restaurantRoutes);
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
 app.get("/profile", (req, res) => {
   res.render("userProfile");
