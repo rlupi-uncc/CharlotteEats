@@ -7,7 +7,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve static assets (css, images, html) from project root
+// Serve static assets: prefer files in `public/`, then fall back to project root
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname)));
 
 app.set("view engine", "ejs");
