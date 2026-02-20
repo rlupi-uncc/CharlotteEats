@@ -3,7 +3,7 @@ const router = express.Router( {mergeParams: true} );
 
 const reviewController = require('../controllers/reviewController.js');
 
-router.post(',', reviewController.createReviewHandler);
+router.post('/', reviewController.createReviewHandler);
 router.get('/', reviewController.getReviewsHandler);
 router.get('/:reviewId', reviewController.getReviewByIdHandler);
 router.put('/:reviewId', reviewController.updateReviewHandler);
