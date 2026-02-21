@@ -12,4 +12,4 @@ async function logInHandler(req, res){
     res.status(200).json({accessToken});
 }
 
-module.exports = (signUpHandler, logInHandler);
+module.exports = {signUpHandler, logInHandler};

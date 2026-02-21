@@ -10,4 +10,4 @@ function handleValidationErrors(req, res, next) {
   next();
 }
 
-module.exports = (handleValidationErrors);
+module.exports = {handleValidationErrors};

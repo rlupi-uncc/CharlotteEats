@@ -43,4 +43,4 @@ async function logIn(email, password){
     return accessToken;
 }
 
-module.exports = (signUp, logIn);
+module.exports = {signUp, logIn};

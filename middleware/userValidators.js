@@ -1,8 +1,8 @@
-const handleValidationErrors = require('./handleValidationErrors.js');
-const expressvalidator = require('express-validator');
+const {handleValidationErrors} = require('./handleValidationErrors.js');
+const {body, oneOf} = require('express-validator');
 
 const validateUser = [
-    expressvalidator.body(`email`)
+    body(`email`)
     .exists({values: `false`})
     .withMessage('email is required')
     .bail()
@@ -10,22 +10,22 @@ const validateUser = [
     .withMessage('email is not valid')
     .normalizeEmail(),
 
-    expressvalidator.body('password')
+    body('password')
     .exists({values: 'false'})
     .withMessage('password is required')
     .bail()
     .isLength({min: 8, max: 64})
     .withMessage('password must contain at least 8 and at most 64 characters'),
 
-    handleValidationErrors.handleValidationErrors,
+    handleValidationErrors,
 ];
 
 const validateUpdateUser = [
-    expressvalidator.oneOf(
+    oneOf(
         [
-          expressvalidator.body('username').exists({ values: 'falsy'}),
-          expressvalidator.body('email').exists({ values: 'falsy' }),
-          expressvalidator.body('password').exists({ values: 'falsy' }),
+          body('username').exists({ values: 'falsy'}),
+          body('email').exists({ values: 'falsy' }),
+          body('password').exists({ values: 'falsy' }),
         ],
         {
           message:
@@ -33,18 +33,18 @@ const validateUpdateUser = [
         },
       ),
     
-    expressvalidator.body(`email`)
+    body(`email`)
     .optional()
     .isEmail()
     .withMessage('email is not valid')
     .normalizeEmail(),
 
-    expressvalidator.body('password')
+    body('password')
     .optional()
     .isLength({min: 8, max: 64})
     .withMessage('password must contain at least 8 and at most 64 characters'),
 
-    handleValidationErrors.handleValidationErrors,
+    handleValidationErrors,
 ];
 
-module.exports = (validateUser, validateUpdateUser);
+module.exports = {validateUser, validateUpdateUser};

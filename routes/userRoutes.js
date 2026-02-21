@@ -1,11 +1,11 @@
 const express = require('express');
-const userController = require('../controllers/userController.js');
-const authenticate = require('../middleware/authenticate.js');
-const userValidators = require('../middleware/userValidators.js');
+const {getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler} = require('../controllers/userController.js');
+const {authenticate} = require('../middleware/authenticate.js');
+const {validateUpdateUser} = require('../middleware/userValidators.js');
 const router = express.Router();
 
-router.get('/me', authenticate.authenticate, userController.getCurrentUserHandler);
-router.put('/me', authenticate.authenticate, userValidators.validateUpdateUser, userController.updateCurrentUserHandler);
-router.delete('/me', authenticate.authenticate, userController.deleteCurrentUserHandler);
+router.get('/me', authenticate, getCurrentUserHandler);
+router.put('/me', authenticate, validateUpdateUser, updateCurrentUserHandler);
+router.delete('/me', authenticate, deleteCurrentUserHandler);
 
-module.exports = (router);
+module.exports = router;

@@ -24,4 +24,4 @@ async function deleteCurrentUserHandler(req, res) {
   res.status(204).send();
 }
 
-module.exports = (getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler);
+module.exports = {getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler};
