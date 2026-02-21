@@ -1,43 +1,81 @@
-import mongoose from 'mongoose';
+// repositories/userRepo.js
+const User = require("../models/User");
 
-export async function createUser(data){
-    return await prisma.User.create({data: data, omit: {password: true}});
+/**
+ * Create a user.
+ * Password will be hashed by UserSchema pre("save") hook.
+ * Returns user WITHOUT password.
+ */
+async function createUser(data) {
+  const user = new User(data);
+  await user.save();
+  return user.toJSON(); // your toJSON transform strips password
 }
 
-export async function findUserByEmail(email){
-    return await mongoose.User.findone({email: email});
+/**
+ * Used by auth/login to fetch user INCLUDING password hash.
+ * (Needed to comparePassword.)
+ */
+async function findUserByEmail(email) {
+  return User.findOne({ email }).exec(); // returns full doc (includes password)
 }
 
-export async function findUserById(id){
-    return await mongoose.User.findById(id);
+/**
+ * If you log in with username, this is the one you want.
+ */
+async function findUserByUsername(username) {
+  return User.findOne({ username }).exec(); // includes password
 }
 
-export async function findAllUsers() {
-    return await mongoose.User.find({
-        omit: { password: true},
-    });
+/**
+ * Return safe user (no password) by id.
+ */
+async function findUserById(id) {
+  return User.findById(id).select("-password").lean().exec();
 }
 
-export async function update(id, updates){
-    const updatedUser = await mongoose.User.updateOne({
-        where: { id },
-        data: updates,
-        omit: { password: true}
-    });
-    if(updatedUser.modifiedCount === 0){
-        return null
-    } else {
-        return updatedUser;
-    }
+/**
+ * Return all users safely (no passwords).
+ */
+async function findAllUsers() {
+  return User.find().select("-password").lean().exec();
 }
 
-export async function remove(id){
-    const deletedUser = await mongoose.User.deleteOne({
-      where: { id },
-    });
-    if(deletedUser.deletedCount === 0){
-        return null
-    } else {
-        return deletedUser;
-    }
+/**
+ * Update user safely.
+ * IMPORTANT: uses findById + save so pre("save") runs (password hashing).
+ * Returns safe user (no password) or null if not found.
+ */
+async function updateUser(id, updates) {
+  const user = await User.findById(id);
+  if (!user) return null;
+
+  // Only allow updating fields you actually want editable
+  if (updates.username !== undefined) user.username = updates.username;
+  if (updates.email !== undefined) user.email = updates.email;
+  if (updates.password !== undefined) user.password = updates.password; // triggers re-hash on save
+  if (updates.role !== undefined) user.role = updates.role;
+  if (updates.profilePicture !== undefined) user.profilePicture = updates.profilePicture;
+  if (updates.balance !== undefined) user.balance = updates.balance;
+
+  await user.save();
+  return user.toJSON();
 }
+
+/**
+ * Delete user. Returns safe deleted user or null if not found.
+ */
+async function removeUser(id) {
+  const deleted = await User.findByIdAndDelete(id).select("-password").lean().exec();
+  return deleted; // null if not found
+}
+
+module.exports = {
+  createUser,
+  findUserByEmail,
+  findUserByUsername,
+  findUserById,
+  findAllUsers,
+  updateUser,
+  removeUser,
+};

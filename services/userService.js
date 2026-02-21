@@ -1,20 +1,20 @@
-import {findAllUsers, findUserById, remove, update} from '../respositories/userRepo.js';
-//Need MongoDB integration here
-import bcrypt from 'bcrypt';
+const userRepo = require('../repositories/userRepo.js');
+const mongodb = require('mongodb');
+const bcrypt = require('bcrypt');
 
-export async function getAllUsers(){
-    return await findAllUsers(); 
+async function getAllUsers(){
+    return await userRepo.findAllUsers(); 
 }
-export async function getUser(id){
-    return await findUserById(id); 
+async function getUser(id){
+    return await userRepo.findUserById(id); 
 }
-export async function updateUser(id, data){
+async function updateUser(id, data){
     if(data.password){ 
         const hashedPassword = await bcrypt.hash(data.password, 10);
         data.password = hashedPassword;
     }
         try{
-            const updatedUser = await update(id, data);
+            const updatedUser = await userRepo.update(id, data);
             return updatedUser;
         } catch (error) {
             if(error instanceof MongoServerError) {
@@ -27,11 +27,11 @@ export async function updateUser(id, data){
             }
         }
 }
-export async function deleteUser(id){
-    return await remove(id); 
+async function deleteUser(id){
+    return await userRepo.remove(id); 
 }
-export async function patchUser(id, data){
-    const updatedUser = await update(id, data);
+async function patchUser(id, data){
+    const updatedUser = await userRepo.update(id, data);
         if (updatedUser) return updatedUser;
         else {
             const error = new Error(`Cannot find user with id ${id}`);
@@ -39,3 +39,5 @@ export async function patchUser(id, data){
             throw error;
         }
 }
+
+module.exports = {getAllUsers, getUser, updateUser, deleteUser, patchUser};
