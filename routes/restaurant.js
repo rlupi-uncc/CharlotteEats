@@ -1,6 +1,11 @@
 const express = require("express");
 const Restaurant = require("../models/Restaurant");
 const router = express.Router();
+
+// Mount for review routers
+const reviewRoutes = require('./reviewRoutes.js');
+router.use('/:id/reviews', reviewRoutes);
+
 // List restaurants with optional search, tag filter, and sorting
 // GET /restaurants
 // Query: ?q=&tag=&sort=rating|name|newest
