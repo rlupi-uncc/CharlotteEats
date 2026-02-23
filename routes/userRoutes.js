@@ -1,11 +1,11 @@
-import express from 'express';
-import { getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler } from '../controllers/userController.js';
-import { authenticate } from '../middleware/authenticate.js';
-import { validateUpdateUser } from '../middleware/userValidators.js';
+const express = require('express');
+const userController = require('../controllers/userController.js');
+const authenticate = require('../middleware/authenticate.js');
+const userValidators = require('../middleware/userValidators.js');
 const router = express.Router();
 
-router.get('/me', authenticate, getCurrentUserHandler);
-router.put('/me', authenticate, validateUpdateUser, updateCurrentUserHandler);
-router.delete('/me', authenticate, deleteCurrentUserHandler);
+router.get('/me', authenticate.authenticate, userController.getCurrentUserHandler);
+router.put('/me', authenticate.authenticate, userValidators.validateUpdateUser, userController.updateCurrentUserHandler);
+router.delete('/me', authenticate.authenticate, userController.deleteCurrentUserHandler);
 
-export default router;
+module.exports = router;

@@ -1,53 +1,61 @@
 <a href="/restaurants" class="muted">← Back to restaurants</a>
-<h1><%= restaurant.name %></h1>
-<p><%= restaurant.description %></p>
+<link rel="stylesheet" href="/css/menu-style.css">
 
-<p>
-Rating: <strong><%= restaurant.ratingAvg %></strong> / 5
-(<%= restaurant.ratingCount %> reviews)
-</p>
+<div class="page">
+  <header class="restaurant-header">
+    <h1><%= restaurant.name %></h1>
+    <p class="restaurant-desc"><%= restaurant.description %></p>
 
-<hr>
+    <p class="rating">
+      Rating: <strong><%= restaurant.ratingAvg %></strong> / 5
+      (<%= restaurant.ratingCount %> reviews)
+    </p>
+  </header>
 
-<form>
-  <input name="q" placeholder="Search menu" value="<%= filters.q || '' %>">
+  <hr>
 
-  <select name="category">
-    <option value="">All categories</option>
-    <% categories.forEach(c => { %>
-      <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>>
-        <%= c %>
-      </option>
+  <form class="menu-filters">
+    <input name="q" placeholder="Search menu" value="<%= filters.q || '' %>">
+
+    <select name="category">
+      <option value="">All categories</option>
+      <% categories.forEach(c => { %>
+        <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+
+    <input name="excludeAllergens" placeholder="Exclude allergens">
+
+    <button type="submit" class="btn-primary">Filter</button>
+  </form>
+
+  <h2>Menu</h2>
+
+  <div class="menu-container">
+    <% menuItems.forEach(i => { %>
+      <article class="menu-item">
+        <h3><%= i.name %></h3>
+        <p class="description"><%= i.description %></p>
+        <p class="price">$<%= i.price %></p>
+        <p class="allergens">Allergens: <%= (i.allergens || []).join(", ") || "None" %></p>
+      </article>
     <% }) %>
-  </select>
-
-  <input name="excludeAllergens" placeholder="Exclude allergens">
-
-  <button>Filter</button>
-</form>
-
-<h2>Menu</h2>
-
-<% menuItems.forEach(i => { %>
-  <div>
-    <strong><%= i.name %></strong> — $<%= i.price %><br>
-    <%= i.description %><br>
-    Allergens: <%= (i.allergens || []).join(", ") || "None" %>
   </div>
-  <br>
-<% }) %>
 
-<hr>
+  <hr>
 
-<h2>Reviews</h2>
+  <section class="reviews">
+    <h2>Reviews</h2>
+    <% reviews.forEach(r => { %>
+      <div class="review-item">
+        <strong><%= r.authorName %></strong> — <span class="review-rating"><%= r.rating %>/5</span>
+        <div class="review-title"><em><%= r.title %></em></div>
+        <div class="review-body"><%= r.body %></div>
+      </div>
+    <% }) %>
 
-<% reviews.forEach(r => { %>
-  <div>
-    <strong><%= r.authorName %></strong> — <%= r.rating %>/5<br>
-    <em><%= r.title %></em><br>
-    <%= r.body %>
-  </div>
-  <br>
-<% }) %>
-<%# NOTE: This is not yet hooked up to anything %>
-<h4>Leave a Review</h4>
+    <%# NOTE: This is not yet hooked up to anything %>
+    <button type="button" class="btn-primary review-btn">Leave a Review</button>
+  </section>
+
+</div>

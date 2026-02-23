@@ -11,7 +11,7 @@
 <body>
 
   <header>
-    <h1>CharlotteEats</h1>
+    <h1><a href="/">CharlotteEats</a></h1>
 
     <div class="header-links-flex">
 
@@ -35,29 +35,42 @@
 
   </header>
 
-    <main>
-        <div class="profile-container">
-          <div class="profile-top">
-            <div class="profile-info">
-              <div class="profile-picture">
-                <img src="https://via.placeholder.com/400" alt="User avatar" class="avatar">
-              </div>
-              <h2>John Doe</h2>
-              <div class="profile-meta">john.doe@example.com</div>
-              <div class="profile-actions">
-                <a href="/edit_profile" class="btn">Edit Profile</a>
-                <button class="btn secondary">Log Out</button>
-              </div>
-              <div class="profile-stats">
-                <div class="stat">Reservations: 3</div>
-                <div class="stat">Reviews: 12</div>
-              </div>
-            </div>
+  <main>
+    <div class="profile-container">
+      <div class="profile-top">
+        <div class="profile-info">
+
+          <div class="profile-picture">
+            <img 
+              src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" 
+              alt="User avatar" 
+              class="avatar"
+            >
           </div>
 
-          
+          <!-- Dynamic username -->
+          <h2><%= user.username %></h2>
+
+          <!-- Dynamic email -->
+          <div class="profile-meta"><%= user.email %></div>
+
+          <div class="profile-actions">
+            <a href="/edit_profile" class="btn">Edit Profile</a>
+            <form action="/auth/logout" method="POST" style="display:inline;">
+              <button type="submit" class="btn secondary">Log Out</button>
+            </form>
+          </div>
+
+          <!-- Placeholder stats (future feature) -->
+          <div class="profile-stats">
+            <div class="stat">Reservations: 0</div>
+            <div class="stat">Reviews: 0</div>
+          </div>
+
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>
