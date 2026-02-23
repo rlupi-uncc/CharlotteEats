@@ -19,12 +19,10 @@ body {
 
 h1 {
   text-align: center;
-  /* margin-left: 175px;
+  margin-left: 175px;
   margin-right: 175px;
-  margin-top: 15px; */
-  margin: 15px auto 0 auto;
+  margin-top: 15px;
   padding: 10px;
-  max-width: 600px;
   background: var(--background-color);
 }
 
@@ -33,8 +31,7 @@ a {
   text-decoration: none;
 }
 
-h2, h3 {
-  color: var(--text-color);
+h2 {
   text-align: center;
 }
 
@@ -102,8 +99,12 @@ main {
   margin: 1rem auto;
 }
 
+#restaurant-review-title {
+  background-color: var(--form-background-color);
+}
+
 .reviews {
-  border: 3px var(--background-color) solid;
+  border: 3px var(--pop-color) solid;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -120,13 +121,14 @@ main {
   gap: 0.5rem;
 }
 
-.review p {
-  line-height: 1.5;
+#review-content {
+  width: 100%;
+  line-height: 3;
+  border: 3px var(--background-color) solid;
 }
 
 .new-review-section {
-  border: 3px var(--background-color) solid;
-  padding: 1rem;
+  
 }
 
 .new-review-form {
@@ -141,15 +143,13 @@ main {
   border: 3px var(--background-color) solid;
 }
 
-#review-content, textarea {
+textarea {
   width: 100%;
-  height: 8rem;
-  border: 3px var(--background-color) solid;
+  line-height: 3;
 }
 
 #submit-btn {
   background-color: var(--pop-color);
-  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -157,20 +157,8 @@ main {
   border-radius: 10px;
 }
 
-.review-btn-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .new-review-btn {
   background-color: var(--pop-color);
-  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -179,35 +167,6 @@ main {
   border-radius: 10px;
 }
 
-.delete-btn {
-  color: var(--pop-color);
-  font-size: 1.2rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
- font-weight: bold;
-} 
-
-.more-less-btn, .new-btn, #submit-btn {
-  background-color:  var(--pop-color);
-  color: var(--text-color);
-  border: none;
-  padding: 0.5em;
-  margin-top: 0.5rem;
-}
-
-.more-less-btn {
-  align-self: start;
-}
-
-
-.new-btn {
-  font-size: 1rem;
-}
-
-.hide {
+/* .hide {
   display: none;
-}
+} */

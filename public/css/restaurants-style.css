@@ -19,10 +19,14 @@ body {
 
 h1 {
   text-align: center;
+  max-width: 600px;
   margin: 15px auto 0 auto;
   padding: 10px;
-  max-width: 600px;
   background: var(--background-color);
+}
+
+#restaurants-title {
+  background: none;
 }
 
 a {
@@ -92,53 +96,3 @@ hr {
   top: -50%;
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-
-.row { 
-  display: flex; 
-  gap: 10px; 
-  flex-wrap: wrap; 
-  align-items: center; 
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-input, select { 
-  padding: 10px; 
-}
-      
-button { 
-  padding: 10px 14px; 
-  cursor: pointer; 
-  background-color: var(--background-color);
-  border:none;
-  text-align: center;
-  border-radius: 10px;
-
-}
-
-.grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-  gap: 12px; 
-  margin-top: 14px; 
-  margin-left: 20px;
-  margin-right: 20px;
-}
-      .card { border: 1px solid #eee; border-radius: 12px; padding: 14px; text-decoration: none; color: inherit; }
-      .card:hover { border-color: #ccc; }
-      .title { font-weight: 800; font-size: 18px; margin: 0 0 6px; }
-      .muted { opacity: 0.75; }
-      .tag { display: inline-block; padding: 2px 8px; border: 1px solid #ccc; border-radius: 999px; font-size: 12px; margin: 6px 6px 0 0; }
-      .rating { margin-top: 10px; font-size: 14px; }
-      .topbar { 
-        display: flex; 
-        justify-content: center; 
-        align-items: baseline; 
-        gap: 10px; 
-        flex-wrap: wrap;
-      }
-
-      #restaurants-title {
-        text-decoration: underline;
-        background-color: white;
-      }
