@@ -162,6 +162,12 @@ main {
   justify-content: flex-end;
 }
 
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .new-review-btn {
   background-color: var(--pop-color);
   color: var(--text-color);
@@ -171,6 +177,35 @@ main {
   margin: 10px;
   font-size: 1rem;
   border-radius: 10px;
+}
+
+.delete-btn {
+  color: var(--pop-color);
+  font-size: 1.2rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+ font-weight: bold;
+} 
+
+.more-less-btn, .new-btn, #submit-btn {
+  background-color:  var(--pop-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5em;
+  margin-top: 0.5rem;
+}
+
+.more-less-btn {
+  align-self: start;
+}
+
+
+.new-btn {
+  font-size: 1rem;
 }
 
 .hide {
