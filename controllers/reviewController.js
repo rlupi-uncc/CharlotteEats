@@ -1,5 +1,6 @@
 const reviewService = require('../services/reviewService.js');
 
+// POST /restaurants/:id/reviews/
 async function createReviewHandler(req, res) {
     const restaurantId = req.params.id;
 
@@ -7,6 +8,7 @@ async function createReviewHandler(req, res) {
     res.status(201).json(createdReview);
 }
 
+// GET /restaurants/:id/reviews/
 async function getReviewsHandler(req, res) {
     const restaurantId = req.params.id;
 
@@ -14,6 +16,7 @@ async function getReviewsHandler(req, res) {
     res.status(200).json(reviews);
 }
 
+// GET /restaurants/:id/reviews/:reviewId
 async function getReviewByIdHandler(req, res) {
     const restaurantId = req.params.id;
     const reviewId = req.params.reviewId;
@@ -22,6 +25,7 @@ async function getReviewByIdHandler(req, res) {
     res.status(200).json(review);
 }
 
+// PUSH /restaurants/:id/reviews/:reviewId
 async function updateReviewHandler(req, res) {
     const restaurantId = req.params.id;
     const reviewId = req.params.reviewId;
@@ -30,6 +34,7 @@ async function updateReviewHandler(req, res) {
     res.status(200).json(updatedReview);
 }
 
+// DELETE /restaurants/:id/reviews/:reviewId
 async function deleteReviewHandler(req, res) {
     const restaurantId = req.params.id;
     const reviewId = req.params.reviewId;
