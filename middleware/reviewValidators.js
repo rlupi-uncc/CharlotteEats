@@ -26,17 +26,7 @@ const validateReviewId = [
 
 // Validates CREATE review payload
 const validateCreateReview = [
-    body('authorName')
-        .exists({ checkFalsy: true })
-        .withMessage('authorName is required')
-        .bail()
-        .isString()
-        .withMessage('authorName must be a string')
-        .bail()
-        .trim()
-        .notEmpty()
-        .withMessage('authorName cannot be empty'),
-
+    
     body('rating')
         .exists({ checkFalsy: true })
         .withMessage('rating is required')
@@ -66,14 +56,6 @@ const validateCreateReview = [
 
 // Validates UPDATE review payload
 const validateUpdateReview = [
-    body('authorName')
-        .optional()
-        .isString()
-        .withMessage('authorName must be a string')
-        .bail()
-        .trim()
-        .notEmpty()
-        .withMessage('authorName cannot be empty'),
 
     body('rating')
         .optional()

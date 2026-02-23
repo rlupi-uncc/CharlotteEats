@@ -6,6 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reviews Page</title>
   <link rel="stylesheet" href="/css/reviews-style.css">
+
+  <script>
+    window.RESTAURANT_ID = "<%= restaurantId %>";
+  </script>
+  <script>
+    window.CURRENT_USER_ID = "<%= user?.id || '' %>";
+  </script>
 </head>
 <body>
   <header>
@@ -40,9 +47,13 @@
 
     <section class="new-review-section hide">
       <form class="new-review-form">
-        <input id="review-title" name="review-title" type="text" minlength="3" placeholder="Review Title" required>
-        <textarea id="review-content" name="review-content" minlength="10" placeholder="Review Content" required></textarea>
-        <input type="submit" id="submit-btn">
+        <input id="title" name="title" type="text" minlength="3" placeholder="Review Title">
+      
+        <input id="rating" name="rating" type="number" min="1" max="5" placeholder="Rating (1-5)" required>
+      
+        <textarea id="body" name="body" minlength="10" placeholder="Review Content" required></textarea>
+      
+        <input type="submit" id="submit-btn" value="Submit Review">
       </form>
     </section>
 

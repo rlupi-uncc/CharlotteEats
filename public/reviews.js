@@ -2,141 +2,224 @@
 
 const MAX_LENGTH = 200;
 
+const restaurantId = window.RESTAURANT_ID;
+
 const reviewsSection = document.querySelector(".reviews");
+const addButton = document.querySelector(".new-review-btn");
+const formSection = document.querySelector(".new-review-section");
+const form = document.querySelector(".new-review-form");
 
-const reviews = [
-  {title: 'Review #1',
-   date: new Date(2025, 7, 31),
-   content: 'Delicious, outstading service, and one of a kind. I would have invited all my friends if I knew this was the best place ever.'},
-  {title: 'Review #2',
-  date: new Date(2025, 8, 9),
-  content: 'Awful, confused to how anyone would pay money to eat at such a terrible so called `restaurant`'},
+// Expect HTML inputs with these IDs:
+const titleInput = document.querySelector("#title");
+const ratingInput = document.querySelector("#rating");
+const bodyInput = document.querySelector("#body");
 
-  {title: 'Review #3',
-  date: new Date(2025, 8, 12),
-  content: 'Worth trying, just needs better service!'}
-]
+// Helpers
 
-const reviewContainer = document.querySelector(".reviews");
+function formatDate(value) {
+  const d = value ? new Date(value) : new Date();
+  return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+}
 
-reviews.forEach(review=>{
-  addEntry(review);
-});
+function showError(msg) {
+  // minimal: alert
+  alert(msg || "Something went wrong.");
+}
 
+// Rendering
 function addEntry(review) {
-  const reviewContainer = document.createElement('article');
-  reviewContainer.classList.add('review');
+  const article = document.createElement("article");
+  article.classList.add("review");
 
-  const reviewHeader = document.createElement('h3');
-  reviewHeader.classList.add('review-header');
-  reviewHeader.textContent = review.title;
-  reviewContainer.append(reviewHeader);
+  // Store reviewId on element (for delete)
+  if (review._id) article.dataset.reviewId = review._id;
 
-  const reviewDate = document.createElement('p');
-  reviewDate.textContent = review.date.toLocaleDateString();
-  reviewContainer.append(reviewDate);
+  const header = document.createElement("h3");
+  header.classList.add("review-header");
+  header.textContent = review.title && review.title.trim() ? review.title : "Review";
+  article.append(header);
 
-  const reviewContent = document.createElement('p');
-  reviewContainer.append(reviewContent);
+  // author + date line
+  const meta = document.createElement("p");
+  const author = review.authorName ? `by ${review.authorName}` : "";
+  const date = review.createdAt ? formatDate(review.createdAt) : formatDate(review.date);
+  meta.textContent = [author, date].filter(Boolean).join(" • ");
+  article.append(meta);
 
-  if(review.content.length > MAX_LENGTH){
+  // rating line
+  if (typeof review.rating === "number") {
+    const ratingLine = document.createElement("p");
+    ratingLine.textContent = `Rating: ${review.rating}/5`;
+    article.append(ratingLine);
+  }
 
-    reviewContent.textContent = review.content.substring(0, MAX_LENGTH);
+  const contentP = document.createElement("p");
+  article.append(contentP);
 
-    const spanDots = document.createElement('span');
+  const content = review.body ?? review.content ?? "";
+  if (content.length > MAX_LENGTH) {
+    contentP.textContent = content.substring(0, MAX_LENGTH);
+
+    const spanDots = document.createElement("span");
     spanDots.textContent = "...";
-    reviewContent.appendChild(spanDots);
+    contentP.appendChild(spanDots);
 
-    let spanElement = document.createElement('span');
-    spanElement.classList.add("hide");
-    reviewContent.appendChild(spanElement);
-    spanElement.textContent = review.content.substring(MAX_LENGTH);
+    const spanHidden = document.createElement("span");
+    spanHidden.classList.add("hide");
+    spanHidden.textContent = content.substring(MAX_LENGTH);
+    contentP.appendChild(spanHidden);
 
-    let readButton = document.createElement('button');
+    const readButton = document.createElement("button");
     readButton.textContent = "Read More";
     readButton.classList.add("more-less-btn");
-    reviewContainer.appendChild(readButton); 
-    
-  }else{
-    reviewContent.textContent = review.content;
+    article.appendChild(readButton);
+  } else {
+    contentP.textContent = content;
   }
 
-  const removeBtn = document.createElement('button');
-  removeBtn.textContent = '[x]';
-  removeBtn.classList.add('delete-btn');
-  reviewHeader.append(removeBtn);
+  // delete button 
+  if (
+    review._id &&
+    review.userId &&
+    window.CURRENT_USER_ID &&
+    String(review.userId) === String(window.CURRENT_USER_ID)
+  ) {
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "[x]";
+    removeBtn.classList.add("delete-btn");
+    header.append(removeBtn);
+  }
 
-  document.querySelector('.reviews').append(reviewContainer);
-
+  reviewsSection.append(article);
 }
 
-const addButton = document.querySelector(".new-review-btn");
+function clearReviewsUI() {
+  // Keep the section title, remove review articles
+  // If your section contains only title + reviews, simplest is:
+  const nodes = Array.from(reviewsSection.querySelectorAll("article.review"));
+  nodes.forEach((n) => n.remove());
+}
 
+// API calls
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, {
+    credentials: "include", 
+    ...options,
+  });
+  const contentType = res.headers.get("content-type") || "";
+  if (contentType.includes("text/html")) {
+    throw new Error("Not authenticated (redirected). Please log in.");
+  }
+
+  if (!res.ok) {
+    let payload = null;
+    try {
+      payload = await res.json();
+    } catch (_) {}
+    const msg = payload?.message || `${res.status} ${res.statusText}`;
+    throw new Error(msg);
+  }
+
+  // 204 No Content
+  if (res.status === 204) return null;
+
+  return res.json();
+}
+
+async function loadReviews(restaurantId) {
+  const data = await apiFetch(`/restaurants/${restaurantId}/reviews`);
+  clearReviewsUI();
+  (data || []).forEach(addEntry);
+}
+
+async function createReview(restaurantId, review) {
+  return apiFetch(`/restaurants/${restaurantId}/reviews`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+}
+
+async function deleteReview(restaurantId, reviewId) {
+  return apiFetch(`/restaurants/${restaurantId}/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+}
+
+// UI Events
 function formState() {
-  const sectionElement = document.querySelector(".new-review-section");
-  sectionElement.classList.toggle("hide");
+  formSection.classList.toggle("hide");
 }
 
-addButton.addEventListener('click', formState);
+addButton?.addEventListener("click", formState);
 
+// Handle submit properly
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-function deleteButton(e){
+  if (!restaurantId) return showError("Missing restaurant id for reviews page.");
 
-  if (e.target.classList.contains('delete-btn')){
-    const element = e.target.closest(".review");
+  if (!form.reportValidity()) return;
 
-    const elementTitle = element.querySelector('.review-header').textContent.replace('[x]', ' ').trim();
+  const title = titleInput?.value?.trim() ?? "";
+  const rating = Number(ratingInput?.value);
+  const body = bodyInput?.value?.trim() ?? "";
 
-    let index = reviews.findIndex((review) =>
-      review.title === elementTitle);
+  try {
+    const created = await createReview(restaurantId, { title, rating, body });
 
-    reviews.splice(index, 1);
+    // reset fields
+    if (titleInput) titleInput.value = "";
+    if (ratingInput) ratingInput.value = "";
+    if (bodyInput) bodyInput.value = "";
 
-    element.remove();
+    formSection.classList.add("hide");
+
+    await loadReviews(restaurantId);
+  } catch (err) {
+    showError(err.message);
   }
-}
+});
 
-reviewsSection.addEventListener('click', deleteButton);
-
-const submitButton = document.querySelector("#submit-btn");
-
-function addReview() {
-  let form = document.querySelector("form");
-
-  if (form.reportValidity()) {
-    let title = document.getElementById("review-title").value;
-    let content = document.getElementById("review-content").value;
-
-    document.getElementById("review-title").value = "";
-    document.getElementById("review-content").value = "";
-
-    let date = new Date();
-
-    const review = { title, content, date };
-    reviews.push(review);
-    addEntry(review);
-  }
-}
-
-submitButton.addEventListener('click', addReview);
-
-function readButtonState(e){
-  if(e.target.textContent === "Read More" || e.target.textContent === "Read Less"){
-
+// Delete + Read More/Less handler
+reviewsSection.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("more-less-btn")) {
     const paragraph = e.target.previousElementSibling;
+    const spans = paragraph.querySelectorAll("span");
+    spans.forEach((s) => s.classList.toggle("hide"));
+    e.target.textContent = e.target.textContent === "Read More" ? "Read Less" : "Read More";
+    return;
+  }
 
-    const paragraphSpan = paragraph.querySelectorAll('span');
+  // Delete
+  if (e.target.classList.contains("delete-btn")) {
+    if (!restaurantId) return showError("Missing restaurant id for reviews page.");
 
-    paragraphSpan.forEach(spanElement => {
-      spanElement.classList.toggle("hide");
-    });
+    const article = e.target.closest(".review");
+    const reviewId = article?.dataset?.reviewId;
+    if (!reviewId) return showError("Missing review id.");
 
-    if(e.target.textContent === "Read More"){
-      e.target.textContent = "Read Less";
-    }else{
-      e.target.textContent = "Read More";
+    try {
+      await deleteReview(restaurantId, reviewId);
+      article.remove();
+    } catch (err) {
+      showError(err.message);
     }
   }
-}
+});
 
-reviewsSection.addEventListener('click', readButtonState);
+// Initial load
+(async function init() {
+  if (!restaurantId) {
+    // If you haven't wired restaurantId into the page yet, you'll hit this.
+    // Add ?id=<restaurantId> to the reviews page link.
+    console.warn("No restaurant id found in URL. Add ?id=<restaurantId> to the reviews page.");
+    return;
+  }
+
+  try {
+    await loadReviews(restaurantId);
+  } catch (err) {
+    showError(err.message);
+  }
+})();
