@@ -19,9 +19,10 @@ body {
 
 h1 {
   text-align: center;
-  margin: 15px auto 0 auto;
+  margin-left: 175px;
+  margin-right: 175px;
+  margin-top: 15px;
   padding: 10px;
-  max-width: 600px;
   background: var(--background-color);
 }
 
@@ -93,52 +94,52 @@ hr {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.row { 
-  display: flex; 
-  gap: 10px; 
-  flex-wrap: wrap; 
-  align-items: center; 
-  margin-left: 20px;
-  margin-right: 20px;
+.login-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-input, select { 
-  padding: 10px; 
+input[type="text"]{
+  border: 2px solid  var(--pop-color);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  width: 100%;
+  padding: 0.6em;
 }
-      
-button { 
-  padding: 10px 14px; 
-  cursor: pointer; 
-  background-color: var(--background-color);
-  border:none;
+
+.login-main {
+  background-color: var(--form-background-color);
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: 200px;
+  margin-right: 200px;
+  padding: 30px;
+  border-radius: 40px;
+}
+
+#login-title {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+#registration-title {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.btn {
+  background-color: var(--pop-color);
+  border: none;
   text-align: center;
+  padding: 10px;
   border-radius: 10px;
-
 }
 
-.grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-  gap: 12px; 
-  margin-top: 14px; 
-  margin-left: 20px;
-  margin-right: 20px;
+#submit-login {
+  margin-left: 200px;
 }
-      .card { border: 1px solid #eee; border-radius: 12px; padding: 14px; text-decoration: none; color: inherit; }
-      .card:hover { border-color: #ccc; }
-      .title { font-weight: 800; font-size: 18px; margin: 0 0 6px; }
-      .muted { opacity: 0.75; }
-      .tag { display: inline-block; padding: 2px 8px; border: 1px solid #ccc; border-radius: 999px; font-size: 12px; margin: 6px 6px 0 0; }
-      .rating { margin-top: 10px; font-size: 14px; }
-      .topbar { 
-        display: flex; 
-        justify-content: center; 
-        align-items: baseline; 
-        gap: 10px; 
-        flex-wrap: wrap;
-      }
 
-      #restaurants-title {
-        text-decoration: underline;
-        background-color: white;
-      }
+#submit-registration {
+  margin-left: 185px;
+}
