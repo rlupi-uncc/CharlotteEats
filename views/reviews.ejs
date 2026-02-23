@@ -10,48 +10,40 @@
 <body>
   <header>
     <h1>CharlotteEats</h1>
-
-    <div class="header-links-flex">
-
-      <a href="/"><h2>Login</h2></a>
-
-      <hr width="2" size="40"/>
-      <a href="/restaurants"><h2>Restaurants List</h2></a>
-      <hr width="2" size="40"/>
-      <h2><a href="/profile">User Profile</a></h2>
-
-      <hr width="2" size="40"/>
-
-      <nav>
-        <div class="hamburger-menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-
-    </div>
-
   </header>
+
+  <div class="header-links-flex">
+    <a href="/"><h2>Login</h2></a>
+    <hr width="2" size="40"/>
+    <a href="/restaurants"><h2>Restaurants List</h2></a>
+    <hr width="2" size="40"/>
+    <h2><a href="/profile">User Profile</a></h2>
+    <hr width="2" size="40"/>
+    <nav>
+      <div class="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </div>
 
   <main>
 
     <section class="reviews">
-      <h2 id="restaurant-review-title">Restaurant Reviews</h2>
+      <h2>Restaurant Reviews</h2>
     </section>
 
-    <button class="new-review-btn">Add a Review</button>
+    <div class="review-btn-container">
+      <button class="new-review-btn">Add a Review</button>
+    </div>
 
     <section class="new-review-section hide">
-
       <form class="new-review-form">
         <input id="review-title" name="review-title" type="text" minlength="3" placeholder="Review Title" required>
-        <textarea id="review-content" name="review-content" type="text"
-        minlength="10" placeholder="Review Content" required>
-      </textarea>
-      <input type="submit" id="submit-btn">
+        <textarea id="review-content" name="review-content" minlength="10" placeholder="Review Content" required></textarea>
+        <input type="submit" id="submit-btn">
       </form>
-
     </section>
 
   </main>

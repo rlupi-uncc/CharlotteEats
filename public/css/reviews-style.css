@@ -31,7 +31,8 @@ a {
   text-decoration: none;
 }
 
-h2 {
+h2, h3 {
+  color: var(--text-color);
   text-align: center;
 }
 
@@ -99,12 +100,8 @@ main {
   margin: 1rem auto;
 }
 
-#restaurant-review-title {
-  background-color: var(--form-background-color);
-}
-
 .reviews {
-  border: 3px var(--pop-color) solid;
+  border: 3px var(--background-color) solid;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -121,14 +118,13 @@ main {
   gap: 0.5rem;
 }
 
-#review-content {
-  width: 100%;
-  line-height: 3;
-  border: 3px var(--background-color) solid;
+.review p {
+  line-height: 1.5;
 }
 
 .new-review-section {
-  
+  border: 3px var(--background-color) solid;
+  padding: 1rem;
 }
 
 .new-review-form {
@@ -143,13 +139,15 @@ main {
   border: 3px var(--background-color) solid;
 }
 
-textarea {
+#review-content, textarea {
   width: 100%;
-  line-height: 3;
+  height: 8rem;
+  border: 3px var(--background-color) solid;
 }
 
 #submit-btn {
   background-color: var(--pop-color);
+  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -157,8 +155,14 @@ textarea {
   border-radius: 10px;
 }
 
+.review-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .new-review-btn {
   background-color: var(--pop-color);
+  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -167,6 +171,6 @@ textarea {
   border-radius: 10px;
 }
 
-/* .hide {
+.hide {
   display: none;
-} */
+}
