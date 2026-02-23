@@ -1,6 +1,7 @@
 const { param, body } = require('express-validator');
 const { handleValidationErrors } = require('./handleValidationErrors.js');
 
+// hi
 // Validates restaurant id param: /restaurants/:id/...
 const validateRestaurantId = [
     param('id')
