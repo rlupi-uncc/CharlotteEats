@@ -12,6 +12,7 @@ app.use(express.json());
 // Serve static assets: prefer files in `public/`, then fall back to project root
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname)));
+app.use(express.static("public/css"));
 
 app.use(cookieParser());
 

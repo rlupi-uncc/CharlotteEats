@@ -1,0 +1,81 @@
+/* Menu styles for restaurant view */
+
+:root{
+    --bg:#fafafa;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#d97706;
+    --accent-2:#2563eb;
+    --pop-color:#6495ED; /* match profile color (rgb(100,149,237)) */
+    --radius:10px;
+}
+
+body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: var(--bg);
+    color: #222;
+    margin: 0;
+    padding: 0 12px;
+}
+
+.page{ max-width:1100px; margin:20px auto; }
+.restaurant-header{ text-align:center; margin-bottom:16px; }
+.restaurant-header h1{ margin:6px 0; font-size:2rem; }
+.restaurant-desc{ color:var(--muted); margin-top:0; }
+.rating{ color:var(--muted); }
+
+.menu-filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:14px 0; }
+.menu-filters input,
+.menu-filters select,
+.menu-filters button{ padding:8px 10px; border-radius:6px; border:1px solid #e5e7eb; font-family: inherit; font-size:0.95rem; }
+.menu-filters select{ appearance:none; -webkit-appearance:none; }
+.menu-filters button{ background:var(--pop-color); color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:600; line-height:1; }
+
+/* Primary button used elsewhere (matches profile/login) */
+.btn-primary{
+    background:var(--pop-color);
+    color:#fff;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    font-family:inherit;
+}
+.btn-primary:active{ transform:translateY(1px); }
+.review-btn{ margin-top:12px; }
+
+.menu-container{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap:18px;
+    padding:12px;
+}
+.menu-item{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px;
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    border: 1px solid rgba(15,23,42,0.04);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.menu-item:hover{ transform: translateY(-4px); box-shadow:0 10px 30px rgba(15,23,42,0.08); }
+.menu-item h3{ margin:0 0 8px 0; color:#111; font-size:1.1rem; }
+.menu-item .description{ color:var(--muted); margin:0 0 10px 0; font-size:0.95rem; }
+.menu-item .price{ font-weight:700; color:var(--accent); margin:8px 0; }
+.menu-item .allergens{ font-size:0.85rem; color:#9ca3af; }
+
+.reviews{ margin-top:22px; }
+.review-item{ background:#fff; border-radius:8px; padding:12px; margin-bottom:12px; border:1px solid #eee; }
+.review-rating{ color:var(--accent); font-weight:600; }
+.review-title{ color:var(--muted); margin-top:6px; }
+.review-body{ margin-top:8px; color:#333; }
+
+/* small screens tweaks */
+@media (max-width:420px){
+    .menu-filters{ flex-direction:column; }
+    .menu-item{ padding:14px; }
+}
+
+/* Utility */
+.muted{ color:var(--muted); display:inline-block; margin-bottom:8px; }
