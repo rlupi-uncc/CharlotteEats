@@ -19,10 +19,12 @@ body {
 
 h1 {
   text-align: center;
-  margin-left: 175px;
+  /* margin-left: 175px;
   margin-right: 175px;
-  margin-top: 15px;
+  margin-top: 15px; */
+  margin: 15px auto 0 auto;
   padding: 10px;
+  max-width: 600px;
   background: var(--background-color);
 }
 
