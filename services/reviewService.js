@@ -1,6 +1,11 @@
 const reviewRepo = require('../repositories/reviewRepo.js');
 const Restaurant = require('../models/Restaurant.js');
 
+/**
+ * Recompute ratingCount and ratingAvg based on embedded reviews.
+ * @param {array} restaurantDoc - all reviews of given restaurant
+ * @returns updated restaurantDoc
+ */
 function recomputeRatings(restaurantDoc) {
     const reviews = restaurantDoc.reviews || [];
     const count = reviews.length;
@@ -15,6 +20,11 @@ function recomputeRatings(restaurantDoc) {
     return restaurantDoc;
 }
 
+/**
+ * Normalize review payload
+ * @param {*} data - review payload
+ * @returns normalized review
+ */
 function normalizeReviewInput(data) {
     const review = {
         authorName: data.authorName,
@@ -50,6 +60,12 @@ function normalizeReviewInput(data) {
     return review;
 }
 
+/**
+ * Create review and update ratings
+ * @param {ObjectId} restaurantId 
+ * @param {ObjectId} reviewData 
+ * @returns review
+ */
 async function createReview(restaurantId, reviewData) {
     const normalized = normalizeReviewInput(reviewData);
 
@@ -73,6 +89,11 @@ async function createReview(restaurantId, reviewData) {
     return createdReview;
 }
 
+/**
+ * Read all reviews for a given restaurant
+ * @param {ObjectId} restaurantId 
+ * @returns list of all reviews
+ */
 async function getReviews(restaurantId) {
     const reviews = await reviewRepo.getReviews(restaurantId);
     if (reviews === null) {
@@ -83,6 +104,12 @@ async function getReviews(restaurantId) {
     return reviews;
 }
 
+/**
+ * Read single review by reviewId
+ * @param {ObjectId} restaurantId 
+ * @param {ObjectId} reviewId 
+ * @returns review with reviewId
+ */
 async function getReviewById(restaurantId, reviewId) {
     const review = await reviewRepo.getReviewById(restaurantId, reviewId);
     if (!review) {
@@ -93,7 +120,13 @@ async function getReviewById(restaurantId, reviewId) {
     return review;
 }
 
-
+/**
+ * Update review by reviewId
+ * @param {ObjectId} restaurantId 
+ * @param {ObjectId} reviewId 
+ * @param {*} updatedData - includes (optional) info to update
+ * @returns Updated review
+ */
 async function updateReview(restaurantId, reviewId, updatedData) {
     const patch = { ...updatedData };
 
@@ -149,6 +182,12 @@ async function updateReview(restaurantId, reviewId, updatedData) {
     return updatedReview;
 }
 
+/**
+ * Delete review by reviewId
+ * @param {ObjectId} restaurantId 
+ * @param {ObjectId} reviewId 
+ * @returns true if deleted
+ */
 async function deleteReview(restaurantId, reviewId) {
     const deleted = await reviewRepo.deleteReview(restaurantId, reviewId);
     if (!deleted) {
