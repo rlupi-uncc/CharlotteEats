@@ -4,10 +4,11 @@ const reviewService = require('../services/reviewService.js');
 // POST /restaurants/:id/reviews/
 async function createReviewHandler(req, res) {
     const restaurantId = req.params.id;
-
-    const createdReview = await reviewService.createReview(restaurantId, req.body);
+    const userId = req.user.id; // from requireAuth JWT payload
+  
+    const createdReview = await reviewService.createReview(restaurantId, userId, req.body);
     res.status(201).json(createdReview);
-}
+  }
 
 // GET /restaurants/:id/reviews/
 async function getReviewsHandler(req, res) {
@@ -39,10 +40,11 @@ async function updateReviewHandler(req, res) {
 async function deleteReviewHandler(req, res) {
     const restaurantId = req.params.id;
     const reviewId = req.params.reviewId;
-
-    await reviewService.deleteReview(restaurantId, reviewId);
+    const userId = req.user.id;
+  
+    await reviewService.deleteReview(restaurantId, reviewId, userId);
     res.status(204).send();
-}
+  }
 
 module.exports = {
     createReviewHandler,

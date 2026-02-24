@@ -20,6 +20,7 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+const reviewRoutes = require("./routes/reviewRoutes");
 const restaurantRoutes = require("./routes/restaurant");
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -29,6 +30,7 @@ const userRepo = require("./repositories/userRepo");
 app.use("/restaurants", restaurantRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/restaurants/:id/reviews", reviewRoutes);
 
 app.get("/profile", requireAuth, async (req, res) => {
   try {
@@ -50,8 +52,10 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
-app.get("/reviews", (req, res) => {
-  res.render("reviews");
+app.get("/reviews", requireAuth, async (req, res) => {
+  const restaurantId = req.query.id;
+  if (!restaurantId) return res.status(400).send("Missing restaurant id");
+  res.render("reviews", { restaurantId, user: { id: req.user.id } });
 });
 
 const PORT = 8000;
