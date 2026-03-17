@@ -38,6 +38,7 @@
         <p class="description"><%= i.description %></p>
         <p class="price">$<%= i.price %></p>
         <p class="allergens">Allergens: <%= (i.allergens || []).join(", ") || "None" %></p>
+        <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
       </article>
     <% }) %>
   </div>
@@ -54,7 +55,6 @@
       </div>
     <% }) %>
 
-    <%# NOTE: This is not yet hooked up to anything %>
     <a href="/reviews?id=<%= restaurant._id %>"><button type="button" class="btn-primary review-btn">Leave a Review</button></a>
   </section>
 

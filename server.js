@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Added Code to Access Images in Folder Img
+app.use("/img", express.static(path.join(__dirname, "img")));
 
 // Serve static assets: prefer files in `public/`, then fall back to project root
 app.use(express.static(path.join(__dirname, "public")));

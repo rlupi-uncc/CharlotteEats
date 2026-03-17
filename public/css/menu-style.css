@@ -86,3 +86,11 @@ body{
     padding-top: 25px;
     padding-left: 10px;
 }
+
+.menu-item-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
