@@ -1,12 +1,31 @@
 const express = require('express');
 const router = express.Router( {mergeParams: true} );
+const { requireAuth } = require("../middleware/requireAuth.js"); 
+
 
 const reviewController = require('../controllers/reviewController.js');
+const {
+    validateRestaurantId,
+    validateReviewId,
+    validateCreateReview,
+    validateUpdateReview,
+} = require('../middleware/reviewValidators.js');
 
-router.post('/', reviewController.createReviewHandler);
+router.use(validateRestaurantId);
+
+// POST /restaurants/:id/reviews/
+router.post("/", requireAuth, validateCreateReview, reviewController.createReviewHandler);
+
+// GET /restaurants/:id/reviews/
 router.get('/', reviewController.getReviewsHandler);
-router.get('/:reviewId', reviewController.getReviewByIdHandler);
-router.put('/:reviewId', reviewController.updateReviewHandler);
-router.delete('/:reviewId', reviewController.deleteReviewHandler);
+
+// GET /restaurants/:id/reviews/:reviewId
+router.get('/:reviewId', validateReviewId, reviewController.getReviewByIdHandler);
+
+// PUT /restaurants/:id/reviews/:reviewId
+router.put("/:reviewId", requireAuth, validateReviewId, validateUpdateReview, reviewController.updateReviewHandler);
+
+// DELETE /restaurants/:id/reviews/:reviewId
+router.delete("/:reviewId", requireAuth, validateReviewId, reviewController.deleteReviewHandler);
 
 module.exports = router;

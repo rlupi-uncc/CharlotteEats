@@ -40,48 +40,94 @@
 
       <h2 id="login-title">Existing User Login</h2>
 
+      <!-- LOGIN FORM (EMAIL + PASSWORD) -->
       <form action="/auth/login" method="POST">
 
         <div>
-          <input type="text" name="username" id="username" placeholder="Username" required>
+          <input 
+            type="email" 
+            name="email" 
+            id="login-email" 
+            placeholder="Email" 
+            required
+          >
         </div>
 
         <div>
-          <input type="password" name="password" id="password" placeholder="Password" required>
+          <input 
+            type="password" 
+            name="password" 
+            id="login-password" 
+            placeholder="Password" 
+            required
+          >
         </div>
         
         <div>
-          <input type="submit" name="submit-login" id="submit-login" class="btn" value="Login">
+          <input 
+            type="submit" 
+            name="submit-login" 
+            id="submit-login" 
+            class="btn" 
+            value="Login"
+          >
         </div>
 
       </form>
 
       <h2 id="registration-title">New User Registration</h2>
 
+      <!-- REGISTRATION FORM -->
       <form action="/auth/register" method="POST">
 
         <div>
-          <input type="text" name="username" id="username" placeholder="Username" required>
+          <input 
+            type="text" 
+            name="username" 
+            id="register-username" 
+            placeholder="Username" 
+            required
+          >
         </div>
 
         <div>
-          <input type="email" name="email" id="email"
-          placeholder="Email" required>
+          <input 
+            type="email" 
+            name="email" 
+            id="register-email"
+            placeholder="Email" 
+            required
+          >
         </div>
 
         <div>
-          <input type="password" name="password" id="password" placeholder="Password" required>
+          <input 
+            type="password" 
+            name="password" 
+            id="register-password" 
+            placeholder="Password" 
+            required
+          >
         </div>
 
         <div>
-          <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+          <input 
+            type="password" 
+            name="confirm-password" 
+            id="confirm-password" 
+            placeholder="Confirm Password" 
+            required
+          >
         </div>
-        
+
         <div>
-          <input type="submit"
-          name="submit-registration"
-          id="submit-registration" class="btn"
-          value="Register">
+          <input
+            type="submit"
+            name="submit-registration"
+            id="submit-registration"
+            class="btn"
+            value="Register"
+          >
         </div>
         
       </form>

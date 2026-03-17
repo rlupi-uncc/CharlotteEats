@@ -19,10 +19,12 @@ body {
 
 h1 {
   text-align: center;
-  margin-left: 175px;
+  /* margin-left: 175px;
   margin-right: 175px;
-  margin-top: 15px;
+  margin-top: 15px; */
+  margin: 15px auto 0 auto;
   padding: 10px;
+  max-width: 600px;
   background: var(--background-color);
 }
 
@@ -31,7 +33,8 @@ a {
   text-decoration: none;
 }
 
-h2 {
+h2, h3 {
+  color: var(--text-color);
   text-align: center;
 }
 
@@ -99,12 +102,8 @@ main {
   margin: 1rem auto;
 }
 
-#restaurant-review-title {
-  background-color: var(--form-background-color);
-}
-
 .reviews {
-  border: 3px var(--pop-color) solid;
+  border: 3px var(--background-color) solid;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -121,14 +120,13 @@ main {
   gap: 0.5rem;
 }
 
-#review-content {
-  width: 100%;
-  line-height: 3;
-  border: 3px var(--background-color) solid;
+.review p {
+  line-height: 1.5;
 }
 
 .new-review-section {
-  
+  border: 3px var(--background-color) solid;
+  padding: 1rem;
 }
 
 .new-review-form {
@@ -143,13 +141,15 @@ main {
   border: 3px var(--background-color) solid;
 }
 
-textarea {
+#review-content, textarea {
   width: 100%;
-  line-height: 3;
+  height: 8rem;
+  border: 3px var(--background-color) solid;
 }
 
 #submit-btn {
   background-color: var(--pop-color);
+  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -157,8 +157,20 @@ textarea {
   border-radius: 10px;
 }
 
+.review-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .new-review-btn {
   background-color: var(--pop-color);
+  color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
@@ -167,6 +179,35 @@ textarea {
   border-radius: 10px;
 }
 
-/* .hide {
+.delete-btn {
+  color: var(--pop-color);
+  font-size: 1.2rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+ font-weight: bold;
+} 
+
+.more-less-btn, .new-btn, #submit-btn {
+  background-color:  var(--pop-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5em;
+  margin-top: 0.5rem;
+}
+
+.more-less-btn {
+  align-self: start;
+}
+
+
+.new-btn {
+  font-size: 1rem;
+}
+
+.hide {
   display: none;
-} */
+}
