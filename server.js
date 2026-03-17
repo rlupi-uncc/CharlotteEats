@@ -44,12 +44,20 @@ app.get("/profile", requireAuth, async (req, res) => {
   }
 });
 
+app.get("/login", (req, res) => {
+  res.render("login", {
+    user: req.user || null
+  });
+});
+
 app.get("/edit_profile", (req, res) => {
   res.render("userProfileEdit");
 });
 
 app.get("/", (req, res) => {
-  res.render("login");
+  res.render("index", {
+    user: req.user || null
+  });
 });
 
 app.get("/reviews", requireAuth, async (req, res) => {

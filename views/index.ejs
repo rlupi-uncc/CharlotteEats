@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Charlotte Eats</title>
+  <link rel="stylesheet" href="/public/css/index-style.css" />
+</head>
+<body>
+
+  <!-- HERO / LANDING -->
+  <main class="landing">
+
+    <div class="logo">
+      <img src="/img/logo/logo_vertical.png" alt="Charlotte Eats Logo">
+    </div>
+
+    <h1>Welcome to Charlotte Eats</h1>
+
+    <p>
+      Discover local restaurants in Charlotte, make reservations, explore reviews, and find your next favorite meal.
+    </p>
+
+    <div class="actions">
+      <a href="/restaurants" class="btn primary">Browse Restaurants</a>
+
+      <% if (user) { %>
+        <a href="/profile" class="btn secondary">My Profile</a>
+      <% } else { %>
+        <a href="/login" class="btn secondary">Login</a>
+      <% } %>
+    </div>
+
+  </main>
+
+</body>
+</html>

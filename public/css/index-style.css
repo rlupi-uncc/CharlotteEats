@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f8fbff;
+}
+
+
+/* LANDING */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* .logo {
+  width: 700px;
+  margin-bottom: 20px;
+} */
+
+.logo {
+  width: 600px;  /* Set the desired width of the cropped area */
+  height: 300px; /* Set the desired height of the cropped area */
+  overflow: hidden; /* Ensures any part outside the container is hidden */
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Scales the image to cover the container while preserving aspect ratio, cropping excess */
+  object-position: center; /* Centers the image within the container (default) */
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #1f3c88;
+  margin-bottom: 10px;
+}
+
+p {
+  max-width: 500px;
+  margin-bottom: 30px;
+  color: #444;
+}
+
+/* BUTTONS */
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.primary {
+  background: #4b9cd3;
+  color: white;
+}
+
+.primary:hover {
+  background: #3888be;
+}
+
+.secondary {
+  border: 2px solid #1f3c88;
+  color: #1f3c88;
+}
+
+.secondary:hover {
+  background: #eef5ff;
+}
