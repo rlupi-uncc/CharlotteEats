@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -45,8 +46,22 @@ app.get("/profile", requireAuth, async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  const token = req.cookies?.accessToken;
+
+  if (token) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+      // user is already logged in → go to profile
+      return res.redirect("/profile");
+    } catch (err) {
+      // invalid token → fall through to login page
+    }
+  }
+
+  // not logged in → show login page
   res.render("login", {
-    user: req.user || null
+    user: null
   });
 });
 
