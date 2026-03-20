@@ -67,7 +67,7 @@ router.get("/", async (req, res) => {
 });
 // Individual restaurant page with menu and reviews
 // GET /restaurants/:id
-// Query: ?q=&category=&excludeAllergens=peanuts,dairy
+// Query: ?q=&category=&excludeAllergens=peanuts,dairy&minPrice=&maxPrice=
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const q = (req.query.q || "").toLowerCase();
@@ -76,6 +76,8 @@ router.get("/:id", async (req, res) => {
     .split(",")
     .map((a) => a.trim().toLowerCase())
     .filter(Boolean);
+  const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null;
+  const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : null;
 
   const restaurant = await Restaurant.findById(id).lean();
   if (!restaurant) return res.status(404).send("Restaurant not found");
@@ -99,6 +101,14 @@ router.get("/:id", async (req, res) => {
     });
   }
 
+  if (minPrice !== null && !isNaN(minPrice)) {
+    menuItems = menuItems.filter((i) => i.price >= minPrice);
+  }
+
+  if (maxPrice !== null && !isNaN(maxPrice)) {
+    menuItems = menuItems.filter((i) => i.price <= maxPrice);
+  }
+
   const categories = Array.from(
     new Set((restaurant.menuItems || []).map((i) => i.category).filter(Boolean))
   ).sort();
@@ -115,7 +125,9 @@ router.get("/:id", async (req, res) => {
     filters: {
       q: req.query.q || "",
       category: req.query.category || "",
-      excludeAllergens: req.query.excludeAllergens || ""
+      excludeAllergens: req.query.excludeAllergens || "",
+      minPrice: req.query.minPrice || "",
+      maxPrice: req.query.maxPrice || ""
     }
   });
 });
