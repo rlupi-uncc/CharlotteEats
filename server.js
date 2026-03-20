@@ -81,7 +81,7 @@ app.get("/reviews", requireAuth, async (req, res) => {
   res.render("reviews", { restaurantId, user: { id: req.user.id } });
 });
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, async () => {
   console.log(`Server running at http://localhost:${PORT}`);
 
