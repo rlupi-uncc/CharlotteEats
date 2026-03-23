@@ -38,4 +38,15 @@ async function logInHandler(req, res) {
   }
 }
 
-module.exports = { signUpHandler, logInHandler };
+//Logs user out by clearing auth token, then sending them to the login page
+//Handles errors by returning 400 BAD REQUEST to user
+async function logOutHandler(req, res) {
+  try {
+    res.clearCookie("accessToken");
+    return res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.status(400);
+  }
+}
+module.exports = { signUpHandler, logInHandler, logOutHandler };

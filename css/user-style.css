@@ -156,3 +156,88 @@ html,body{
 /* small utility */
 .muted{ color:var(--muted); }
 
+.profile-reservations {
+	margin-top: 2rem;
+  }
+  
+  .profile-reservations h2 {
+	margin-bottom: 1rem;
+  }
+  
+  .reservation-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 1rem;
+  }
+  
+  .reservation-card {
+	background: #ffffff;
+	border: 1px solid #e4e4e7;
+	border-radius: 16px;
+	padding: 1.25rem;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  
+  .reservation-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reservation-card-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+  }
+  
+  .reservation-card-top h3 {
+	margin: 0;
+	font-size: 1.1rem;
+  }
+  
+  .reservation-status {
+	display: inline-block;
+	padding: 0.35rem 0.7rem;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-transform: capitalize;
+  }
+  
+  .reservation-status.booked {
+	background: #dcfce7;
+	color: #166534;
+  }
+  
+  .reservation-status.cancelled {
+	background: #fee2e2;
+	color: #991b1b;
+  }
+  
+  .reservation-status.completed {
+	background: #e0e7ff;
+	color: #3730a3;
+  }
+  
+  .reservation-details p,
+  .reservation-notes p {
+	margin: 0.35rem 0;
+	color: #333;
+  }
+  
+  .reservation-notes {
+	margin-top: 0.9rem;
+	padding-top: 0.8rem;
+	border-top: 1px solid #ececec;
+  }
+  
+  .empty-state {
+	padding: 1rem;
+	background: #f8fafc;
+	border: 1px dashed #cbd5e1;
+	border-radius: 12px;
+	color: #475569;
+  }
+

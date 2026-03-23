@@ -47,6 +47,47 @@
 
   <hr>
 
+  <section class="reservations">
+    <h2>Make a Reservation</h2>
+  
+    <form id="reservation-form" class="reservation-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reservationDate">Date</label>
+          <input type="date" id="reservationDate" name="reservationDate" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="reservationTime">Time</label>
+          <input type="time" id="reservationTime" name="reservationTime" required>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group">
+          <label for="partySize">Party Size</label>
+          <input type="number" id="partySize" name="partySize" min="1" max="20" required>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="specialRequests">Special Requests</label>
+        <textarea id="specialRequests" name="specialRequests" placeholder="Any allergies, seating requests, or notes?"></textarea>
+      </div>
+  
+      <button type="submit" class="btn-primary reserve-btn">Reserve</button>
+    </form>
+  
+    <p id="reservation-message" class="reservation-message"></p>
+  </section>
+
+<script>
+  window.RESTAURANT_ID = "<%= restaurant._id %>";
+</script>
+<script src="/reservation.js"></script>
+
+<hr>
+
   <section class="reviews">
     <h2>Reviews</h2>
     <% reviews.forEach(r => { %>
