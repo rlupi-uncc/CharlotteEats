@@ -52,14 +52,14 @@ app.get("/login", (req, res) => {
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-      // user is already logged in → go to profile
+      // user is already logged in -> go to profile
       return res.redirect("/profile");
     } catch (err) {
-      // invalid token → fall through to login page
+      // invalid token -> redirect to login page
     }
   }
 
-  // not logged in → show login page
+  // not logged in -> show login page
   res.render("login", {
     user: null
   });
