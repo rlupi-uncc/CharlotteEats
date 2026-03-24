@@ -37,7 +37,7 @@ async function updateUser(id, data){
       }
 }
 async function deleteUser(id){
-    return await userRepo.remove(id); 
+    return await userRepo.removeUser(id); 
 }
 
 module.exports = {getAllUsers, getUser, updateUser, deleteUser};
