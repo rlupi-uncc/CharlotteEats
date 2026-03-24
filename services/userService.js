@@ -13,31 +13,31 @@ async function updateUser(id, data){
         const hashedPassword = await bcrypt.hash(data.password, 10);
         data.password = hashedPassword;
     }
-        try{
-            const updatedUser = await userRepo.update(id, data);
-            return updatedUser;
-        } catch (error) {
-            if(error instanceof MongoServerError) {
-                if(error.code === '11000'){
-                    const error = new Error('Email has already been used');
-                    error.status = 409;
-                    throw error;
-                }
-                throw error;
-            }
+    try{
+        const updatedUser = await userRepo.updateUser(id, data);
+        return updatedUser;
+    } catch (err) {
+        // Handle duplicate key errors (email or username)
+        if (err instanceof mongodb.MongoServerError && err.code === 11000) {
+          const dupFields = Object.keys(err.keyPattern || err.keyValue || {});
+          const field = dupFields[0] || "field";
+    
+          const e = new Error(
+            field === "email"
+              ? "Email has already been used"
+              : field === "username"
+              ? "Username has already been used"
+              : "Account already exists"
+          );
+          e.status = 409;
+          throw e;
         }
+    
+        throw err;
+      }
 }
 async function deleteUser(id){
     return await userRepo.remove(id); 
 }
-async function patchUser(id, data){
-    const updatedUser = await userRepo.update(id, data);
-        if (updatedUser) return updatedUser;
-        else {
-            const error = new Error(`Cannot find user with id ${id}`);
-            error.status = 404;
-            throw error;
-        }
-}
 
-module.exports = {getAllUsers, getUser, updateUser, deleteUser, patchUser};
+module.exports = {getAllUsers, getUser, updateUser, deleteUser};

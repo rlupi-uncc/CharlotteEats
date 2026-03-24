@@ -1,11 +1,11 @@
 const express = require('express');
 const {getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler} = require('../controllers/userController.js');
-const {authenticate} = require('../middleware/authenticate.js');
+const {requireAuth} = require('../middleware/requireAuth.js');
 const {validateUpdateUser} = require('../middleware/userValidators.js');
 const router = express.Router();
 
-router.get('/me', authenticate, getCurrentUserHandler);
-router.put('/me', authenticate, validateUpdateUser, updateCurrentUserHandler);
-router.delete('/me', authenticate, deleteCurrentUserHandler);
+router.get('/me', requireAuth, getCurrentUserHandler);
+router.put('/me', requireAuth, validateUpdateUser, updateCurrentUserHandler);
+router.delete('/me', requireAuth, deleteCurrentUserHandler);
 
 module.exports = router;
