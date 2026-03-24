@@ -41,13 +41,14 @@
         <p class="description"><%= i.description %></p>
         <p class="price">$<%= i.price %></p>
         <p class="allergens">Allergens: <%= (i.allergens || []).join(", ") || "None" %></p>
+        <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
       </article>
     <% }) %>
   </div>
 
   <hr>
 
-  <section class="reservations">
+  <section class="reservations" id="reservations">
     <h2>Make a Reservation</h2>
   
     <form id="reservation-form" class="reservation-form">

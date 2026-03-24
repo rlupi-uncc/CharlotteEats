@@ -17,12 +17,14 @@ async function run() {
 
   const reviews = [
     {
+      userId: new mongoose.Types.ObjectId(),
       authorName: "Jordan K.",
       rating: 5,
       title: "Best pulled pork in town",
       body: "Super tender, great sauce options, and the sides were legit."
     },
     {
+      userId: new mongoose.Types.ObjectId(),
       authorName: "Alyssa P.",
       rating: 4,
       title: "Solid BBQ spot",
@@ -48,7 +50,8 @@ async function run() {
         price: 13.99,
         category: "Entrees",
         tags: ["bbq", "house-special"],
-        allergens: []
+        allergens: [],
+        image: "/img/menu/pulled-pork.jpg"
       },
       {
         name: "Mac & Cheese",
@@ -56,7 +59,8 @@ async function run() {
         price: 4.99,
         category: "Sides",
         tags: ["vegetarian"],
-        allergens: ["dairy", "gluten"]
+        allergens: ["dairy", "gluten"],
+        image: "/img/menu/mac-cheese.jpg"
       },
       {
         name: "Peanut Butter Pie",
@@ -64,7 +68,8 @@ async function run() {
         price: 6.5,
         category: "Desserts",
         tags: ["sweet"],
-        allergens: ["peanuts", "dairy", "gluten"]
+        allergens: ["peanuts", "dairy", "gluten"],
+        image: "/img/menu/peanut-butter-pie.jpg"
       }
     ],
 
