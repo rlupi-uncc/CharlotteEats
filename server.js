@@ -2,33 +2,32 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
-const app = express();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+
+const reviewRoutes = require("./routes/reviewRoutes");
+const restaurantRoutes = require("./routes/restaurant");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const { requireAuth } = require("./middleware/requireAuth");
+const userRepo = require("./repositories/userRepo");
+const reservationRoutes = require("./routes/reservations");
+const reservationService = require("./services/reservationService");
+
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-// Serve static assets: prefer files in `public/`, then fall back to project root
+// Serve static assets: prefer files in public/, then fall back to project root
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname)));
 app.use(express.static("public/css"));
 
 app.use(cookieParser());
 
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-const reviewRoutes = require("./routes/reviewRoutes");
-const restaurantRoutes = require("./routes/restaurant");
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const { requireAuth } = require("./middleware/requireAuth");
-const userRepo = require("./repositories/userRepo");
-const reservationRoutes = require("./routes/reservations");
-const reservationService = require("./services/reservationService");
 
 app.use("/restaurants", restaurantRoutes);
 app.use("/auth", authRoutes);
@@ -55,16 +54,13 @@ app.get("/login", (req, res) => {
 
   if (token) {
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET);
-
-      // user is already logged in -> go to profile
+      jwt.verify(token, process.env.JWT_SECRET);
       return res.redirect("/profile");
     } catch (err) {
-      // invalid token -> redirect to login page
+      // invalid token -> fall through to login page
     }
   }
 
-  // not logged in -> show login page
   res.render("login", {
     user: null
   });
@@ -72,7 +68,7 @@ app.get("/login", (req, res) => {
 
 app.get("/edit_profile", requireAuth, async (req, res) => {
   try {
-    const user = await userRepo.findUserById(req.user.id); // safe (no password)
+    const user = await userRepo.findUserById(req.user.id);
     if (!user) return res.status(401).redirect("/");
 
     return res.render("userProfileEdit", { user });
@@ -94,15 +90,4 @@ app.get("/reviews", requireAuth, async (req, res) => {
   res.render("reviews", { restaurantId, user: { id: req.user.id } });
 });
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, async () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-
-  // Connect to Mongo after server is listening
-  try {
-    const { connectMongo } = require("./db");
-    await connectMongo();
-  } catch (e) {
-    console.error("Mongo connect failed:", e);
-  }
-});
+module.exports = app;
