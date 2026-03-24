@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const methodOverride = require('method-override');
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride('_method'));
 
 //Added Code to Access Images in Folder Img
 app.use("/img", express.static(path.join(__dirname, "img")));
