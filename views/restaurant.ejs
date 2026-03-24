@@ -24,6 +24,9 @@
       <% }) %>
     </select>
 
+    <input name="minPrice" type="number" step="0.01" placeholder="Min price" value="<%= filters.minPrice || '' %>">
+    <input name="maxPrice" type="number" step="0.01" placeholder="Max price" value="<%= filters.maxPrice || '' %>">
+
     <input name="excludeAllergens" placeholder="Exclude allergens">
 
     <button type="submit" class="btn-primary">Filter</button>

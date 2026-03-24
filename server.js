@@ -70,8 +70,16 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.get("/edit_profile", (req, res) => {
-  res.render("userProfileEdit");
+app.get("/edit_profile", requireAuth, async (req, res) => {
+  try {
+    const user = await userRepo.findUserById(req.user.id); // safe (no password)
+    if (!user) return res.status(401).redirect("/");
+
+    return res.render("userProfileEdit", { user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server error");
+  }
 });
 
 app.get("/", (req, res) => {
