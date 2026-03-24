@@ -11,6 +11,7 @@ const restaurantRoutes = require("./routes/restaurant");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { requireAuth } = require("./middleware/requireAuth");
+const { attachUser } = require("./middleware/attachUser");
 const userRepo = require("./repositories/userRepo");
 const reservationRoutes = require("./routes/reservations");
 const reservationService = require("./services/reservationService");
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname)));
 app.use(express.static("public/css"));
 
 app.use(cookieParser());
+app.use(attachUser);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -55,20 +57,11 @@ app.get("/profile", requireAuth, async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  const token = req.cookies?.accessToken;
-
-  if (token) {
-    try {
-      jwt.verify(token, process.env.JWT_SECRET);
-      return res.redirect("/profile");
-    } catch (err) {
-      // invalid token -> fall through to login page
-    }
+  if (req.user) {
+    return res.redirect("/profile");
   }
 
-  res.render("login", {
-    user: null
-  });
+  res.render("login");
 });
 
 app.get("/edit_profile", requireAuth, async (req, res) => {
@@ -84,9 +77,7 @@ app.get("/edit_profile", requireAuth, async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    user: req.user || null
-  });
+  res.render("index");
 });
 
 app.get("/reviews", requireAuth, async (req, res) => {
