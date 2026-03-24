@@ -27,18 +27,23 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const { requireAuth } = require("./middleware/requireAuth");
 const userRepo = require("./repositories/userRepo");
+const reservationRoutes = require("./routes/reservations");
+const reservationService = require("./services/reservationService");
 
 app.use("/restaurants", restaurantRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/restaurants/:id/reviews", reviewRoutes);
+app.use("/restaurants/:id/reservations", reservationRoutes);
 
 app.get("/profile", requireAuth, async (req, res) => {
   try {
-    const user = await userRepo.findUserById(req.user.id); // safe (no password)
+    const user = await userRepo.findUserById(req.user.id);
     if (!user) return res.status(401).redirect("/");
 
-    return res.render("userProfile", { user });
+    const reservations = await reservationService.getReservationsForUser(req.user.id);
+
+    return res.render("userProfile", { user, reservations });
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server error");
@@ -65,8 +70,16 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.get("/edit_profile", (req, res) => {
-  res.render("userProfileEdit");
+app.get("/edit_profile", requireAuth, async (req, res) => {
+  try {
+    const user = await userRepo.findUserById(req.user.id); // safe (no password)
+    if (!user) return res.status(401).redirect("/");
+
+    return res.render("userProfileEdit", { user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server error");
+  }
 });
 
 app.get("/", (req, res) => {

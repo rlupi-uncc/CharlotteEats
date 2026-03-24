@@ -1,8 +1,8 @@
-const { connect } = require("./db");
+const { connectMongo } = require("./db");
 
 (async () => {
   try {
-    const db = await connect();
+    const db = await connectMongo();
     const res = await db.collection("test").insertOne({ working: true });
     console.log("Mongo connected:", res.insertedId);
     process.exit();
