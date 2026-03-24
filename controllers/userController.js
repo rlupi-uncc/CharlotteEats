@@ -8,14 +8,25 @@ async function getCurrentUserHandler(req, res){
 }
 
 async function updateCurrentUserHandler(req, res) {
-  let id = req.user.id;
+  const id = req.user.id;
   const updates = {};
-  if (req.body.name) updates.username = req.body.username;
-  if (req.body.email_change) updates.email = req.body.email;
-  if (req.body.password && req.body.password == req.body.password_confirm) updates.password = req.body.password;
+
+  if (req.body.name) updates.username = req.body.name;
+  if (req.body.email_change) updates.email = req.body.email_change;
+
+  if (req.body.password) {
+    if (req.body.password !== req.body.confirm_password) {
+      return res.status(400).send("Passwords do not match");
+    }
+    updates.password = req.body.password;
+  }
 
   const updatedUser = await userService.updateUser(id, updates);
-  res.status(200).redirect("/profile");
+  if (!updatedUser) {
+    return res.status(404).send("User not found");
+  }
+
+  return res.redirect("/profile");
 }
 
 async function deleteCurrentUserHandler(req, res) {

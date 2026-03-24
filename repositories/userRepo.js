@@ -47,16 +47,15 @@ async function findAllUsers() {
  * Returns safe user (no password) or null if not found.
  */
 async function updateUser(id, updates) {
-  let user = User.findById(id).exec();
+  const user = await User.findById(id).exec();
   if (!user) return null;
 
-  // Only allow updating fields you actually want editable
-  if (updates.username !== false) user.username = updates.username;
-  if (updates.email !== false) user.email = updates.email;
-  if (updates.password !== false) user.password = updates.password; // triggers re-hash on save
-  if (updates.role !== false) user.role = updates.role;
-  if (updates.profilePicture !== false) user.profilePicture = updates.profilePicture;
-  if (updates.balance !== false) user.balance = updates.balance;
+  if (updates.username !== undefined) user.username = updates.username;
+  if (updates.email !== undefined) user.email = updates.email;
+  if (updates.password !== undefined) user.password = updates.password;
+  if (updates.role !== undefined) user.role = updates.role;
+  if (updates.profilePicture !== undefined) user.profilePicture = updates.profilePicture;
+  if (updates.balance !== undefined) user.balance = updates.balance;
 
   await user.save();
   return user.toJSON();

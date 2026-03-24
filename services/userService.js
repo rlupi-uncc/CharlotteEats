@@ -9,15 +9,10 @@ async function getUser(id){
     return await userRepo.findUserById(id); 
 }
 async function updateUser(id, data){
-    if(data.password){ 
-        const hashedPassword = await bcrypt.hash(data.password, 10);
-        data.password = hashedPassword;
-    }
     try{
         const updatedUser = await userRepo.updateUser(id, data);
         return updatedUser;
     } catch (err) {
-        // Handle duplicate key errors (email or username)
         if (err instanceof mongodb.MongoServerError && err.code === 11000) {
           const dupFields = Object.keys(err.keyPattern || err.keyValue || {});
           const field = dupFields[0] || "field";
@@ -34,10 +29,11 @@ async function updateUser(id, data){
         }
     
         throw err;
-      }
+    }
 }
+
 async function deleteUser(id){
-    return await userRepo.remove(id); 
+    return await userRepo.removeUser(id); 
 }
 
 module.exports = {getAllUsers, getUser, updateUser, deleteUser};
