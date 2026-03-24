@@ -7,7 +7,7 @@ function requireAuth(req, res, next) {
   const token = req.cookies?.accessToken;
 
   if (!token) {
-    return res.status(401).redirect("/");
+    return res.status(401).redirect("/login");
   }
 
   try {
@@ -16,7 +16,7 @@ function requireAuth(req, res, next) {
     req.user = payload;
     return next();
   } catch (err) {
-    return res.status(401).redirect("/");
+    return res.status(401).redirect("/login");
   }
 }
 

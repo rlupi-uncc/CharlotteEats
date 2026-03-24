@@ -3,12 +3,26 @@ require("dotenv").config();
 const express = require("express");
 const methodOverride = require('method-override');
 const path = require("path");
-const app = express();
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+
+const reviewRoutes = require("./routes/reviewRoutes");
+const restaurantRoutes = require("./routes/restaurant");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const { requireAuth } = require("./middleware/requireAuth");
+const userRepo = require("./repositories/userRepo");
+const reservationRoutes = require("./routes/reservations");
+const reservationService = require("./services/reservationService");
+
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
+
+//Added Code to Access Images in Folder Img
+app.use("/img", express.static(path.join(__dirname, "img")));
 
 // Serve static assets: prefer files in `public/`, then fall back to project root
 app.use(express.static(path.join(__dirname, "public")));
@@ -17,40 +31,62 @@ app.use(express.static("public/css"));
 
 app.use(cookieParser());
 
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-const reviewRoutes = require("./routes/reviewRoutes");
-const restaurantRoutes = require("./routes/restaurant");
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const { requireAuth } = require("./middleware/requireAuth");
-const userRepo = require("./repositories/userRepo");
 
 app.use("/restaurants", restaurantRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/restaurants/:id/reviews", reviewRoutes);
+app.use("/restaurants/:id/reservations", reservationRoutes);
 
 app.get("/profile", requireAuth, async (req, res) => {
   try {
-    const user = await userRepo.findUserById(req.user.id); // safe (no password)
+    const user = await userRepo.findUserById(req.user.id);
     if (!user) return res.status(401).redirect("/");
 
-    return res.render("userProfile", { user });
+    const reservations = await reservationService.getReservationsForUser(req.user.id);
+
+    return res.render("userProfile", { user, reservations });
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server error");
   }
 });
 
-app.get("/edit_profile", (req, res) => {
-  res.render("userProfileEdit");
+app.get("/login", (req, res) => {
+  const token = req.cookies?.accessToken;
+
+  if (token) {
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      return res.redirect("/profile");
+    } catch (err) {
+      // invalid token -> fall through to login page
+    }
+  }
+
+  res.render("login", {
+    user: null
+  });
+});
+
+app.get("/edit_profile", requireAuth, async (req, res) => {
+  try {
+    const user = await userRepo.findUserById(req.user.id);
+    if (!user) return res.status(401).redirect("/");
+
+    return res.render("userProfileEdit", { user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server error");
+  }
 });
 
 app.get("/", (req, res) => {
-  res.render("login");
+  res.render("index", {
+    user: req.user || null
+  });
 });
 
 app.get("/reviews", requireAuth, async (req, res) => {
@@ -59,15 +95,4 @@ app.get("/reviews", requireAuth, async (req, res) => {
   res.render("reviews", { restaurantId, user: { id: req.user.id } });
 });
 
-const PORT = 8000;
-app.listen(PORT, async () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-
-  // Connect to Mongo after server is listening
-  try {
-    const { connectMongo } = require("./db");
-    await connectMongo();
-  } catch (e) {
-    console.error("Mongo connect failed:", e);
-  }
-});
+module.exports = app;

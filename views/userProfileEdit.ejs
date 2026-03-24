@@ -40,9 +40,11 @@
 			<form class="profile-top" method="post">
 				<div class="profile-info">
 					<div class="profile-picture">
-						<img src="https://via.placeholder.com/400" alt="User avatar" class="avatar">
+						<img src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" alt="User avatar" class="avatar">
 					</div>
-							<h2>dynamically load the username here please</h2>
+
+							<h2><%= user.username %></h2>
+							<div class="profile-meta">Password: ••••••••</div>
 
 					<div class="profile-actions">
 						<a href="/profile" class="btn secondary">Cancel</a>

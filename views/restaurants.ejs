@@ -9,11 +9,11 @@
   <body>
 
     <header>
-    <h1>CharlotteEats</h1>
+    <h1><a href="/">CharlotteEats</a></h1>
 
     <div class="header-links-flex">
 
-      <a href="/"><h2>Login</h2></a>
+      <a href="/login"><h2>Login</h2></a>
 
       <hr width="2" size="40"/>
       <a href="/restaurants"><h2>Restaurants List</h2></a>
@@ -76,13 +76,14 @@
       <% } %>
 
       <% restaurants.forEach(function(r) { %>
-        <a class="card" href="/restaurants/<%= r._id %>">
-          <div class="title"><%= r.name %></div>
-          <div class="muted"><%= r.description || "" %></div>
-
-          <div style="margin-top: 8px;" class="muted">
-            <% if (r.address && (r.address.city || r.address.state)) { %>
-              <%= r.address.city || "" %><%= r.address.city && r.address.state ? ", " : "" %><%= r.address.state || "" %>
+        <div class="card-wrapper">
+          <a class="card" href="/restaurants/<%= r._id %>">
+            <div class="title"><%= r.name %></div>
+            <div class="muted"><%= r.description || "" %></div>
+            
+            <div style="margin-top: 8px;" class="muted">
+              <% if (r.address && (r.address.city || r.address.state)) { %>
+                <%= r.address.city || "" %><%= r.address.city && r.address.state ? ", " : "" %><%= r.address.state || "" %>
             <% } %>
           </div>
 
@@ -98,7 +99,19 @@
             <% }); %>
           </div>
         </a>
-      <% }); %>
-    </div>
+
+        <div>
+          <button onclick="window.location.href='/restaurants/<%= r._id %>#reservations'" 
+          class="reservation-button" id="reservation-button">Make Reservation</button>
+        </div>
+        
+        <button onclick="window.location.href='/reviews?id=<%= r._id %>'" 
+        class="leave-review-button" id="leave-review-button">Leave Review</button>
+      </div>
+
+        </div>
+
+    <% }); %>
+  </div>
   </body>
 </html>
