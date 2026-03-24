@@ -47,7 +47,7 @@ async function findAllUsers() {
  * Returns safe user (no password) or null if not found.
  */
 async function updateUser(id, updates) {
-  let user = await findUserById(id);
+  let user = User.findById(id).exec();
   if (!user) return null;
 
   // Only allow updating fields you actually want editable
