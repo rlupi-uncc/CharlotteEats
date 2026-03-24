@@ -8,7 +8,8 @@ const MenuItemSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true },
     tags: [{ type: String, trim: true, lowercase: true }],
     allergens: [{ type: String, trim: true, lowercase: true }],
-    isAvailable: { type: Boolean, default: true }
+    isAvailable: { type: Boolean, default: true },
+    image: { type: String, default: ""}
   },
   { _id: true }
 );

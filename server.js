@@ -19,7 +19,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve static assets: prefer files in public/, then fall back to project root
+//Added Code to Access Images in Folder Img
+app.use("/img", express.static(path.join(__dirname, "img")));
+
+// Serve static assets: prefer files in `public/`, then fall back to project root
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname)));
 app.use(express.static("public/css"));

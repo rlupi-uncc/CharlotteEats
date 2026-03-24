@@ -142,3 +142,54 @@ button {
         text-decoration: underline;
         background-color: white;
       }
+
+/* Added Code for Styling May Be Deleted */
+.card-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+}
+
+.card-wrapper .card {
+  flex: 1;        /* card takes up all remaining space */
+  min-width: 0;   /* prevents overflow issues */
+}
+
+.reservation-button {
+  flex-shrink: 0;          /* button never grows or squishes */
+  white-space: nowrap;
+  align-self: center;      /* vertically centers it next to the card */
+  padding: 10px 16px;
+}
+
+.reservation-button {
+  margin-top: 15px;
+  margin-left: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 30px;
+}
+
+#reservation-button:hover {
+  text-decoration: underline;
+}
+
+.leave-review-button {
+  flex-shrink: 0;          /* button never grows or squishes */
+  white-space: nowrap;
+  align-self: center;      /* vertically centers it next to the card */
+  padding: 10px 16px;
+}
+
+.leave-review-button {
+  margin-left: 10px;
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 30px;
+}
+
+#leave-review-button:hover {
+  text-decoration: underline;
+}
