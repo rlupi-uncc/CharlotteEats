@@ -57,7 +57,13 @@ async function updateReview(restaurantId, reviewId, updatedData) {
   if (updatedData.rating !== undefined) review.rating = updatedData.rating;
   if (updatedData.title !== undefined) review.title = updatedData.title;
   if (updatedData.body !== undefined) review.body = updatedData.body;
-
+  if (updatedData.likes !== undefined) {
+    review.likes = updatedData.likes;
+    if (updatedData.userId && !review.likedBy.includes(updatedData.userId)) {
+      review.likedBy.push(updatedData.userId);
+    }
+  }
+  
   await restaurant.save();
   return review.toObject();
 }
