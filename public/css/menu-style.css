@@ -24,12 +24,26 @@ body{
 .restaurant-desc{ color:var(--muted); margin-top:0; }
 .rating{ color:var(--muted); }
 
-.menu-filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:14px 0; }
+.menu-filters{ display:flex; flex-direction:column; gap:10px; margin:14px 0; }
+.menu-filters .search-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.menu-filters .search-input-wrapper{ position:relative; flex:1; min-width:220px; }
+.menu-filters .search-input-wrapper input{ width:100%; padding:10px 14px 10px 46px; }
+.menu-filters .filter-toggle{ position:absolute; left:8px; top:50%; transform:translateY(-50%); width:36px; height:36px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); transition: background-color .2s ease, color .2s ease; }
+.menu-filters .filter-toggle:hover{ background:rgba(100,149,237,0.08); color:var(--pop-color); }
+.menu-filters .filter-toggle.active{ background:var(--pop-color); color:#fff; }
+.menu-filters .filter-icon{ width:18px; height:18px; display:block; }
+.menu-filters .filter-toggle.active{ background:var(--pop-color); color:#fff; }
+.menu-filters .filter-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.menu-filters .filter-panel{ display:none; flex-wrap:wrap; gap:10px; }
+.menu-filters .filter-panel.open{ display:flex; }
 .menu-filters input,
 .menu-filters select,
-.menu-filters button{ padding:8px 10px; border-radius:6px; border:1px solid #e5e7eb; font-family: inherit; font-size:0.95rem; }
+.menu-filters button{ padding:10px 12px; border-radius:10px; border:1px solid #e5e7eb; font-family: inherit; font-size:0.95rem; }
 .menu-filters select{ appearance:none; -webkit-appearance:none; }
-.menu-filters button{ background:var(--pop-color); color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:600; line-height:1; }
+.menu-filters button{ background:var(--pop-color); color:#fff; border:none; cursor:pointer; font-weight:600; line-height:1; }
+.menu-filters button.clear-all { background:#fff; color:var(--pop-color); border:1px solid var(--pop-color); }
+.menu-filters .filter-panel input,
+.menu-filters .filter-panel select{ min-width:180px; }
 
 /* Primary button used elsewhere (matches profile/login) */
 .btn-primary{

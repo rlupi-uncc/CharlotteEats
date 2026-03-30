@@ -14,22 +14,35 @@
 
   <hr>
 
-  <form class="menu-filters">
-    <input name="q" placeholder="Search menu" value="<%= filters.q || '' %>">
+  <form class="menu-filters" method="get">
+    <div class="search-row">
+      <div class="search-input-wrapper">
+        <button type="button" class="filter-toggle" aria-expanded="false" aria-label="Toggle advanced filters">
+          <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M3 4h18l-7 8v6l-4 2v-8L3 4z" />
+          </svg>
+        </button>
+        <input name="q" type="search" placeholder="Search menu" value="<%= filters.q || '' %>">
+      </div>
 
-    <select name="category">
-      <option value="">All categories</option>
-      <% categories.forEach(c => { %>
-        <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
-      <% }) %>
-    </select>
+      <div class="filter-actions">
+        <button type="submit" class="btn-primary">Apply Filters</button>
+        <button type="button" class="clear-all">Clear All Filters</button>
+      </div>
+    </div>
 
-    <input name="minPrice" type="number" step="0.01" placeholder="Min price" value="<%= filters.minPrice || '' %>">
-    <input name="maxPrice" type="number" step="0.01" placeholder="Max price" value="<%= filters.maxPrice || '' %>">
+    <div class="filter-panel">
+      <select name="category">
+        <option value="">All categories</option>
+        <% categories.forEach(c => { %>
+          <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
+        <% }) %>
+      </select>
 
-    <input name="excludeAllergens" placeholder="Exclude allergens">
-
-    <button type="submit" class="btn-primary">Filter</button>
+      <input name="minPrice" type="number" step="0.01" placeholder="Min price" value="<%= filters.minPrice || '' %>">
+      <input name="maxPrice" type="number" step="0.01" placeholder="Max price" value="<%= filters.maxPrice || '' %>">
+      <input name="excludeAllergens" placeholder="Exclude allergens" value="<%= filters.excludeAllergens || '' %>">
+    </div>
   </form>
 
   <h2>Menu</h2>
@@ -86,6 +99,7 @@
   window.RESTAURANT_ID = "<%= restaurant._id %>";
 </script>
 <script src="/reservation.js"></script>
+<script src="/menu.js"></script>
 
 <hr>
 
