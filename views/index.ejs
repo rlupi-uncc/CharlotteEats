@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Charlotte Eats</title>
   <link rel="stylesheet" href="/public/css/index-style.css" />
 </head>
-<body>
+
+<body class="landing-background">
 
   <!-- HERO / LANDING -->
   <main class="landing">
@@ -25,12 +27,43 @@
 
       <% if (user) { %>
         <a href="/profile" class="btn secondary">My Profile</a>
-      <% } else { %>
-        <a href="/login" class="btn secondary">Login</a>
-      <% } %>
+        <% } else { %>
+          <a href="/login" class="btn secondary">Login</a>
+          <% } %>
+    </div>
+
+    <div class="contact-container">
+      <p>
+        Interested in adding your local restaurant?
+        <span class="contact-toggle" onclick="toggleContact()">
+          Click here!
+        </span>
+      </p>
+
+      <div id="contact-dropdown" class="contact-dropdown">
+        <p class="contact-title">
+          Contact one of our developers for more information:
+        </p>
+
+        <ul>
+          <li>Carter Meadows – carter@example.com</li>
+          <li>Bryson Burrell – bryson@example.com</li>
+          <li>Alena Polman – alena@example.com</li>
+          <li>Randall Lupi – randall@example.com</li>
+          <li>Ailani Borges Lopez – ailani@example.com</li>
+        </ul>
+      </div>
     </div>
 
   </main>
 
+  <script>
+    function toggleContact() {
+      const dropdown = document.getElementById("contact-dropdown");
+      dropdown.classList.toggle("open");
+    }
+  </script>
+
 </body>
+
 </html>
