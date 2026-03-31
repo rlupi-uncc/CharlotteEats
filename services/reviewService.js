@@ -139,6 +139,21 @@ async function getReviewById(restaurantId, reviewId) {
 async function updateReview(restaurantId, reviewId, updatedData) {
   const patch = { ...updatedData };
 
+
+  const isLikeUpdate =
+    patch.userId !== undefined &&
+    Object.keys(patch).every((k) => ["likes", "userId"].includes(k));
+
+  if (isLikeUpdate) {
+    const updatedReview = await reviewRepo.updateReview(restaurantId, reviewId, patch);
+    if (!updatedReview) {
+      const err = new Error("Restaurant or review not found");
+      err.status = 404;
+      throw err;
+    }
+    return updatedReview;
+  }
+
   // Do NOT allow authorName changes (security + consistency)
   if ("authorName" in patch) delete patch.authorName;
 

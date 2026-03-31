@@ -96,7 +96,6 @@ function addEntry(review) {
 
   if (alreadyLiked) {
     likeImage.src = "img/liked-thumbs-up.jpg";
-    likeImage.style.pointerEvents = "none";
   } else {
     likeImage.src = "img/unliked-thumbs-up.jpg";
   }
@@ -111,7 +110,7 @@ function addEntry(review) {
     header.removeChild(likeImage);
   }
 
-  // likes section - Ailani Added Section
+  // likes section
   if (typeof review.likes === "number") {
     const likesLine = document.createElement("p");
     likesLine.classList.add("likes-line");
@@ -188,11 +187,11 @@ async function deleteReview(restaurantId, reviewId) {
   });
 }
 
-async function updateReviewLikes(restaurantId, reviewId, likes) {
+async function updateReviewLikes(restaurantId, reviewId) {
   return apiFetch(`/restaurants/${restaurantId}/reviews/${reviewId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ likes, userId: window.CURRENT_USER_ID }),
+    body: JSON.stringify({ likes: 1, userId: window.CURRENT_USER_ID }),
   });
 }
 
@@ -263,23 +262,29 @@ reviewsSection.addEventListener("click", async (e) => {
     const article = e.target.closest(".review");
     const reviewId = article?.dataset?.reviewId;
 
-    if (!reviewId) return;
+    if (!reviewId)
+      return;
+
+    const likeImage = article.querySelector("img");
+    const isLiked = likeImage?.src.includes("liked-thumbs-up.jpg") &&!likeImage?.src.includes("unliked-thumbs-up.jpg");
 
     try {
-      const newLikes = Number(e.target.dataset.likes) + 1;
-      console.log("SENDING LIKES:", newLikes);
-      const updated = await updateReviewLikes(restaurantId, reviewId, newLikes);
 
-      e.target.dataset.likes = updated.likes;
-      const likesLine = article.querySelector(".likes-line");
-      if (likesLine) likesLine.textContent = `Likes: ${updated.likes}`;
+      if(isLiked){
+        const lessUpdated = await updateReviewLikes(restaurantId, reviewId);
 
-      const likeImage = article.querySelector("img");
-      if(likeImage){
-        likeImage.src = "img/liked-thumbs-up.jpg";
-        likeImage.style.pointerEvents = "none";
+        e.target.dataset.likes = lessUpdated.likes;
+        const unlikeLine = article.querySelector(".likes-line");
+        if (unlikeLine) unlikeLine.textContent = `Likes: ${lessUpdated.likes}`;
+        if(likeImage) likeImage.src = "img/unliked-thumbs-up.jpg";
+      }else{
+        const updated = await updateReviewLikes(restaurantId, reviewId);
+        
+        e.target.dataset.likes = updated.likes;
+        const likesLine = article.querySelector(".likes-line");
+        if (likesLine) likesLine.textContent = `Likes: ${updated.likes}`;
+        if (likeImage) likeImage.src = "img/liked-thumbs-up.jpg";
       }
-
     } catch (err) {
       showError(err.message);
     }

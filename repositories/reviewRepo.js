@@ -59,8 +59,23 @@ async function updateReview(restaurantId, reviewId, updatedData) {
   if (updatedData.body !== undefined) review.body = updatedData.body;
   if (updatedData.likes !== undefined) {
     review.likes = updatedData.likes;
-    if (updatedData.userId && !review.likedBy.includes(updatedData.userId)) {
-      review.likedBy.push(updatedData.userId);
+
+    if (updatedData.likes !== undefined) {
+      if (updatedData.userId) {
+        const alreadyLiked = review.likedBy
+        .map(String)
+        .includes(String(updatedData.userId));
+
+        if (alreadyLiked) {
+          review.likedBy = review.likedBy.filter(
+            (id) => String(id) !== String(updatedData.userId)
+          );
+        } else {
+          review.likedBy.push(updatedData.userId);
+        }
+
+        review.likes = review.likedBy.length;
+      }
     }
   }
   
