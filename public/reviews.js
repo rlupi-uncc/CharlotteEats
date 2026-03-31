@@ -82,11 +82,11 @@ function addEntry(review) {
 
   // Add Like Button
   likeImage = document.createElement("img");
-  likeImage.src = "img/unliked-thumbs-up.jpg";
+  likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
   likeImage.classList.add("img", "like-btn");
   likeImage.dataset.likes = review.likes ?? 0;
   
-  likeImage.src = "img/unliked-thumbs-up.jpg";
+  likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
 
   header.append(likeImage);
 
@@ -95,9 +95,9 @@ function addEntry(review) {
     .includes(String(window.CURRENT_USER_ID));
 
   if (alreadyLiked) {
-    likeImage.src = "img/liked-thumbs-up.jpg";
+    likeImage.src = "img/reviewicon/liked-thumbs-up.jpg";
   } else {
-    likeImage.src = "img/unliked-thumbs-up.jpg";
+    likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
   }
 
   // Remove Like Button from Current User's Review
@@ -276,14 +276,14 @@ reviewsSection.addEventListener("click", async (e) => {
         e.target.dataset.likes = lessUpdated.likes;
         const unlikeLine = article.querySelector(".likes-line");
         if (unlikeLine) unlikeLine.textContent = `Likes: ${lessUpdated.likes}`;
-        if(likeImage) likeImage.src = "img/unliked-thumbs-up.jpg";
+        if(likeImage) likeImage.src = "/img/reviewicon/unliked-thumbs-up.jpg";
       }else{
         const updated = await updateReviewLikes(restaurantId, reviewId);
         
         e.target.dataset.likes = updated.likes;
         const likesLine = article.querySelector(".likes-line");
         if (likesLine) likesLine.textContent = `Likes: ${updated.likes}`;
-        if (likeImage) likeImage.src = "img/liked-thumbs-up.jpg";
+        if (likeImage) likeImage.src = "/img/reviewicon/liked-thumbs-up.jpg";
       }
     } catch (err) {
       showError(err.message);
