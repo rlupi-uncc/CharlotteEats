@@ -57,7 +57,28 @@ async function updateReview(restaurantId, reviewId, updatedData) {
   if (updatedData.rating !== undefined) review.rating = updatedData.rating;
   if (updatedData.title !== undefined) review.title = updatedData.title;
   if (updatedData.body !== undefined) review.body = updatedData.body;
+  if (updatedData.likes !== undefined) {
+    review.likes = updatedData.likes;
 
+    if (updatedData.likes !== undefined) {
+      if (updatedData.userId) {
+        const alreadyLiked = review.likedBy
+        .map(String)
+        .includes(String(updatedData.userId));
+
+        if (alreadyLiked) {
+          review.likedBy = review.likedBy.filter(
+            (id) => String(id) !== String(updatedData.userId)
+          );
+        } else {
+          review.likedBy.push(updatedData.userId);
+        }
+
+        review.likes = review.likedBy.length;
+      }
+    }
+  }
+  
   await restaurant.save();
   return review.toObject();
 }
