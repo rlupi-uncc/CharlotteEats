@@ -29,8 +29,8 @@ const validateLogin = [
 const validateUpdateUser = [
   oneOf(
     [
-      body("username").exists({ checkFalsy: true }),
-      body("email").exists({ checkFalsy: true }),
+      body("name").exists({ checkFalsy: true }),
+      body("email_change").exists({ checkFalsy: true }),
       body("password").exists({ checkFalsy: true }),
     ],
     {
@@ -38,14 +38,14 @@ const validateUpdateUser = [
     }
   ),
 
-  body("email")
-    .optional()
+  body("email_change")
+    .optional({ checkFalsy: true })
     .isEmail()
     .withMessage("email is not valid")
     .normalizeEmail(),
 
   body("password")
-    .optional()
+    .optional({ checkFalsy: true })
     .isLength({ min: 8, max: 64 })
     .withMessage("password must contain at least 8 and at most 64 characters"),
 

@@ -1,11 +1,9 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f8fbff;
+  background: url('/img/stock/skyline.png') center center / cover no-repeat fixed;
 }
 
-
-/* LANDING */
 .landing {
   min-height: 100vh;
   display: flex;
@@ -14,6 +12,7 @@ body {
   align-items: center;
   text-align: center;
   padding: 20px;
+  background: rgba(248, 251, 255, 0.82);
 }
 
 /* .logo {
@@ -38,12 +37,16 @@ h1 {
   font-size: 2.5rem;
   color: #1f3c88;
   margin-bottom: 10px;
+
+  text-shadow: 0 2px 6px rgba(255,255,255,0.6);
 }
 
 p {
   max-width: 500px;
   margin-bottom: 30px;
-  color: #444;
+  color: #222;
+
+  text-shadow: 0 1px 4px rgba(255,255,255,0.6);
 }
 
 /* BUTTONS */
@@ -75,6 +78,55 @@ p {
 
 .secondary:hover {
   background: #eef5ff;
+}
+
+.contact-container {
+  margin-top: 30px;
+  max-width: 500px;
+}
+
+.contact-toggle {
+  color: #4b9cd3;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.contact-toggle:hover {
+  text-decoration: underline;
+}
+
+.contact-dropdown {
+  margin-top: 15px;
+  padding: 0 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.contact-dropdown.open {
+  padding: 15px;
+  max-height: 300px;
+}
+
+.contact-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.contact-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-dropdown li {
+  margin-bottom: 6px;
+  color: #333;
 }
 
 @media (max-width: 600px) {
