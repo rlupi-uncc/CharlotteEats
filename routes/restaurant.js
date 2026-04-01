@@ -6,11 +6,39 @@ const router = express.Router();
 const reviewRoutes = require('./reviewRoutes.js');
 router.use('/:id/reviews', reviewRoutes);
 
-function applyMenuFilters(menuItems, { category, q, exclude, minPrice, maxPrice }) {
+// Helper functions for filtering and normalizing tags
+const TAG_ALIASES = {
+  hala: 'halal',
+  halal: 'halal',
+  'gluten free': 'gluten-free',
+  'gluten-free': 'gluten-free',
+  'nut free': 'nut-free',
+  'nut-free': 'nut-free',
+  keto: 'keto',
+  vegan: 'vegan',
+  vegetarian: 'vegetarian'
+};
+
+function normalizeTag(value) {
+  return (value || '').toString().trim().toLowerCase().replace(/\s+/g, '-');
+}
+
+// Convert user input tag to canonical form for consistent filtering
+function canonicalTag(value) {
+  const tag = normalizeTag(value);
+  return TAG_ALIASES[tag] || tag;
+}
+
+function applyMenuFilters(menuItems, { category, q, dietTag, exclude, minPrice, maxPrice }) {
   return menuItems.filter((i) => {
     if (category && (i.category || '').toLowerCase() !== category) return false;
 
     if (q && !`${i.name || ''} ${i.description || ''}`.toLowerCase().includes(q)) return false;
+
+    if (dietTag) {
+      const itemTags = (i.tags || []).map(canonicalTag);
+      if (!itemTags.includes(canonicalTag(dietTag))) return false;
+    }
 
     if (exclude.length) {
       const allergens = (i.allergens || []).map((a) => a.toLowerCase());
@@ -56,8 +84,9 @@ router.get("/", async (req, res) => {
   }
 
   if (tag) {
+    const canonicalQueryTag = canonicalTag(tag);
     restaurants = restaurants.filter((r) =>
-      (r.tags || []).map((t) => t.toLowerCase()).includes(tag)
+      (r.tags || []).map(canonicalTag).includes(canonicalQueryTag)
     );
   }
 
@@ -90,6 +119,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const q = (req.query.q || "").toLowerCase();
   const category = (req.query.category || "").toLowerCase();
+  const dietTag = (req.query.dietTag || "").trim().toLowerCase();
   const exclude = (req.query.excludeAllergens || "")
     .split(",")
     .map((a) => a.trim().toLowerCase())
@@ -103,6 +133,7 @@ router.get("/:id", async (req, res) => {
   let menuItems = applyMenuFilters(restaurant.menuItems || [], {
     category,
     q,
+    dietTag,
     exclude,
     minPrice,
     maxPrice
@@ -124,6 +155,7 @@ router.get("/:id", async (req, res) => {
     filters: {
       q: req.query.q || "",
       category: req.query.category || "",
+      dietTag: req.query.dietTag || "",
       excludeAllergens: req.query.excludeAllergens || "",
       minPrice: req.query.minPrice || "",
       maxPrice: req.query.maxPrice || ""

@@ -38,6 +38,7 @@
           <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
         <% }) %>
       </select>
+      <input name="dietTag" type="text" placeholder="Filter by dietary tag (halal, keto, gluten-free)" value="<%= filters.dietTag || '' %>">
 
       <input name="minPrice" type="number" step="0.01" placeholder="Min price" value="<%= filters.minPrice || '' %>">
       <input name="maxPrice" type="number" step="0.01" placeholder="Max price" value="<%= filters.maxPrice || '' %>">
@@ -53,6 +54,7 @@
         <h3><%= i.name %></h3>
         <p class="description"><%= i.description %></p>
         <p class="price">$<%= i.price %></p>
+        <p class="tags">Tags: <%= (i.tags || []).join(", ") || "None" %></p>
         <p class="allergens">Allergens: <%= (i.allergens || []).join(", ") || "None" %></p>
         <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
       </article>
