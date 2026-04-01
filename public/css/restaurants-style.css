@@ -123,8 +123,11 @@ button {
   margin-top: 14px; 
   margin-left: 20px;
   margin-right: 20px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  padding: 10px;
 }
-      .card { border: 1px solid #eee; border-radius: 12px; padding: 14px; text-decoration: none; color: inherit; }
+      .card {padding: 14px; text-decoration: none; color: inherit; }
       .card:hover { border-color: #ccc; }
       .title { font-weight: 800; font-size: 18px; margin: 0 0 6px; }
       .muted { opacity: 0.75; }
@@ -164,7 +167,7 @@ button {
 }
 
 .reservation-button {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   margin-left: 10px;
   font-size: 15px;
   font-weight: bold;
@@ -184,7 +187,6 @@ button {
 
 .leave-review-button {
   margin-left: 10px;
-  margin-top: 50px;
   font-size: 15px;
   font-weight: bold;
   padding: 30px;

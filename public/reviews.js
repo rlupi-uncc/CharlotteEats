@@ -1,5 +1,7 @@
 "use strict";
 
+// const { updateSearchIndex } = require("../models/Restaurant");
+
 const MAX_LENGTH = 200;
 
 const restaurantId = window.RESTAURANT_ID;
@@ -8,6 +10,7 @@ const reviewsSection = document.querySelector(".reviews");
 const addButton = document.querySelector(".new-review-btn");
 const formSection = document.querySelector(".new-review-section");
 const form = document.querySelector(".new-review-form");
+var likeImage;
 
 // Expect HTML inputs with these IDs:
 const titleInput = document.querySelector("#title");
@@ -75,6 +78,44 @@ function addEntry(review) {
     article.appendChild(readButton);
   } else {
     contentP.textContent = content;
+  }
+
+  // Add Like Button
+  likeImage = document.createElement("img");
+  likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
+  likeImage.classList.add("img", "like-btn");
+  likeImage.dataset.likes = review.likes ?? 0;
+  
+  likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
+
+  header.append(likeImage);
+
+  const alreadyLiked = (review.likedBy || [])
+    .map(String)
+    .includes(String(window.CURRENT_USER_ID));
+
+  if (alreadyLiked) {
+    likeImage.src = "img/reviewicon/liked-thumbs-up.jpg";
+  } else {
+    likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
+  }
+
+  // Remove Like Button from Current User's Review
+  if (
+    review._id &&
+    review.userId &&
+    window.CURRENT_USER_ID &&
+    String(review.userId) === String(window.CURRENT_USER_ID)
+  ) {
+    header.removeChild(likeImage);
+  }
+
+  // likes section
+  if (typeof review.likes === "number") {
+    const likesLine = document.createElement("p");
+    likesLine.classList.add("likes-line");
+    likesLine.textContent = `Likes: ${review.likes}`;
+    article.append(likesLine);
   }
 
   // delete button 
@@ -146,6 +187,14 @@ async function deleteReview(restaurantId, reviewId) {
   });
 }
 
+async function updateReviewLikes(restaurantId, reviewId) {
+  return apiFetch(`/restaurants/${restaurantId}/reviews/${reviewId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ likes: 1, userId: window.CURRENT_USER_ID }),
+  });
+}
+
 // UI Events
 function formState() {
   formSection.classList.toggle("hide");
@@ -183,6 +232,7 @@ form?.addEventListener("submit", async (e) => {
 
 // Delete + Read More/Less handler
 reviewsSection.addEventListener("click", async (e) => {
+
   if (e.target.classList.contains("more-less-btn")) {
     const paragraph = e.target.previousElementSibling;
     const spans = paragraph.querySelectorAll("span");
@@ -202,6 +252,39 @@ reviewsSection.addEventListener("click", async (e) => {
     try {
       await deleteReview(restaurantId, reviewId);
       article.remove();
+    } catch (err) {
+      showError(err.message);
+    }
+  }
+
+  // Like Review
+  if (e.target.classList.contains("like-btn")) {
+    const article = e.target.closest(".review");
+    const reviewId = article?.dataset?.reviewId;
+
+    if (!reviewId)
+      return;
+
+    const likeImage = article.querySelector("img");
+    const isLiked = likeImage?.src.includes("liked-thumbs-up.jpg") &&!likeImage?.src.includes("unliked-thumbs-up.jpg");
+
+    try {
+
+      if(isLiked){
+        const lessUpdated = await updateReviewLikes(restaurantId, reviewId);
+
+        e.target.dataset.likes = lessUpdated.likes;
+        const unlikeLine = article.querySelector(".likes-line");
+        if (unlikeLine) unlikeLine.textContent = `Likes: ${lessUpdated.likes}`;
+        if(likeImage) likeImage.src = "/img/reviewicon/unliked-thumbs-up.jpg";
+      }else{
+        const updated = await updateReviewLikes(restaurantId, reviewId);
+        
+        e.target.dataset.likes = updated.likes;
+        const likesLine = article.querySelector(".likes-line");
+        if (likesLine) likesLine.textContent = `Likes: ${updated.likes}`;
+        if (likeImage) likeImage.src = "/img/reviewicon/liked-thumbs-up.jpg";
+      }
     } catch (err) {
       showError(err.message);
     }
