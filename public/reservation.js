@@ -8,7 +8,7 @@ const restaurantId = window.RESTAURANT_ID;
 function showLoginMessage() {
   message.innerHTML = `
     <span>You must be logged in to make a reservation. </span>
-    <a href="/" class="login-link">Sign in here</a>
+    <a href="/login" class="login-link">Sign in here</a>
   `;
 }
 
