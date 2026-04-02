@@ -28,7 +28,7 @@ views/         # EJS templates
 public/        # Frontend JS and CSS
 Installation
 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/rlupi-uncc/CharlotteEats
 cd CharlotteEats
 2. Install dependencies
 npm install
