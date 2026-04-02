@@ -1,6 +1,7 @@
 CharlotteEats
 
 CharlotteEats is a full-stack web application that allows users to browse restaurants, view menus, leave reviews, and manage reservations. This project was developed as part of a college capstone and focuses on authentication, database integration, and interactive user features.
+Stable Deployed version accessible at: https://charlotteeats-itsc-4155-003-group-1.onrender.com/
 
 Features
 User authentication with protected routes
