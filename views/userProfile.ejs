@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="/css/login-style.css">
   <link rel="stylesheet" href="/css/user-style.css">
 </head>
+
 <body>
 
   <header>
@@ -15,13 +17,15 @@
 
     <div class="header-links-flex">
 
-      <a href="/login"><h2>Login</h2></a>
-      <hr width="2" size="40"/>
+      <a href="/login">
+        <h2>Login</h2>
+      </a>
+      <hr width="2" size="40" />
       <h2><a href="/restaurants">Restaurants List</h2>
-      <hr width="2" size="40"/>
+      <hr width="2" size="40" />
       <h2><a href="/profile">User Profile</a></h2>
 
-      <hr width="2" size="40"/>
+      <hr width="2" size="40" />
 
       <nav>
         <div class="hamburger-menu">
@@ -41,18 +45,18 @@
         <div class="profile-info">
 
           <div class="profile-picture">
-            <img 
-              src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" 
-              alt="User avatar" 
-              class="avatar"
-            >
+            <img src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" alt="User avatar" class="avatar">
           </div>
 
           <!-- Dynamic username -->
-          <h2><%= user.username %></h2>
+          <h2>
+            <%= user.username %>
+          </h2>
 
           <!-- Dynamic email -->
-          <div class="profile-meta"><%= user.email %></div>
+          <div class="profile-meta">
+            <%= user.email %>
+          </div>
 
           <div class="profile-actions">
             <a href="/edit_profile" class="btn">Edit Profile</a>
@@ -63,46 +67,64 @@
 
           <!-- Placeholder stats (future feature) -->
           <div class="profile-stats">
-            <div class="stat">Reservations: <%= reservations.length %></div>
+            <div class="stat">Reservations: <%= reservations.length %>
+            </div>
             <div class="stat">Reviews: 0</div>
           </div>
 
           <section class="profile-reservations">
             <h2>My Reservations</h2>
-          
-            <% if (!reservations || reservations.length === 0) { %>
+
+            <% if (!reservations || reservations.length===0) { %>
               <p class="empty-state">No reservations yet.</p>
-            <% } else { %>
-              <div class="reservation-cards">
-                <% reservations.forEach(r => { %>
-                  <article class="reservation-card">
-                    <div class="reservation-card-top">
-                      <h3><%= r.restaurantId?.name || "Restaurant" %></h3>
-                      <span class="reservation-status <%= r.status %>"><%= r.status %></span>
-                    </div>
-          
-                    <div class="reservation-details">
-                      <p><strong>Date:</strong> <%= r.reservationDate %></p>
-                      <p><strong>Time:</strong> <%= r.reservationTime %></p>
-                      <p><strong>Party Size:</strong> <%= r.partySize %></p>
-                    </div>
-          
-                    <% if (r.specialRequests) { %>
-                      <div class="reservation-notes">
-                        <strong>Special Requests:</strong>
-                        <p><%= r.specialRequests %></p>
+              <% } else { %>
+                <div class="reservation-cards">
+                  <% reservations.forEach(r=> { %>
+                    <article class="reservation-card">
+                      <div class="reservation-card-top">
+                        <h3>
+                          <%= r.restaurantId?.name || "Restaurant" %>
+                        </h3>
+                        <span class="reservation-status <%= r.status %>">
+                          <%= r.status %>
+                        </span>
                       </div>
-                    <% } %>
-                  </article>
-                <% }) %>
-              </div>
-            <% } %>
+
+                      <div class="reservation-details">
+                        <p><strong>Date:</strong>
+                          <%= r.reservationDate %>
+                        </p>
+                        <p><strong>Time:</strong>
+                          <%= r.reservationTime %>
+                        </p>
+                        <p><strong>Party Size:</strong>
+                          <%= r.partySize %>
+                        </p>
+                      </div>
+
+                      <% if (r.specialRequests) { %>
+                        <div class="reservation-notes">
+                          <strong>Special Requests:</strong>
+                          <p>
+                            <%= r.specialRequests %>
+                          </p>
+                        </div>
+                        <% } %>
+                          <form class="delete-reservation-form" data-reservation-id="<%= r._id %>"
+                            data-restaurant-id="<%= r.restaurantId?._id || r.restaurantId %>">
+                            <button type="submit" class="btn secondary">Delete Reservation</button>
+                          </form>
+                    </article>
+                    <% }) %>
+                </div>
+                <% } %>
           </section>
 
         </div>
       </div>
     </div>
   </main>
-
+  <script src="/profileReservations.js"></script>
 </body>
+
 </html>

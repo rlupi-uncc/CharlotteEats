@@ -27,4 +27,11 @@ router.put(
   reservationController.cancelReservationHandler
 );
 
+router.delete(
+  "/:reservationId",
+  validateRestaurantId,
+  validateReservationId,
+  reservationController.deleteReservationHandler
+);
+
 module.exports = router;
