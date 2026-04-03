@@ -1,5 +1,5 @@
-const reservationController = require("../controllers/reservationController");
-const reservationService = require("../services/reservationService");
+const reservationController = require("../../controllers/reservationController");
+const reservationService = require("../../services/reservationService");
 
 jest.mock("../services/reservationService");
 

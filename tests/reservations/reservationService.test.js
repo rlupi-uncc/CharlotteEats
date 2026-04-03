@@ -1,7 +1,7 @@
-const reservationService = require("../services/reservationService");
-const Reservation = require("../models/Reservation");
-const Restaurant = require("../models/Restaurant");
-const reservationRepo = require("../repositories/reservationRepo");
+const reservationService = require("../../services/reservationService");
+const Reservation = require("../../models/Reservation");
+const Restaurant = require("../../models/Restaurant");
+const reservationRepo = require("../../repositories/reservationRepo");
 
 jest.mock("../models/Reservation");
 jest.mock("../models/Restaurant");
