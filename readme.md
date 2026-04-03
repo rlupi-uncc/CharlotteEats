@@ -1,121 +1,100 @@
-Sprint 0 – Project Environment Setup (Node.js + MongoDB)
+# CharlotteEats
 
-This repository contains the Sprint 0 environment setup for our project, including:
+CharlotteEats is a full-stack web application that allows users to browse restaurants, view menus, leave reviews, and manage reservations. This project was developed as part of a college capstone and focuses on authentication, database integration, and interactive user features.
 
-Node.js HTTP server
+**Live App:**  
+https://charlotteeats-itsc-4155-003-group-1.onrender.com/
 
-Unit testing with Jest
+---
 
-MongoDB Atlas connection
+## Features
 
-Git-based workflow
+- User authentication with protected routes
+- Browse restaurants and view menu items
+- Leave, update, and delete reviews
+- Create and manage restaurant reservations
+- View reservations on the user profile page
+- Cancel or delete reservations
+- Rating system with automatic average calculation
 
-Follow the steps below to run the application locally.
+---
 
---PREREQUISITES--
+## Tech Stack
 
-Ensure the following are installed:
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- EJS templating
+- JavaScript (frontend and backend)
+- CSS
 
-Node.js (LTS recommended)
+---
 
-npm (comes with Node.js)
+## Project Structure
 
-Verify:
+```
+models/        # Mongoose schemas
+routes/        # Express route definitions
+controllers/   # Route handlers
+services/      # Business logic
+repositories/  # Database interaction
+middleware/    # Validation and authentication
+views/         # EJS templates
+public/        # Frontend JS and CSS
+```
 
-node -v
-npm -v
+---
 
---DEPENDENCIES--
+## Installation
 
-From the project root directory:
+### 1. Clone the repository
+```bash
+git clone https://github.com/rlupi-uncc/CharlotteEats
+cd CharlotteEats
+```
 
+### 2. Install dependencies
+```bash
 npm install
+```
 
+### 3. Configure environment variables
 
-This installs:
+Create a `.env` file in the root directory:
 
-Jest (unit testing)
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=time_to_expire
+```
 
-MongoDB Node.js driver
+### 4. Start the server
+```bash
+node server.js
+```
 
-dotenv
-
---MONGODB USER SETUP--
-
-Create a file named:
-
-.env
-
-
-Add the MongoDB Atlas connection string:
-
-navigate to https://cloud.mongodb.com/v2/698122ecf48b4f92e4eb6f4e#/security/database/users
-
-create a user for yourself and copy the connection string into your .env file
-
-MONGO_URI=your_atlas_connection_string_here
-
-
-Example format:
-
-mongodb+srv://USERNAME:PASSWORD@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
-
-
-Do not commit this file to GitHub.
-
---RUN THE NODE SERVER--
-
-Start the HTTP server:
-
-npm start
-
-
-Open a browser and navigate to:
+### 5. Open the application
 
 http://localhost:8000
 
+---
 
-You should see:
+## Usage
 
-My first server!
+- Register or log in to access full functionality
+- Browse restaurants and menus
+- Leave reviews on restaurant pages
+- Make reservations using the reservation form
+- View and manage reservations from the profile page
 
---UNIT TESTS--
+---
 
-Execute Jest tests:
+## Testing
 
+Run unit tests with:
+
+```bash
 npm test
+```
 
-
-All tests should pass.
-
---DATABASE CONNECTIVITY--
-
-Run the MongoDB connectivity check:
-
-node mongoTest.js
-
-
-If successful, the terminal will print an inserted document ID.
-
-Project Structure Overview
-hello.js          - Node.js HTTP server
-package.json     - Project configuration and scripts
-utils.js         - Sample utility function
-utils.test.js    - Jest unit test
-db.js             - MongoDB connection helper
-mongoTest.js      - MongoDB connection test script
-.env              - Environment variables (not committed)
-.gitignore        - Git ignore rules
-
-Common Issues
-MongoDB connection fails
-
-Confirm your IP is allowed in Atlas Network Access
-
-Confirm username/password are correct
-
-Ensure .env file exists and contains MONGO_URI
-
-Port already in use
-
-If port 8000 is busy, stop the other process or modify the port in hello.js.
+Tests are written using Jest and focus on service and controller logic.

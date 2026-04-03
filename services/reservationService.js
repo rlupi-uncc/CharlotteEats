@@ -46,8 +46,27 @@ async function cancelReservation(userId, reservationId) {
   return reservation.toObject();
 }
 
+async function deleteReservation(userId, reservationId) {
+  const reservation = await Reservation.findById(reservationId);
+  if (!reservation) {
+    const err = new Error("Reservation not found");
+    err.status = 404;
+    throw err;
+  }
+
+  if (String(reservation.userId) !== String(userId)) {
+    const err = new Error("Forbidden");
+    err.status = 403;
+    throw err;
+  }
+
+  await reservation.deleteOne();
+  return { deleted: true };
+}
+
 module.exports = {
   createReservation,
   getReservationsForUser,
   cancelReservation,
+  deleteReservation,
 };

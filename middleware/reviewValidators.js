@@ -77,6 +77,13 @@ const validateUpdateReview = [
         .trim()
         .notEmpty()
         .withMessage('body cannot be empty'),
+
+    body('likes')
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage('likes must be a non-negative integer')
+        .toInt(),
+        
     handleValidationErrors,   
 ];
 

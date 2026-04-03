@@ -6,6 +6,24 @@ const router = express.Router();
 const reviewRoutes = require('./reviewRoutes.js');
 router.use('/:id/reviews', reviewRoutes);
 
+function applyMenuFilters(menuItems, { category, q, exclude, minPrice, maxPrice }) {
+  return menuItems.filter((i) => {
+    if (category && (i.category || '').toLowerCase() !== category) return false;
+
+    if (q && !`${i.name || ''} ${i.description || ''}`.toLowerCase().includes(q)) return false;
+
+    if (exclude.length) {
+      const allergens = (i.allergens || []).map((a) => a.toLowerCase());
+      if (exclude.some((a) => allergens.includes(a))) return false;
+    }
+
+    if (minPrice !== null && !isNaN(minPrice) && i.price < minPrice) return false;
+    if (maxPrice !== null && !isNaN(maxPrice) && i.price > maxPrice) return false;
+
+    return true;
+  });
+}
+
 // List restaurants with optional search, tag filter, and sorting
 // GET /restaurants
 // Query: ?q=&tag=&sort=rating|name|newest
@@ -82,32 +100,13 @@ router.get("/:id", async (req, res) => {
   const restaurant = await Restaurant.findById(id).lean();
   if (!restaurant) return res.status(404).send("Restaurant not found");
 
-  let menuItems = restaurant.menuItems || [];
-
-  if (category) {
-    menuItems = menuItems.filter((i) => (i.category || "").toLowerCase() === category);
-  }
-
-  if (q) {
-    menuItems = menuItems.filter((i) =>
-      `${i.name || ""} ${i.description || ""}`.toLowerCase().includes(q)
-    );
-  }
-
-  if (exclude.length) {
-    menuItems = menuItems.filter((i) => {
-      const allergens = (i.allergens || []).map((x) => x.toLowerCase());
-      return exclude.every((a) => !allergens.includes(a));
-    });
-  }
-
-  if (minPrice !== null && !isNaN(minPrice)) {
-    menuItems = menuItems.filter((i) => i.price >= minPrice);
-  }
-
-  if (maxPrice !== null && !isNaN(maxPrice)) {
-    menuItems = menuItems.filter((i) => i.price <= maxPrice);
-  }
+  let menuItems = applyMenuFilters(restaurant.menuItems || [], {
+    category,
+    q,
+    exclude,
+    minPrice,
+    maxPrice
+  });
 
   const categories = Array.from(
     new Set((restaurant.menuItems || []).map((i) => i.category).filter(Boolean))

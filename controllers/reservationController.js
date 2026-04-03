@@ -22,8 +22,17 @@ async function cancelReservationHandler(req, res) {
   res.status(200).json(updated);
 }
 
+async function deleteReservationHandler(req, res) {
+  const userId = req.user.id;
+  const reservationId = req.params.reservationId;
+
+  await reservationService.deleteReservation(userId, reservationId);
+  res.status(204).send();
+}
+
 module.exports = {
   createReservationHandler,
   getMyReservationsHandler,
   cancelReservationHandler,
+  deleteReservationHandler,
 };
