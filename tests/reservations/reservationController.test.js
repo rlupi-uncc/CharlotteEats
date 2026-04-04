@@ -1,7 +1,7 @@
 const reservationController = require("../../controllers/reservationController");
 const reservationService = require("../../services/reservationService");
 
-jest.mock("../../services/reservationService");
+jest.mock("../services/reservationService");
 
 describe("reservationController", () => {
   let req;
