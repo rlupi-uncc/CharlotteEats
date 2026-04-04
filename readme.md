@@ -97,4 +97,4 @@ Run unit tests with:
 npm test
 ```
 
-Tests are written using Jest and focus on service and controller logic.
+Tests are written using Jest and focus on backend logic.
