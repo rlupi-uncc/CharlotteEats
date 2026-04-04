@@ -3,9 +3,9 @@ const Reservation = require("../../models/Reservation");
 const Restaurant = require("../../models/Restaurant");
 const reservationRepo = require("../../repositories/reservationRepo");
 
-jest.mock("../models/Reservation");
-jest.mock("../models/Restaurant");
-jest.mock("../repositories/reservationRepo");
+jest.mock("../../models/Reservation");
+jest.mock("../../models/Restaurant");
+jest.mock("../../repositories/reservationRepo");
 
 describe("reservationService", () => {
   afterEach(() => {
