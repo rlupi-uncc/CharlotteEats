@@ -7,7 +7,7 @@ async function signUpHandler(req, res) {
     await authService.signUp(username, email, password);
 
     // After successful signup, send them to login page
-    return res.redirect("/");
+    return res.redirect("/login");
   } catch (err) {
     console.error(err);
     return res.status(400).render("login", {
