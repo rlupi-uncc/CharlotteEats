@@ -10,7 +10,19 @@ function applyMenuFilters(menuItems, { category, q, exclude, minPrice, maxPrice 
   return menuItems.filter((i) => {
     if (category && (i.category || '').toLowerCase() !== category) return false;
 
-    if (q && !`${i.name || ''} ${i.description || ''}`.toLowerCase().includes(q)) return false;
+    if (q) {
+      const hay = [
+        i.name,
+        i.description,
+        i.category,
+        ...(i.tags || [])
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      if (!hay.includes(q)) return false;
+    }
 
     if (exclude.length) {
       const allergens = (i.allergens || []).map((a) => a.toLowerCase());
