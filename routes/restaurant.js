@@ -1,22 +1,19 @@
 const express = require("express");
 const Restaurant = require("../models/Restaurant");
+const { requireAuth } = require("../middleware/requireAuth");
+const { requireRestaurantOwner } = require("../middleware/requireRestaurantOwner");
 const router = express.Router();
 
 // Mount for review routers
-const reviewRoutes = require('./reviewRoutes.js');
-router.use('/:id/reviews', reviewRoutes);
+const reviewRoutes = require("./reviewRoutes.js");
+router.use("/:id/reviews", reviewRoutes);
 
 function applyMenuFilters(menuItems, { category, q, exclude, minPrice, maxPrice }) {
   return menuItems.filter((i) => {
-    if (category && (i.category || '').toLowerCase() !== category) return false;
+    if (category && (i.category || "").toLowerCase() !== category) return false;
 
     if (q) {
-      const hay = [
-        i.name,
-        i.description,
-        i.category,
-        ...(i.tags || [])
-      ]
+      const hay = [i.name, i.description, i.category, ...(i.tags || [])]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
@@ -36,9 +33,7 @@ function applyMenuFilters(menuItems, { category, q, exclude, minPrice, maxPrice 
   });
 }
 
-// List restaurants with optional search, tag filter, and sorting
-// GET /restaurants
-// Query: ?q=&tag=&sort=rating|name|newest
+// List restaurants
 router.get("/", async (req, res) => {
   const q = (req.query.q || "").trim().toLowerCase();
   const tag = (req.query.tag || "").trim().toLowerCase();
@@ -57,7 +52,7 @@ router.get("/", async (req, res) => {
         r.description,
         ...(r.tags || []),
         r.address?.city,
-        r.address?.state
+        r.address?.state,
       ]
         .filter(Boolean)
         .join(" ")
@@ -91,13 +86,12 @@ router.get("/", async (req, res) => {
     filters: {
       q: req.query.q || "",
       tag: req.query.tag || "",
-      sort: req.query.sort || "rating"
-    }
+      sort: req.query.sort || "rating",
+    },
   });
 });
-// Individual restaurant page with menu and reviews
-// GET /restaurants/:id
-// Query: ?q=&category=&excludeAllergens=peanuts,dairy&minPrice=&maxPrice=
+
+// Individual restaurant page
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const q = (req.query.q || "").toLowerCase();
@@ -117,7 +111,7 @@ router.get("/:id", async (req, res) => {
     q,
     exclude,
     minPrice,
-    maxPrice
+    maxPrice,
   });
 
   const categories = Array.from(
@@ -133,14 +127,130 @@ router.get("/:id", async (req, res) => {
     menuItems,
     categories,
     reviews,
-    filters: {
+    currentUser: req.user || null,    filters: {
       q: req.query.q || "",
       category: req.query.category || "",
       excludeAllergens: req.query.excludeAllergens || "",
       minPrice: req.query.minPrice || "",
-      maxPrice: req.query.maxPrice || ""
-    }
+      maxPrice: req.query.maxPrice || "",
+    },
   });
+});
+
+// Render edit page - owner only
+router.get("/:id/edit", requireAuth, requireRestaurantOwner, async (req, res) => {
+  const restaurant = await Restaurant.findById(req.params.id).lean();
+  if (!restaurant) return res.status(404).send("Restaurant not found");
+
+  res.render("editRestaurant", { restaurant });
+});
+
+// Update restaurant - owner only
+router.post("/:id/edit", requireAuth, requireRestaurantOwner, async (req, res, next) => {
+  try {
+    const updated = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        description: req.body.description,
+        tags: (req.body.tags || "")
+          .split(",")
+          .map((t) => t.trim().toLowerCase())
+          .filter(Boolean),
+        address: {
+          line1: req.body.line1 || "",
+          city: req.body.city || "",
+          state: req.body.state || "",
+          zip: req.body.zip || "",
+        },
+        phone: req.body.phone || "",
+        website: req.body.website || "",
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) return res.status(404).send("Restaurant not found");
+
+    res.redirect(`/restaurants/${updated._id}`);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:id/menu-items", requireAuth, requireRestaurantOwner, async (req, res, next) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) return res.status(404).send("Restaurant not found");
+
+    restaurant.menuItems.push({
+      name: req.body.name,
+      description: req.body.description || "",
+      price: Number(req.body.price),
+      category: req.body.category,
+      tags: (req.body.tags || "")
+        .split(",")
+        .map(t => t.trim().toLowerCase())
+        .filter(Boolean),
+      allergens: (req.body.allergens || "")
+        .split(",")
+        .map(a => a.trim().toLowerCase())
+        .filter(Boolean),
+      isAvailable: req.body.isAvailable === "on",
+      image: req.body.image || "https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    });
+
+    await restaurant.save();
+    res.redirect(`/restaurants/${req.params.id}/edit`);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:id/menu-items/:menuItemId/edit", requireAuth, requireRestaurantOwner, async (req, res, next) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) return res.status(404).send("Restaurant not found");
+
+    const item = restaurant.menuItems.id(req.params.menuItemId);
+    if (!item) return res.status(404).send("Menu item not found");
+
+    item.name = req.body.name;
+    item.description = req.body.description || "";
+    item.price = Number(req.body.price);
+    item.category = req.body.category;
+    item.tags = (req.body.tags || "")
+      .split(",")
+      .map(t => t.trim().toLowerCase())
+      .filter(Boolean);
+    item.allergens = (req.body.allergens || "")
+      .split(",")
+      .map(a => a.trim().toLowerCase())
+      .filter(Boolean);
+    item.isAvailable = req.body.isAvailable === "on";
+    item.image = req.body.image || "https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
+    await restaurant.save();
+    res.redirect(`/restaurants/${req.params.id}/edit`);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:id/menu-items/:menuItemId/delete", requireAuth, requireRestaurantOwner, async (req, res, next) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) return res.status(404).send("Restaurant not found");
+
+    const item = restaurant.menuItems.id(req.params.menuItemId);
+    if (!item) return res.status(404).send("Menu item not found");
+
+    item.deleteOne();
+    await restaurant.save();
+
+    res.redirect(`/restaurants/${req.params.id}/edit`);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

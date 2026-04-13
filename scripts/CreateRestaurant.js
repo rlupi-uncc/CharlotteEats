@@ -12,64 +12,77 @@ function computeRating(reviews) {
 async function run() {
   await mongoose.connect(process.env.MONGO_URI);
 
+  const ownerId = new mongoose.Types.ObjectId("69d567942866360fbd56b8c9");
+
   // avoid duplicates if you run it multiple times
-  await Restaurant.deleteMany({ name: "Smoky River BBQ" });
+  await Restaurant.deleteMany({ name: "Le Jardin de Charlotte" });
 
   const reviews = [
     {
       userId: new mongoose.Types.ObjectId(),
-      authorName: "Jordan K.",
+      authorName: "Sophie M.",
       rating: 5,
-      title: "Best pulled pork in town",
-      body: "Super tender, great sauce options, and the sides were legit."
+      title: "Elegant and delicious",
+      body: "The coq au vin was incredible and the atmosphere felt authentically French."
     },
     {
       userId: new mongoose.Types.ObjectId(),
-      authorName: "Alyssa P.",
+      authorName: "Daniel R.",
       rating: 4,
-      title: "Solid BBQ spot",
-      body: "Brisket was great. A little busy at dinner but worth it."
+      title: "Great date night spot",
+      body: "Loved the onion soup and crème brûlée. Service was a little slow but very friendly."
     }
   ];
 
   const { ratingAvg, ratingCount } = computeRating(reviews);
 
   const restaurant = await Restaurant.create({
-    name: "Smoky River BBQ",
-    description: "Slow-smoked BBQ, classic sides, and house sauces.",
-    tags: ["bbq", "family-friendly", "casual", "takeout"],
+    ownerId,
+    name: "Le Jardin de Charlotte",
+    description: "A charming French bistro serving classic dishes, fine desserts, and curated wines.",
+    tags: ["french", "bistro", "romantic", "fine-dining"],
 
-    address: { line1: "123 Main St", city: "Charlotte", state: "NC", zip: "28202" },
-    phone: "704-555-1212",
-    website: "https://example.com",
+    address: {
+      line1: "214 Tryon St",
+      city: "Charlotte",
+      state: "NC",
+      zip: "28202"
+    },
+    phone: "704-555-3487",
+    website: "https://example.com/le-jardin",
 
     menuItems: [
       {
-        name: "Pulled Pork Plate",
-        description: "Served with slaw and a side.",
-        price: 13.99,
+        name: "French Onion Soup",
+        description: "Rich beef broth topped with toasted baguette and melted gruyère.",
+        price: 9.95,
+        category: "Starters",
+        tags: ["classic", "savory"],
+        allergens: ["dairy", "gluten"]
+      },
+      {
+        name: "Coq au Vin",
+        description: "Braised chicken in red wine with mushrooms, onions, and herbs.",
+        price: 24.5,
         category: "Entrees",
-        tags: ["bbq", "house-special"],
-        allergens: [],
-        image: "/img/menu/pulled-pork.jpg"
+        tags: ["house-special", "traditional"],
+        allergens: []
       },
       {
-        name: "Mac & Cheese",
-        description: "Creamy cheddar blend.",
-        price: 4.99,
-        category: "Sides",
-        tags: ["vegetarian"],
-        allergens: ["dairy", "gluten"],
-        image: "/img/menu/mac-cheese.jpg"
+        name: "Croque Monsieur",
+        description: "Toasted ham and gruyère sandwich with béchamel.",
+        price: 14.25,
+        category: "Lunch",
+        tags: ["classic", "cafe"],
+        allergens: ["dairy", "gluten"]
       },
       {
-        name: "Peanut Butter Pie",
-        description: "Rich, sweet, and dense.",
-        price: 6.5,
+        name: "Crème Brûlée",
+        description: "Vanilla custard with a caramelized sugar crust.",
+        price: 8.5,
         category: "Desserts",
-        tags: ["sweet"],
-        allergens: ["peanuts", "dairy", "gluten"],
-        image: "/img/menu/peanut-butter-pie.jpg"
+        tags: ["sweet", "classic"],
+        allergens: ["dairy", "eggs"]
       }
     ],
 
