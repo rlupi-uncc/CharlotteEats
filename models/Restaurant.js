@@ -47,6 +47,13 @@ const RestaurantSchema = new mongoose.Schema(
 
     reviews: { type: [ReviewSchema], default: [] },
 
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+      index: true,
+    },
+
     // cached rating for quick sorting/filtering
     ratingAvg: { type: Number, default: 0, min: 0, max: 5 },
     ratingCount: { type: Number, default: 0, min: 0 }
