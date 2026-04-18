@@ -39,6 +39,30 @@
 
     <section class="reviews">
       <h2>Restaurant Reviews</h2>
+
+      <form method="GET" action="/reviews" style="margin-top: 14px;">
+        <input type="hidden" name="id" value="<%= restaurantId %>">
+      <div class="row">
+        <select name="sort">
+          <option value="Default">
+            Sort: Default
+          </option>
+          <option value="likes" <%= (filters.sort === "likes" ? "selected" : "") %>>
+            Sort: Likes
+          </option>
+          <option value="newest" <%= (filters.sort === "newest" ? "selected" : "") %>>
+            Sort: Newest
+          </option>
+          <option value="oldest" <%= (filters.sort === "oldest" ?
+          "selected" : "") %>>
+          Sort: Oldest
+        </select>
+
+        <button type="submit">Apply</button>
+
+      </div>
+    </form>
+
     </section>
 
     <div class="review-btn-container">
