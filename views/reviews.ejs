@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,18 +15,23 @@
     window.CURRENT_USER_ID = "<%= user?.id || '' %>";
   </script>
 </head>
+
 <body>
   <header>
     <h1><a href="/">CharlotteEats</a></h1>
   </header>
 
   <div class="header-links-flex">
-    <a href="/login"><h2>Login</h2></a>
-    <hr width="2" size="40"/>
-    <a href="/restaurants"><h2>Restaurants List</h2></a>
-    <hr width="2" size="40"/>
+    <a href="/login">
+      <h2>Login</h2>
+    </a>
+    <hr width="2" size="40" />
+    <a href="/restaurants">
+      <h2>Restaurants List</h2>
+    </a>
+    <hr width="2" size="40" />
     <h2><a href="/profile">User Profile</a></h2>
-    <hr width="2" size="40"/>
+    <hr width="2" size="40" />
     <nav>
       <div class="hamburger-menu">
         <span></span>
@@ -42,26 +48,26 @@
 
       <form method="GET" action="/reviews" style="margin-top: 14px;">
         <input type="hidden" name="id" value="<%= restaurantId %>">
-      <div class="row">
-        <select name="sort">
-          <option value="Default">
-            Sort: Default
-          </option>
-          <option value="likes" <%= (filters.sort === "likes" ? "selected" : "") %>>
-            Sort: Likes
-          </option>
-          <option value="newest" <%= (filters.sort === "newest" ? "selected" : "") %>>
-            Sort: Newest
-          </option>
-          <option value="oldest" <%= (filters.sort === "oldest" ?
-          "selected" : "") %>>
-          Sort: Oldest
-        </select>
+        <div class="row">
+          <select name="sort">
+            <option value="default" <%=(!filters.sort || filters.sort==="default" ) ? "selected" : "" %>>
+              Sort: Default
+            </option>
+            <option value="likes" <%=filters.sort==="likes" ? "selected" : "" %>>
+              Sort: Likes
+            </option>
+            <option value="newest" <%=filters.sort==="newest" ? "selected" : "" %>>
+              Sort: Newest
+            </option>
+            <option value="oldest" <%=filters.sort==="oldest" ? "selected" : "" %>>
+              Sort: Oldest
+            </option>
+          </select>
 
-        <button type="submit">Apply</button>
+          <button type="submit">Apply</button>
 
-      </div>
-    </form>
+        </div>
+      </form>
 
     </section>
 
@@ -72,17 +78,18 @@
     <section class="new-review-section hide">
       <form class="new-review-form">
         <input id="title" name="title" type="text" minlength="3" placeholder="Review Title">
-      
+
         <input id="rating" name="rating" type="number" min="1" max="5" placeholder="Rating (1-5)" required>
-      
+
         <textarea id="body" name="body" minlength="10" placeholder="Review Content" required></textarea>
-      
+
         <input type="submit" id="submit-btn" value="Submit Review">
       </form>
     </section>
 
   </main>
 </body>
+
 </html>
 
 <script src="/reviews.js"></script>
