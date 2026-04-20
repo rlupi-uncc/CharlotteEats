@@ -30,9 +30,21 @@ async function updateCurrentUserHandler(req, res) {
 }
 
 async function deleteCurrentUserHandler(req, res) {
-  let id = req.user.id;
-  await userService.deleteUser(id);
-  res.status(204).send();
+  try {
+    const id = req.user.id;
+    await userService.deleteUser(id);
+
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Failed to delete account");
+  }
 }
 
 module.exports = {getCurrentUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler};
