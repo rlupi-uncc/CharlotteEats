@@ -11,7 +11,7 @@ async function signUpHandler(req, res) {
   } catch (err) {
     console.error(err);
     return res.status(400).render("login", {
-      error: err.message || "Registration failed",
+      registerError: err.message
     });
   }
 }
@@ -33,7 +33,7 @@ async function logInHandler(req, res) {
   } catch (err) {
     console.error(err);
     return res.status(401).render("login", {
-      error: "Invalid email or password",
+      loginError: "Invalid email or password",
     });
   }
 }

@@ -72,6 +72,17 @@
             value="Login"
           >
         </div>
+        
+        <% if (typeof loginError !== 'undefined' && loginError) { %>
+            <div class="alert">
+                <%= loginError %>
+            </div>
+        <% } %>
+        <% if (typeof errors !== 'undefined' && errors) { %>
+            <div class="alert">
+                <%= errors %>
+            </div>
+        <% } %>
 
       </form>
 
@@ -129,7 +140,13 @@
             value="Register"
           >
         </div>
-        
+
+        <% if (typeof registerError !== 'undefined' && registerError) { %>
+            <div class="alert">
+                <%= registerError %>
+            </div>
+        <% } %>
+
       </form>
 
     </div>
