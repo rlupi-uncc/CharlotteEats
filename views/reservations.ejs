@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reservations</title>
+  <link rel="stylesheet" href="/css/login-style.css">
+  <link rel="stylesheet" href="/css/user-style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1><a href="/">CharlotteEats</a></h1>
+
+    <div class="header-links-flex">
+
+      <a href="/login">
+        <h2>Login</h2>
+      </a>
+      <hr width="2" size="40" />
+      <a href="/restaurants">
+        <h2>Restaurants List</h2>
+      </a>
+      <hr width="2" size="40" />
+      <h2><a href="/profile">User Profile</a></h2>
+      <hr width="2" size="40" />
+
+      <nav>
+        <div class="hamburger-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+          <div class="menu-dropdown">
+            <a href="/reservations/my">My Reservations</a>
+            <a href="/profile">My Profile</a>
+            <a href="/reviews/my">My Reviews</a>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+
+  </header>
+
+  <main>
+    <div class="profile-container">
+      <h1>My Reservations</h1>
+
+      <% if (!reservations || reservations.length === 0) { %>
+        <p class="empty-state">No reservations yet. <a href="/restaurants">Browse restaurants</a> to make one!</p>
+      <% } else { %>
+        <div class="reservation-cards">
+          <% reservations.forEach(r => { %>
+            <article class="reservation-card">
+              <div class="reservation-card-top">
+                <h3>
+                  <%= r.restaurantId?.name || "Restaurant" %>
+                </h3>
+                <span class="reservation-status <%= r.status %>">
+                  <%= r.status %>
+                </span>
+              </div>
+
+              <div class="reservation-details">
+                <p><strong>Date:</strong> <%= r.reservationDate %></p>
+                <p><strong>Time:</strong> <%= r.reservationTime %></p>
+                <p><strong>Party Size:</strong> <%= r.partySize %></p>
+                <% if (r.specialRequests) { %>
+                  <p><strong>Special Requests:</strong> <%= r.specialRequests %></p>
+                <% } %>
+              </div>
+
+              <% if (r.status === 'booked') { %>
+                <div class="reservation-actions">
+                  <button class="btn secondary cancel-btn" data-reservation-id="<%= r._id %>" data-restaurant-id="<%= r.restaurantId._id %>">Cancel Reservation</button>
+                </div>
+              <% } %>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <script>
+    // Handle cancel reservation
+    document.querySelectorAll('.cancel-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const reservationId = e.target.dataset.reservationId;
+        const restaurantId = e.target.dataset.restaurantId;
+        if (confirm('Are you sure you want to cancel this reservation?')) {
+          try {
+            const response = await fetch(`/restaurants/${restaurantId}/reservations/${reservationId}/cancel`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            if (response.ok) {
+              location.reload();
+            } else {
+              alert('Failed to cancel reservation');
+            }
+          } catch (error) {
+            alert('Error cancelling reservation');
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html></content>
+<parameter name="filePath">c:\ITSC 4155\charlotte_eats\CharlotteEats\views\reservations.ejs

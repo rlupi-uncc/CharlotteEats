@@ -18,7 +18,7 @@ router.post(
   reservationController.createReservationHandler
 );
 
-router.get("/my", reservationController.getMyReservationsHandler);
+router.get("/my", reservationController.getMyReservationsPageHandler);
 
 router.put(
   "/:reservationId/cancel",

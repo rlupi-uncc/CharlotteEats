@@ -14,6 +14,12 @@ async function getMyReservationsHandler(req, res) {
   res.status(200).json(reservations);
 }
 
+async function getMyReservationsPageHandler(req, res) {
+  const userId = req.user.id;
+  const reservations = await reservationService.getReservationsForUser(userId);
+  return res.render("reservations", { reservations });
+}
+
 async function cancelReservationHandler(req, res) {
   const userId = req.user.id;
   const reservationId = req.params.reservationId;
@@ -33,6 +39,7 @@ async function deleteReservationHandler(req, res) {
 module.exports = {
   createReservationHandler,
   getMyReservationsHandler,
+  getMyReservationsPageHandler,
   cancelReservationHandler,
   deleteReservationHandler,
 };

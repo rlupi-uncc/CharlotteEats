@@ -119,6 +119,10 @@ async function getReviews(restaurantId) {
   return reviews;
 }
 
+async function getReviewsForUser(userId) {
+  return reviewRepo.getReviewsByUserId(userId);
+}
+
 /**
  * Read single review by reviewId
  */
@@ -228,6 +232,7 @@ async function deleteReview(restaurantId, reviewId, userId) {
 module.exports = {
   createReview,
   getReviews,
+  getReviewsForUser,
   getReviewById,
   updateReview,
   deleteReview,

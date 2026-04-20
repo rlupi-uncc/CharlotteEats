@@ -28,6 +28,27 @@ async function getReviews(restaurantId) {
   return restaurant.reviews || [];
 }
 
+async function getReviewsByUserId(userId) {
+  const restaurants = await Restaurant.find({ "reviews.userId": userId })
+    .select("name reviews")
+    .lean();
+
+  const reviews = [];
+  restaurants.forEach((restaurant) => {
+    (restaurant.reviews || []).forEach((review) => {
+      if (String(review.userId) === String(userId)) {
+        reviews.push({
+          ...review,
+          restaurantName: restaurant.name,
+          restaurantId: restaurant._id,
+        });
+      }
+    });
+  });
+
+  return reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
 /**
  * Retrieve single review by reviewId
  * @param {ObjectId|string} restaurantId
@@ -117,6 +138,7 @@ async function deleteReview(restaurantId, reviewId, userId) {
 module.exports = {
   createReview,
   getReviews,
+  getReviewsByUserId,
   getReviewById,
   updateReview,
   deleteReview,

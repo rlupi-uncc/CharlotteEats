@@ -15,6 +15,7 @@ const { attachUser } = require("./middleware/attachUser");
 const userRepo = require("./repositories/userRepo");
 const reservationRoutes = require("./routes/reservations");
 const reservationService = require("./services/reservationService");
+const reviewService = require("./services/reviewService");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 // app.use("/restaurants/:id/reviews", reviewRoutes);
 app.use("/restaurants/:id/reservations", reservationRoutes);
+app.use("/reservations", reservationRoutes);
 
 app.get("/profile", requireAuth, async (req, res) => {
   try {
@@ -50,6 +52,16 @@ app.get("/profile", requireAuth, async (req, res) => {
     const reservations = await reservationService.getReservationsForUser(req.user.id);
 
     return res.render("userProfile", { user, reservations });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server error");
+  }
+});
+
+app.get("/reviews/my", requireAuth, async (req, res) => {
+  try {
+    const reviews = await reviewService.getReviewsForUser(req.user.id);
+    return res.render("myReviews", { reviews });
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server error");

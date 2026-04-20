@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reviews</title>
+  <link rel="stylesheet" href="/css/reviews-style.css">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">CharlotteEats</a></h1>
+  </header>
+
+  <div class="header-links-flex">
+    <a href="/login">
+      <h2>Login</h2>
+    </a>
+    <hr width="2" size="40" />
+    <a href="/restaurants">
+      <h2>Restaurants List</h2>
+    </a>
+    <hr width="2" size="40" />
+    <h2><a href="/profile">User Profile</a></h2>
+    <hr width="2" size="40" />
+    <nav>
+      <div class="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <div class="menu-dropdown">
+          <a href="/reservations/my">My Reservations</a>
+          <a href="/profile">My Profile</a>
+          <a href="/reviews/my">My Reviews</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <main>
+    <section class="reviews">
+      <h2>My Reviews</h2>
+
+      <% if (!reviews || reviews.length === 0) { %>
+        <p class="empty-state">You haven't written any reviews yet.</p>
+        <p><a href="/restaurants">Browse restaurants</a> to leave your first review.</p>
+      <% } else { %>
+        <div class="review-list">
+          <% reviews.forEach(review => { %>
+            <article class="review-card">
+              <div class="review-card-top">
+                <h3><%= review.title || 'Untitled Review' %></h3>
+                <span class="review-rating">Rating: <strong><%= review.rating %></strong></span>
+              </div>
+              <div class="review-meta">
+                <span><strong>Restaurant:</strong> <%= review.restaurantName %></span>
+                <span><strong>Date:</strong> <%= new Date(review.createdAt).toLocaleDateString() %></span>
+              </div>
+              <p class="review-body"><%= review.body %></p>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </main>
+</body>
+
+</html>
