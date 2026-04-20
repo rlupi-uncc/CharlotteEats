@@ -17,7 +17,7 @@ router.use(validateRestaurantId);
 router.post("/", requireAuth, validateCreateReview, reviewController.createReviewHandler);
 
 // GET /restaurants/:id/reviews/
-router.get('/', reviewController.getReviewsHandler);
+router.get('/', requireAuth, reviewController.getReviewsHandler);
 
 // GET /restaurants/:id/reviews/:reviewId
 router.get('/:reviewId', validateReviewId, reviewController.getReviewByIdHandler);
