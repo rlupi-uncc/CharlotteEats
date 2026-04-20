@@ -13,8 +13,18 @@ async function createReviewHandler(req, res) {
 // GET /restaurants/:id/reviews/
 async function getReviewsHandler(req, res) {
     const restaurantId = req.params.id;
+    const sort = (req.query.sort || "newest").trim().toLowerCase();
 
     const reviews = await reviewService.getReviews(restaurantId);
+
+    if (sort === "likes"){
+        reviews.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+    } else if (sort === "newest") {
+        reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (sort === "oldest") {
+        reviews.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }
+
     res.status(200).json(reviews);
 }
 

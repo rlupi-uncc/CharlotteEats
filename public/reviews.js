@@ -168,7 +168,9 @@ async function apiFetch(url, options = {}) {
 }
 
 async function loadReviews(restaurantId) {
-  const data = await apiFetch(`/restaurants/${restaurantId}/reviews`);
+  const params = new URLSearchParams(window.location.search);
+  const sort = params.get("sort") || "newest";
+  const data = await apiFetch(`/restaurants/${restaurantId}/reviews?sort=${sort}`);
   clearReviewsUI();
   (data || []).forEach(addEntry);
 }
