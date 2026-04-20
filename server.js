@@ -83,12 +83,14 @@ app.get("/", (req, res) => {
 app.get("/reviews", requireAuth, async (req, res) => {
   const restaurantId = req.query.id;
   if (!restaurantId) return res.status(400).send("Missing restaurant id");
-  // res.render("reviews", { restaurantId, user: { id: req.user.id } });
-  res.render("reviews", { 
-    reviews: [], 
-    filters: { sort: ""},
-    restaurantId, 
-    user: { id: req.user.id} 
+
+  const sort = (req.query.sort || "default").toLowerCase();
+
+  res.render("reviews", {
+    reviews: [],
+    filters: { sort },
+    restaurantId,
+    user: { id: req.user.id }
   });
 });
 
