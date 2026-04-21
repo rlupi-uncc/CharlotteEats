@@ -38,6 +38,22 @@ hr {
   border: 1px solid var(--pop-color);
 }
 
+.alert {
+  color: rgb(134, 8, 33);
+  background-color: rgb(233, 134, 134);
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 20px;
+  padding-left: 20px;
+  width: fit-content;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+}
+
 .header-links-flex {
   display: flex;
   justify-content: space-around;
