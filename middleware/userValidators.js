@@ -4,25 +4,25 @@ const { body, oneOf } = require("express-validator");
 const validateUser = [
   body("email")
     .exists({ checkFalsy: true })
-    .withMessage("email is required")
+    .withMessage("An email is required")
     .bail()
     .isEmail()
-    .withMessage("email is not valid")
+    .withMessage("The email entered is not a valid email")
     .normalizeEmail(),
 
   body("password")
     .exists({ checkFalsy: true })
-    .withMessage("password is required")
+    .withMessage("A password is required")
     .bail()
     .isLength({ min: 6, max: 64 })
-    .withMessage("password must contain at least 8 and at most 64 characters"),
+    .withMessage("The password must contain at least 8 and at most 64 characters"),
 
   handleValidationErrors.handleValidationErrors,
 ];
 
 const validateLogin = [
-  body("email").exists({ checkFalsy: true }).isEmail().withMessage("email is not valid").normalizeEmail(),
-  body("password").exists({ checkFalsy: true }).withMessage("password is required"),
+  body("email").exists({ checkFalsy: true }).isEmail().withMessage("The email entered is not a valid email").normalizeEmail(),
+  body("password").exists({ checkFalsy: true }).withMessage("A password is required"),
   handleValidationErrors.handleValidationErrors,
 ];
 
@@ -41,13 +41,13 @@ const validateUpdateUser = [
   body("email_change")
     .optional({ checkFalsy: true })
     .isEmail()
-    .withMessage("email is not valid")
+    .withMessage("The email entered is not a valid email")
     .normalizeEmail(),
 
   body("password")
     .optional({ checkFalsy: true })
     .isLength({ min: 8, max: 64 })
-    .withMessage("password must contain at least 8 and at most 64 characters"),
+    .withMessage("The password must contain at least 8 and at most 64 characters"),
 
   handleValidationErrors.handleValidationErrors,
 ];
