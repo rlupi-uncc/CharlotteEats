@@ -42,6 +42,7 @@
           <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
         <% }) %>
       </select>
+      <input name="dietTag" type="text" placeholder="Filter by dietary tag (halal, keto, gluten-free)" value="<%= filters.dietTag || '' %>">
 
       <input name="minPrice" type="number" step="0.01" placeholder="Min price" value="<%= filters.minPrice || '' %>">
       <input name="maxPrice" type="number" step="0.01" placeholder="Max price" value="<%= filters.maxPrice || '' %>">
