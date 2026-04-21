@@ -60,11 +60,6 @@
         <h3><%= i.name %></h3>
         <p class="description"><%= i.description %></p>
         <p class="price">$<%= i.price %></p>
-<<<<<<< HEAD
-        <p class="tags">Tags: <%= (i.tags || []).join(", ") || "None" %></p>
-        <p class="allergens">Allergens: <%= (i.allergens || []).join(", ") || "None" %></p>
-        <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
-=======
         <p class="allergens">
           Allergens: <%= (i.allergens || []).join(", ") || "None" %>
         </p>
@@ -73,7 +68,6 @@
           <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
         <% } %>
   
->>>>>>> origin
       </article>
     <% }) %>
   </div>
