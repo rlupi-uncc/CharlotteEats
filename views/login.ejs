@@ -75,11 +75,13 @@
         
         <% if (typeof loginError !== 'undefined' && loginError) { %>
             <div class="alert">
-                <%= loginError %>
+              Login Error:  
+              <%= loginError %>
             </div>
         <% } %>
         <% if (typeof errors !== 'undefined' && errors) { %>
             <div class="alert">
+                Validation Error:
                 <%= errors %>
             </div>
         <% } %>
@@ -143,6 +145,7 @@
 
         <% if (typeof registerError !== 'undefined' && registerError) { %>
             <div class="alert">
+                Registration Error:
                 <%= registerError %>
             </div>
         <% } %>
