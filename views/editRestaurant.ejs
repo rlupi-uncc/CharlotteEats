@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Restaurant</title>
+  <link rel="stylesheet" href="/css/edit-restaurant.css">
+</head>
+<body>
+  <div class="page">
+    <a href="/restaurants/<%= restaurant._id %>" class="back-link">← Back to restaurant</a>
+
+    <h1>Edit <%= restaurant.name %></h1>
+
+    <section class="card">
+      <h2>Restaurant Details</h2>
+      <form method="POST" action="/restaurants/<%= restaurant._id %>/edit" class="stack-form">
+        <label>Name</label>
+        <input type="text" name="name" value="<%= restaurant.name %>" required>
+
+        <label>Description</label>
+        <textarea name="description"><%= restaurant.description || "" %></textarea>
+
+        <label>Tags (comma-separated)</label>
+        <input type="text" name="tags" value="<%= (restaurant.tags || []).join(', ') %>">
+
+        <label>Address Line 1</label>
+        <input type="text" name="line1" value="<%= restaurant.address?.line1 || "" %>">
+
+        <div class="row">
+          <div>
+            <label>City</label>
+            <input type="text" name="city" value="<%= restaurant.address?.city || "" %>">
+          </div>
+          <div>
+            <label>State</label>
+            <input type="text" name="state" value="<%= restaurant.address?.state || "" %>">
+          </div>
+          <div>
+            <label>ZIP</label>
+            <input type="text" name="zip" value="<%= restaurant.address?.zip || "" %>">
+          </div>
+        </div>
+
+        <label>Phone</label>
+        <input type="text" name="phone" value="<%= restaurant.phone || "" %>">
+
+        <label>Website</label>
+        <input type="text" name="website" value="<%= restaurant.website || "" %>">
+
+        <button type="submit" class="btn-primary">Save Restaurant Changes</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Current Menu Items</h2>
+
+      <% if (!restaurant.menuItems || restaurant.menuItems.length === 0) { %>
+        <p class="empty-state">No menu items yet.</p>
+      <% } else { %>
+        <div class="menu-editor-grid">
+          <% restaurant.menuItems.forEach(item => { %>
+            <article class="menu-editor-card">
+              <img
+                src="<%= item.image || 'https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' %>"
+                alt="<%= item.name %>"
+                class="menu-image-preview"
+              >
+
+              <form method="POST" action="/restaurants/<%= restaurant._id %>/menu-items/<%= item._id %>/edit" class="stack-form">
+                <label>Name</label>
+                <input type="text" name="name" value="<%= item.name %>" required>
+
+                <label>Description</label>
+                <textarea name="description"><%= item.description || "" %></textarea>
+
+                <label>Image URL</label>
+                <input
+                  type="text"
+                  name="image"
+                  value="<%= item.image || 'https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' %>"
+                  placeholder="https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                >
+
+                <div class="row">
+                  <div>
+                    <label>Price</label>
+                    <input type="number" name="price" step="0.01" min="0" value="<%= item.price %>" required>
+                  </div>
+                  <div>
+                    <label>Category</label>
+                    <input type="text" name="category" value="<%= item.category %>" required>
+                  </div>
+                </div>
+
+                <label>Tags (comma-separated)</label>
+                <input type="text" name="tags" value="<%= (item.tags || []).join(', ') %>">
+
+                <label>Allergens (comma-separated)</label>
+                <input type="text" name="allergens" value="<%= (item.allergens || []).join(', ') %>">
+
+                <label class="checkbox-row">
+                  <input type="checkbox" name="isAvailable" <%= item.isAvailable ? "checked" : "" %>>
+                  Available
+                </label>
+
+                <div class="action-row">
+                  <button type="submit" class="btn-primary">Update Item</button>
+                </div>
+              </form>
+
+              <form method="POST" action="/restaurants/<%= restaurant._id %>/menu-items/<%= item._id %>/delete">
+                <button type="submit" class="btn-danger">Delete Item</button>
+              </form>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+
+    <section class="card">
+      <h2>Add Menu Item</h2>
+
+      <form method="POST" action="/restaurants/<%= restaurant._id %>/menu-items" class="stack-form">
+        <label>Name</label>
+        <input type="text" name="name" required>
+
+        <label>Description</label>
+        <textarea name="description"></textarea>
+
+        <label>Image URL</label>
+        <input
+          type="text"
+          name="image"
+          value="https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          placeholder="https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        >
+        
+        <div class="row">
+          <div>
+            <label>Price</label>
+            <input type="number" name="price" step="0.01" min="0" required>
+          </div>
+          <div>
+            <label>Category</label>
+            <input type="text" name="category" required>
+          </div>
+        </div>
+
+        <label>Tags (comma-separated)</label>
+        <input type="text" name="tags">
+
+        <label>Allergens (comma-separated)</label>
+        <input type="text" name="allergens">
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="isAvailable" checked>
+          Available
+        </label>
+
+        <button type="submit" class="btn-primary">Add Menu Item</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

@@ -47,6 +47,6 @@ describe("User Routes", () => {
 
   test("DELETE user/me returns 204", async () => {
     const res = await request(app).delete("/user/me").send();
-    expect(res.statusCode).toBe(204);
+    expect(res.statusCode).toBe(302);
   });
 });

@@ -4,6 +4,9 @@
 
 const MAX_LENGTH = 200;
 
+// Like button cooldown
+const LIKE_COOLDOWN_MS = 800;
+
 const restaurantId = window.RESTAURANT_ID;
 
 const reviewsSection = document.querySelector(".reviews");
@@ -85,7 +88,7 @@ function addEntry(review) {
   likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
   likeImage.classList.add("img", "like-btn");
   likeImage.dataset.likes = review.likes ?? 0;
-  
+
   likeImage.src = "img/reviewicon/unliked-thumbs-up.jpg";
 
   header.append(likeImage);
@@ -144,7 +147,7 @@ function clearReviewsUI() {
 // API calls
 async function apiFetch(url, options = {}) {
   const res = await fetch(url, {
-    credentials: "include", 
+    credentials: "include",
     ...options,
   });
   const contentType = res.headers.get("content-type") || "";
@@ -156,7 +159,7 @@ async function apiFetch(url, options = {}) {
     let payload = null;
     try {
       payload = await res.json();
-    } catch (_) {}
+    } catch (_) { }
     const msg = payload?.message || `${res.status} ${res.statusText}`;
     throw new Error(msg);
   }
@@ -168,7 +171,9 @@ async function apiFetch(url, options = {}) {
 }
 
 async function loadReviews(restaurantId) {
-  const data = await apiFetch(`/restaurants/${restaurantId}/reviews`);
+  const params = new URLSearchParams(window.location.search);
+  const sort = params.get("sort") || "newest";
+  const data = await apiFetch(`/restaurants/${restaurantId}/reviews?sort=${sort}`);
   clearReviewsUI();
   (data || []).forEach(addEntry);
 }
@@ -259,34 +264,46 @@ reviewsSection.addEventListener("click", async (e) => {
 
   // Like Review
   if (e.target.classList.contains("like-btn")) {
-    const article = e.target.closest(".review");
+    const likeBtn = e.target;
+    const article = likeBtn.closest(".review");
     const reviewId = article?.dataset?.reviewId;
+    if (!reviewId) return;
 
-    if (!reviewId)
-      return;
+    // prevent spam clicks while request is in flight or cooldown is active
+    if (likeBtn.dataset.coolingDown === "true") return;
+    likeBtn.dataset.coolingDown = "true";
+    likeBtn.style.pointerEvents = "none";
+    likeBtn.style.opacity = "0.6";
 
-    const likeImage = article.querySelector("img");
-    const isLiked = likeImage?.src.includes("liked-thumbs-up.jpg") &&!likeImage?.src.includes("unliked-thumbs-up.jpg");
+    const isLiked =
+      likeBtn.src.includes("liked-thumbs-up.jpg") &&
+      !likeBtn.src.includes("unliked-thumbs-up.jpg");
 
     try {
+      const updatedReview = await updateReviewLikes(restaurantId, reviewId);
 
-      if(isLiked){
-        const lessUpdated = await updateReviewLikes(restaurantId, reviewId);
+      likeBtn.dataset.likes = updatedReview.likes;
 
-        e.target.dataset.likes = lessUpdated.likes;
-        const unlikeLine = article.querySelector(".likes-line");
-        if (unlikeLine) unlikeLine.textContent = `Likes: ${lessUpdated.likes}`;
-        if(likeImage) likeImage.src = "/img/reviewicon/unliked-thumbs-up.jpg";
-      }else{
-        const updated = await updateReviewLikes(restaurantId, reviewId);
-        
-        e.target.dataset.likes = updated.likes;
-        const likesLine = article.querySelector(".likes-line");
-        if (likesLine) likesLine.textContent = `Likes: ${updated.likes}`;
-        if (likeImage) likeImage.src = "/img/reviewicon/liked-thumbs-up.jpg";
+      const likesLine = article.querySelector(".likes-line");
+      if (likesLine) {
+        likesLine.textContent = `Likes: ${updatedReview.likes}`;
       }
+
+      const nowLiked = (updatedReview.likedBy || [])
+        .map(String)
+        .includes(String(window.CURRENT_USER_ID));
+
+      likeBtn.src = nowLiked
+        ? "/img/reviewicon/liked-thumbs-up.jpg"
+        : "/img/reviewicon/unliked-thumbs-up.jpg";
     } catch (err) {
       showError(err.message);
+    } finally {
+      setTimeout(() => {
+        likeBtn.dataset.coolingDown = "false";
+        likeBtn.style.pointerEvents = "";
+        likeBtn.style.opacity = "";
+      }, LIKE_COOLDOWN_MS);
     }
   }
 });
