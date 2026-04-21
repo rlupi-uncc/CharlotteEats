@@ -6,10 +6,10 @@ const { handleValidationErrors } = require('./handleValidationErrors.js');
 const validateRestaurantId = [
     param('id')
         .exists({ checkFalsy: true })
-        .withMessage('A Restaurant id is required.')
+        .withMessage('A Restaurant id is required')
         .bail()
         .isMongoId()
-        .withMessage('Restaurant id must be a valid Mongo ObjectId.'),
+        .withMessage('Restaurant id must be a valid Mongo ObjectId'),
     handleValidationErrors,
 ];
 
@@ -17,10 +17,10 @@ const validateRestaurantId = [
 const validateReviewId = [
     param('reviewId')
         .exists({ checkFalsy: true })
-        .withMessage('A reviewId is required.')
+        .withMessage('A reviewId is required')
         .bail()
         .isMongoId()
-        .withMessage('The reviewId must be a valid Mongo ObjectId.'),
+        .withMessage('The reviewId must be a valid Mongo ObjectId'),
     handleValidationErrors,
 ];
 
@@ -29,28 +29,28 @@ const validateCreateReview = [
     
     body('rating')
         .exists({ checkFalsy: true })
-        .withMessage('A rating is required.')
+        .withMessage('A rating is required')
         .bail()
         .isFloat({ min: 1, max: 5})
-        .withMessage('The rating must be a number between 1 and 5.')
+        .withMessage('The rating must be a number between 1 and 5')
         .toFloat(),
 
     body('title')
         .optional()
         .isString()
-        .withMessage('The title must be a string.')
+        .withMessage('The title must be a string')
         .trim(),
 
     body('body')
         .exists({ checkFalsy: true })
-        .withMessage('A body is required.')
+        .withMessage('A body is required')
         .bail()
         .isString()
-        .withMessage('The body must be a string.')
+        .withMessage('The body must be a string')
         .bail()
         .trim()
         .notEmpty()
-        .withMessage('The body cannot be empty.'),
+        .withMessage('The body cannot be empty'),
     handleValidationErrors,
 ];
 
@@ -60,28 +60,28 @@ const validateUpdateReview = [
     body('rating')
         .optional()
         .isFloat({ min: 1, max: 5})
-        .withMessage('The rating must be a number between 1 and 5.')
+        .withMessage('The rating must be a number between 1 and 5')
         .toFloat(),
 
     body('title')
         .optional()
         .isString()
-        .withMessage('The title must be a string.')
+        .withMessage('The title must be a string')
         .trim(),
 
     body('body')
         .optional()
         .isString()
-        .withMessage('The body must be a string.')
+        .withMessage('The body must be a string')
         .bail()
         .trim()
         .notEmpty()
-        .withMessage('The body cannot be empty.'),
+        .withMessage('The body cannot be empty'),
 
     body('likes')
         .optional()
         .isInt({ min: 0 })
-        .withMessage('The likes must be a non-negative integer.')
+        .withMessage('The likes must be a non-negative integer')
         .toInt(),
         
     handleValidationErrors,   
