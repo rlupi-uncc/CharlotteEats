@@ -17,7 +17,7 @@
 
     <div class="header-links-flex">
 
-    <a href="/login"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
+    <a href="/"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
 
       <hr width="2" size="40" />
       <h2><a href="/restaurants">Restaurants List</h2>
@@ -73,7 +73,7 @@
           <div class="profile-stats">
             <div class="stat">Reservations: <%= reservations.length %>
             </div>
-            <div class="stat">Reviews: 0</div>
+            <div class="stat">Reviews: <%= user.reviewCount || reviews.length || 0 %></div>
           </div>
 
           <section class="profile-reservations">
