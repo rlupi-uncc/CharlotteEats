@@ -80,6 +80,12 @@
 					<button type="submit" class="btn header" formaction="/user/me?_method=PUT">Update</button>
 					<button type="submit" class="btn danger" formaction="/user/me?_method=DELETE">Delete Profile</button>
 				</div>
+				<% if (typeof errors !== 'undefined' && errors) { %>
+					<div class="alert">
+						Validation Error:
+						<%= errors %>
+					</div>
+				<% } %>
 			</form>
 		
 	</main>

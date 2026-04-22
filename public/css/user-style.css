@@ -15,6 +15,22 @@ html,body{
 	-webkit-font-smoothing:antialiased;
 }
 
+.alert {
+  color: rgb(134, 8, 33);
+  background-color: rgb(233, 134, 134);
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 20px;
+  padding-left: 20px;
+  width: fit-content;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+}
+
 .profile-container{
 	max-width:820px;
 	margin:32px auto;
