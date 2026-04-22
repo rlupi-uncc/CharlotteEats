@@ -1,7 +1,6 @@
 :root {
   --text-color: black;
   --background-color: lightblue;
-  --form-background-color: rgb(175, 225, 175);
   --pop-color: rgb(100, 149, 237);
   --content-height: 0px;
 }
@@ -17,11 +16,12 @@ body {
   color: var(--text-color);
 }
 
+#body, #title, #rating {
+  border: 3px solid lightgrey;
+}
+
 h1 {
   text-align: center;
-  /* margin-left: 175px;
-  margin-right: 175px;
-  margin-top: 15px; */
   margin: 15px auto 0 auto;
   padding: 10px;
   max-width: 600px;
@@ -185,13 +185,17 @@ main {
 }
 
 #submit-btn {
-  background-color: var(--pop-color);
   color: var(--text-color);
   border: none;
   text-align: center;
   padding: 10px;
-  font-size: 1rem;
+  font-size: 17px;
+  font-weight: bold;
   border-radius: 10px;
+}
+
+#submit-btn:hover {
+  text-decoration: underline;
 }
 
 .review-btn-container {
@@ -206,7 +210,7 @@ main {
 }
 
 .new-review-btn {
-  background-color: var(--pop-color);
+  background-color: var(--background-color);
   color: var(--text-color);
   border: none;
   text-align: center;
@@ -214,6 +218,11 @@ main {
   margin: 10px;
   font-size: 1rem;
   border-radius: 10px;
+  font-weight: bold;
+}
+
+.new-review-btn:hover {
+  text-decoration: underline;
 }
 
 .like-btn {
@@ -224,7 +233,7 @@ main {
 }
 
 .delete-btn {
-  color: var(--pop-color);
+  color: var(--background-color);
   font-size: 1.2rem;
   border: none;
   background: transparent;
@@ -236,7 +245,7 @@ main {
 } 
 
 .more-less-btn, .new-btn, #submit-btn {
-  background-color:  var(--pop-color);
+  background-color:  var(--background-color);
   color: var(--text-color);
   border: none;
   padding: 0.5em;

@@ -31,6 +31,7 @@ a {
 }
 
 h2 {
+  color: var(--text-color);
   text-align: center;
 }
 
@@ -155,7 +156,7 @@ hr {
 }
 
 .login-content {
-  background-color: var(--form-background-color);
+  border: 3px var(--background-color) solid;
   margin: 40px auto;
   padding: 30px;
   border-radius: 40px;
@@ -165,22 +166,12 @@ hr {
 input[type="text"],
 input[type="email"],
 input[type="password"]{
-  border: 2px solid  var(--pop-color);
+  border: 2px solid  lightgrey;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   width: 100%;
   padding: 0.6em;
 }
-
-/* .login-main {
-  background-color: var(--form-background-color);
-  margin-top: 40px;
-  margin-bottom: 40px;
-  margin-left: 500px;
-  margin-right: 200px;
-  padding: 30px;
-  border-radius: 40px;
-} */
 
 #login-title {
   margin-top: 20px;
@@ -193,7 +184,7 @@ input[type="password"]{
 }
 
 .btn {
-  background-color: var(--pop-color);
+  background-color: var(--background-color);
   border: none;
   text-align: center;
   padding: 10px;
