@@ -92,9 +92,6 @@ async function createReview(restaurantId, userId, reviewData) {
     throw err;
   }
 
-  // Increment user's review count
-  await User.findByIdAndUpdate(userId, { $inc: { reviewCount: 1 } });
-
   // recompute cached ratings
   const restaurantDoc = await Restaurant.findById(restaurantId);
   if (!restaurantDoc) {
@@ -218,9 +215,6 @@ async function deleteReview(restaurantId, reviewId, userId) {
     err.status = 404;
     throw err;
   }
-
-  // Decrement user's review count
-  await User.findByIdAndUpdate(userId, { $inc: { reviewCount: -1 } });
 
   const restaurantDoc = await Restaurant.findById(restaurantId);
   if (!restaurantDoc) {

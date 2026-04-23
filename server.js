@@ -16,6 +16,7 @@ const userRepo = require("./repositories/userRepo");
 const reservationRoutes = require("./routes/reservations");
 const reservationService = require("./services/reservationService");
 const reviewService = require("./services/reviewService");
+const userService = require("./services/userService");
 
 const app = express();
 
@@ -46,7 +47,7 @@ app.use("/reservations", reservationRoutes);
 
 app.get("/profile", requireAuth, async (req, res) => {
   try {
-    const user = await userRepo.findUserById(req.user.id);
+    const user = await userService.getUser(req.user.id);
     if (!user) return res.status(401).redirect("/");
 
     const reservations = await reservationService.getReservationsForUser(req.user.id);
@@ -80,7 +81,7 @@ app.get("/login", (req, res) => {
 
 app.get("/edit_profile", requireAuth, async (req, res) => {
   try {
-    const user = await userRepo.findUserById(req.user.id);
+    const user = await userService.getUser(req.user.id);
     if (!user) return res.status(401).redirect("/");
 
     return res.render("userProfileEdit", { user });
