@@ -68,12 +68,48 @@ JWT_SECRET=your_secret_key
 JWT_EXPIRES_IN=time_to_expire
 ```
 
-### 4. Start the server
+### 4. Runs this script BEFORE starting the server, delete after running ONCE
+fixReviewCounts.js (place the file on the same level as db.js)
+```require("dotenv").config();
+
+const { connectMongo } = require('./db.js');
+const User = require('./models/User.js');
+const Restaurant = require('./models/Restaurant.js');
+
+async function fixReviewCounts() {
+  try {
+    await connectMongo();
+
+    // Get all users
+    const users = await User.find({});
+    console.log(`Found ${users.length} users`);
+
+    for (const user of users) {
+      // Count reviews for this user
+      const reviewCount = await Restaurant.countDocuments({ 'reviews.userId': user._id });
+      console.log(`User ${user.username} has ${reviewCount} reviews in DB`);
+      user.reviewCount = reviewCount;
+      await user.save();
+      console.log(`Updated ${user.username}: ${reviewCount} reviews`);
+    }
+
+    console.log('Review counts fixed!');
+  } catch (error) {
+    console.error('Error fixing review counts:', error);
+  } finally {
+    process.exit(0);
+  }
+}
+
+fixReviewCounts();
+```
+
+### 5. Start the server
 ```bash
 node server.js
 ```
 
-### 5. Open the application
+### 6. Open the application
 
 http://localhost:8000
 
