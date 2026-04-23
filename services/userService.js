@@ -4,10 +4,23 @@ const mongodb = require('mongodb');
 const bcrypt = require('bcrypt');
 
 async function getReviewCount(userId) {
+  const isValidObjectId =
+    typeof userId === 'string' && mongodb.ObjectId.isValid(userId);
+
+  const match =
+    isValidObjectId
+      ? {
+          $or: [
+            { 'reviews.userId': userId },
+            { 'reviews.userId': new mongodb.ObjectId(userId) },
+          ],
+        }
+      : { 'reviews.userId': userId };
+
   const result = await Restaurant.aggregate([
     { $unwind: '$reviews' },
-    { $match: { 'reviews.userId': userId } },
-    { $group: { _id: null, count: { $sum: 1 } } }
+    { $match: match },
+    { $group: { _id: null, count: { $sum: 1 } } },
   ]);
   return result.length > 0 ? result[0].count : 0;
 }
