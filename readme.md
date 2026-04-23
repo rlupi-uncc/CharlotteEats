@@ -70,7 +70,7 @@ JWT_EXPIRES_IN=time_to_expire
 
 ### 4. Runs this script BEFORE starting the server, delete after running ONCE
 fixReviewCounts.js (place the file on the same level as db.js)
-require("dotenv").config();
+```require("dotenv").config();
 
 const { connectMongo } = require('./db.js');
 const User = require('./models/User.js');
@@ -102,6 +102,7 @@ async function fixReviewCounts() {
 }
 
 fixReviewCounts();
+```
 
 ### 5. Start the server
 ```bash
