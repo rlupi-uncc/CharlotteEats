@@ -42,8 +42,13 @@ const UserSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+
+    reviewCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
   },
-  { timestamps: true }
 );
 
 // Hash password before save

@@ -50,6 +50,23 @@ function addEntry(review) {
   const author = review.authorName ? `by ${review.authorName}` : "";
   const date = review.createdAt ? formatDate(review.createdAt) : formatDate(review.date);
   meta.textContent = [author, date].filter(Boolean).join(" • ");
+  
+  // Add avatar next to author name if author exists
+  if (review.authorName) {
+    const avatar = document.createElement("img");
+    avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.authorName)}&background=6495ED&color=fff&size=24&font-size=0.4`;
+    avatar.alt = `${review.authorName} avatar`;
+    avatar.classList.add("review-avatar");
+    avatar.style.width = "24px";
+    avatar.style.height = "24px";
+    avatar.style.borderRadius = "50%";
+    avatar.style.marginRight = "8px";
+    avatar.style.verticalAlign = "middle";
+    
+    // Insert avatar at the beginning of the meta paragraph
+    meta.insertBefore(avatar, meta.firstChild);
+  }
+  
   article.append(meta);
 
   // rating line

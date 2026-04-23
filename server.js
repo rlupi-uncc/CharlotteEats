@@ -50,8 +50,10 @@ app.get("/profile", requireAuth, async (req, res) => {
     if (!user) return res.status(401).redirect("/");
 
     const reservations = await reservationService.getReservationsForUser(req.user.id);
+    const reviews = await reviewService.getReviewsForUser(req.user.id);
+    const mostRecentReview = reviews.length > 0 ? reviews[0] : null;
 
-    return res.render("userProfile", { user, reservations });
+    return res.render("userProfile", { user, reservations, mostRecentReview });
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server error");
