@@ -17,7 +17,7 @@
 
     <div class="header-links-flex">
 
-    <a href="/login"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
+    <a href="/"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
 
       <hr width="2" size="40" />
       <h2><a href="/restaurants">Restaurants List</h2>
@@ -49,7 +49,7 @@
         <div class="profile-info">
 
           <div class="profile-picture">
-            <img src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" alt="User avatar" class="avatar">
+            <img src="<%= user.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=6495ED&color=fff&size=160&font-size=0.6` %>" alt="User avatar" class="avatar">
           </div>
 
           <!-- Dynamic username -->
@@ -73,7 +73,7 @@
           <div class="profile-stats">
             <div class="stat">Reservations: <%= reservations.length %>
             </div>
-            <div class="stat">Reviews: 0</div>
+            <div class="stat">Reviews: <%= user.reviewCount %></div>
           </div>
 
           <section class="profile-reservations">
@@ -120,6 +120,39 @@
                           </form>
                     </article>
                     <% }) %>
+                </div>
+                <% } %>
+          </section>
+
+          <section class="profile-reviews">
+            <h2>My Most Recent Review</h2>
+
+            <% if (!mostRecentReview) { %>
+              <p class="empty-state">No reviews yet.</p>
+              <% } else { %>
+                <div class="review-cards">
+                  <article class="review-card">
+                    <div class="review-card-top">
+                      <h3>
+                        <%= mostRecentReview.restaurantName || "Restaurant" %>
+                      </h3>
+                      <span class="review-rating">
+                        <%= "★".repeat(mostRecentReview.rating) %>
+                      </span>
+                    </div>
+
+                    <div class="review-details">
+                      <p><strong>Title:</strong>
+                        <%= mostRecentReview.title || "No title" %>
+                      </p>
+                      <p><strong>Body:</strong>
+                        <%= mostRecentReview.body || "No body" %>
+                      </p>
+                      <p><strong>Date:</strong>
+                        <%= new Date(mostRecentReview.createdAt).toLocaleDateString() %>
+                      </p>
+                    </div>
+                  </article>
                 </div>
                 <% } %>
           </section>

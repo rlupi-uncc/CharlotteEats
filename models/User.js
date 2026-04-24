@@ -43,7 +43,6 @@ const UserSchema = new mongoose.Schema(
       min: 0,
     },
   },
-  { timestamps: true }
 );
 
 // Hash password before save

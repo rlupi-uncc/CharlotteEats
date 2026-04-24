@@ -15,9 +15,8 @@
   </header>
 
   <div class="header-links-flex">
-    <a href="/login">
-      <h2>Login</h2>
-    </a>
+    <a href="/"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
+
     <hr width="2" size="40" />
     <a href="/restaurants">
       <h2>Restaurants List</h2>
@@ -48,11 +47,14 @@
         <p><a href="/restaurants">Browse restaurants</a> to leave your first review.</p>
       <% } else { %>
         <div class="review-list">
-          <% reviews.forEach(review => { %>
-            <article class="review-card">
+          <% reviews.forEach((review, index) => { %>
+            <article class="review-card <%= index === 0 ? 'most-recent' : '' %>">
               <div class="review-card-top">
                 <h3><%= review.title || 'Untitled Review' %></h3>
                 <span class="review-rating">Rating: <strong><%= review.rating %></strong></span>
+                <% if (index === 0) { %>
+                  <span class="badge most-recent-badge">Most Recent</span>
+                <% } %>
               </div>
               <div class="review-meta">
                 <span><strong>Restaurant:</strong> <%= review.restaurantName %></span>

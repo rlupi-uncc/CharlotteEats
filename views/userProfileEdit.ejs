@@ -15,7 +15,7 @@
 
 		<div class="header-links-flex">
 
-    		<a href="/login"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
+    		<a href="/"><img src="/img/logo/logo_horizontal.png" alt="Charlotte Eats Logo" style="height: 40px; width: 100%;"></a>
 			<hr width="2" size="40"/>
 			<h2><a href="/restaurants">Search for Restaurants</h2>
 			<hr width="2" size="40"/>
@@ -45,7 +45,7 @@
 			<form class="profile-top" method="post">
 				<div class="profile-info">
 					<div class="profile-picture">
-						<img src="<%= user.profilePicture || 'https://via.placeholder.com/400' %>" alt="User avatar" class="avatar">
+						<img src="<%= user.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=6495ED&color=fff&size=160&font-size=0.6` %>" alt="User avatar" class="avatar">
 					</div>
 
 							<h2><%= user.username %></h2>

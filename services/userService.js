@@ -1,12 +1,39 @@
 const userRepo = require('../repositories/userRepo.js');
+const Restaurant = require('../models/Restaurant');
 const mongodb = require('mongodb');
 const bcrypt = require('bcrypt');
+
+async function getReviewCount(userId) {
+  const isValidObjectId =
+    typeof userId === 'string' && mongodb.ObjectId.isValid(userId);
+
+  const match =
+    isValidObjectId
+      ? {
+          $or: [
+            { 'reviews.userId': userId },
+            { 'reviews.userId': new mongodb.ObjectId(userId) },
+          ],
+        }
+      : { 'reviews.userId': userId };
+
+  const result = await Restaurant.aggregate([
+    { $unwind: '$reviews' },
+    { $match: match },
+    { $group: { _id: null, count: { $sum: 1 } } },
+  ]);
+  return result.length > 0 ? result[0].count : 0;
+}
 
 async function getAllUsers(){
     return await userRepo.findAllUsers(); 
 }
 async function getUser(id){
-    return await userRepo.findUserById(id); 
+    const user = await userRepo.findUserById(id);
+    if (user) {
+        user.reviewCount = await getReviewCount(id);
+    }
+    return user;
 }
 async function updateUser(id, data){
     try{

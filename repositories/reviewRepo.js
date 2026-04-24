@@ -1,4 +1,5 @@
 const Restaurant = require("../models/Restaurant.js");
+const mongodb = require("mongodb");
 
 /**
  * Create a review (embedded)
@@ -29,7 +30,17 @@ async function getReviews(restaurantId) {
 }
 
 async function getReviewsByUserId(userId) {
-  const restaurants = await Restaurant.find({ "reviews.userId": userId })
+  const query =
+    typeof userId === 'string' && /^[0-9a-fA-F]{24}$/.test(userId)
+      ? {
+          $or: [
+            { 'reviews.userId': userId },
+            { 'reviews.userId': new mongodb.ObjectId(userId) },
+          ],
+        }
+      : { 'reviews.userId': userId };
+
+  const restaurants = await Restaurant.find(query)
     .select("name reviews")
     .lean();
 
