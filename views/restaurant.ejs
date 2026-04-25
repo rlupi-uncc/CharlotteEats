@@ -56,16 +56,18 @@
     <% const placeholder = "https://images.unsplash.com/vector-1769004080108-6c81a96475df?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"; %>
   
     <% menuItems.forEach(i => { %>
+      <% if (i.isAvailable === true) { %>
       <article class="menu-item">
         <h3><%= i.name %></h3>
         <p class="description"><%= i.description %></p>
-        <p class="price">$<%= i.price %></p>
+        <p class="price">$<%= i.price.toFixed(2) %></p>
         <p class="allergens">
           Allergens: <%= (i.allergens || []).join(", ") || "None" %>
         </p>
   
         <% if (i.image && i.image !== placeholder) { %>
           <img src="<%= i.image %>" alt="<%= i.name %>" class="menu-item-img"/>
+          <% }%>
         <% } %>
   
       </article>
